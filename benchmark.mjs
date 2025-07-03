@@ -298,15 +298,10 @@ toolNames.forEach((name) => {
       );
       break;
     case 'unpack':
-      const unpackPkg = JSON.parse(
-        readFileSync(
-          path.join(process.cwd(), 'node_modules/@unpackjs/cli/package.json'),
-          'utf-8',
-        ),
-      );
       buildTools.push(
         new BuildTool({
-          name: 'Unpack ' + unpackPkg.version,
+          // TODO
+          name: 'Unpack ',
           port: 4000,
           startScript: 'start:unpack',
           startedRegex: /ready in (\d+)ms/,
