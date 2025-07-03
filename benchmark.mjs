@@ -307,7 +307,7 @@ toolNames.forEach((name) => {
       buildTools.push(
         new BuildTool({
           name: 'Unpack ' + unpackPkg.version,
-          port: 3000,
+          port: 4000,
           startScript: 'start:unpack',
           startedRegex: /ready in (\d+)ms/,
           buildScript: 'build:unpack',
