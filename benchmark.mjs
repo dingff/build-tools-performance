@@ -178,6 +178,7 @@ const parseToolNames = () => {
     'vite',
     'webpack',
     'farm',
+    'unpack',
   ];
 
   if (process.env.TOOLS === 'all') {
@@ -195,6 +196,7 @@ const parseToolNames = () => {
     'rolldown-vite',
     'vite',
     'webpack',
+    'unpack',
   ];
   return defaultTools;
 };
@@ -292,6 +294,24 @@ toolNames.forEach((name) => {
           startedRegex: /Ready in (.+)(s|ms)/,
           buildScript: 'build:farm',
           binFilePath: '@farmfe/cli/bin/farm.mjs',
+        }),
+      );
+      break;
+    case 'unpack':
+      const unpackPkg = JSON.parse(
+        readFileSync(
+          path.join(process.cwd(), 'node_modules/@unpackjs/cli/package.json'),
+          'utf-8',
+        ),
+      );
+      buildTools.push(
+        new BuildTool({
+          name: 'Unpack ' + unpackPkg.version,
+          port: 3001,
+          startScript: 'start:unpack',
+          startedRegex: /ready in (\d+)ms/,
+          buildScript: 'build:unpack',
+          binFilePath: '@unpackjs/cli/bin/index.js',
         }),
       );
       break;

@@ -25,6 +25,7 @@
     "@types/node": "^22.16.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@unpackjs/cli": "^2.1.2",
     "@vitejs/plugin-react-oxc": "^0.2.3",
     "@vitejs/plugin-react-swc": "^3.10.2",
     "babel-loader": "^10.0.0",
@@ -68,6 +69,8 @@
     "start:rsbuild": "rsbuild dev",
     "start:rsbuild:lazy": "cross-env LAZY=true rsbuild dev",
     "build:rsbuild": "rsbuild build",
+    "start:unpack": "unpack dev",
+    "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs"
   },
   "engines": {
