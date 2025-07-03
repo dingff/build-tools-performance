@@ -14,7 +14,7 @@ export default defineConfig({
     css: true,
   },
   dev: {
-    prebundle: true,
+    // prebundle: true,
   },
   typeCheck: false,
 });
