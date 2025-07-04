@@ -174,11 +174,11 @@ const parseToolNames = () => {
   const allTools = [
     'rspack',
     'rsbuild',
+    'unpack',
     'rolldown-vite',
     'vite',
     'webpack',
     'farm',
-    'unpack',
   ];
 
   if (process.env.TOOLS === 'all') {
@@ -193,10 +193,10 @@ const parseToolNames = () => {
   const defaultTools = [
     'rspack',
     'rsbuild',
+    'unpack',
     'rolldown-vite',
     'vite',
     'webpack',
-    'unpack',
   ];
   return defaultTools;
 };
@@ -300,8 +300,7 @@ toolNames.forEach((name) => {
     case 'unpack':
       buildTools.push(
         new BuildTool({
-          // TODO
-          name: 'Unpack ',
+          name: 'Unpack ' + require('@unpackjs/cli/package.json').version,
           port: 4000,
           startScript: 'start:unpack',
           startedRegex: /ready in (\d+)ms/,
@@ -375,9 +374,6 @@ async function runBenchmark() {
     logger.info(
       color.dim('navigating to' + ` http://localhost:${buildTool.port}`),
     );
-
-    // Wait a bit more for the server to be fully ready
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     await page.goto(`http://localhost:${buildTool.port}`, {
       timeout: 60000,
