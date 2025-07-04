@@ -53,7 +53,7 @@
     "webpack-dev-server": "^5.2.2"
   },
   "scripts": {
-    "benchmark": "node benchmark.mjs",
+    "benchmark": "cross-env DEBUG=1 node benchmark.mjs",
     "clean": "rm -rf ./node_modules/.cache && rm -rf ./node_modules/.vite && rm -rf ./node_modules/.farm",
     "start:farm": "farm start",
     "build:farm": "farm build",
