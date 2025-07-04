@@ -342,7 +342,7 @@ toolNames.forEach((name) => {
     case 'unpack':
       buildTools.push(
         // new BuildTool({
-        //   name: 'Unpack ' + require('@unpackjs/cli/package.json').version,
+        //   name: 'Unpack ' + require('@unpackjs/core/package.json').version,
         //   port: 4000,
         //   startScript: 'start:unpack',
         //   startedRegex: /ready in (\d+)ms/,
@@ -351,7 +351,7 @@ toolNames.forEach((name) => {
         // }),
         new BuildTool({
           name:
-            'Unpack (Lazy) ' + require('@unpackjs/cli/package.json').version,
+            'Unpack (Lazy) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:lazy',
           startedRegex: /ready in (\d+)ms/,
@@ -361,7 +361,7 @@ toolNames.forEach((name) => {
         new BuildTool({
           name:
             'Unpack (Lazy + Prebundle) ' +
-            require('@unpackjs/cli/package.json').version,
+            require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:prebundle',
           startedRegex: /ready in (\d+)ms/,

@@ -1,4 +1,5 @@
 import { defineConfig } from '@unpackjs/cli';
+import { pluginReact } from '@unpackjs/plugin-react';
 import path from 'node:path';
 const caseName = process.env.CASE ?? 'medium';
 
@@ -18,4 +19,5 @@ export default defineConfig({
     prebundle: Boolean(process.env.PREBUNDLE),
   },
   typeCheck: false,
+  plugins: [pluginReact()],
 });
