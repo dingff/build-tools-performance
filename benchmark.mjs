@@ -330,7 +330,7 @@ toolNames.forEach((name) => {
     case 'farm':
       buildTools.push(
         new BuildTool({
-          name: 'Farm ' + require('@farmfe/core/package.json').version,
+          name: 'Farm (Lazy) ' + require('@farmfe/core/package.json').version,
           port: 9000,
           startScript: 'start:farm',
           startedRegex: /Ready in (.+)(s|ms)/,

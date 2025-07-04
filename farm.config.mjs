@@ -11,6 +11,7 @@ export default defineConfig({
     input: {
       index: path.resolve(__dirname, 'src', caseName, 'index.html'),
     },
+    lazyCompilation: true,
   },
   plugins: ['@farmfe/plugin-react'],
 });
