@@ -222,7 +222,7 @@ toolNames.forEach((name) => {
       buildTools.push(
         new BuildTool({
           name: 'Rsbuild ' + require('@rsbuild/core/package.json').version,
-          port: 3000,
+          port: 3333,
           startScript: 'start:rsbuild',
           startedRegex: /in (.+) (s|ms)/,
           buildScript: 'build:rsbuild',
@@ -231,7 +231,7 @@ toolNames.forEach((name) => {
         new BuildTool({
           name:
             'Rsbuild (Lazy) ' + require('@rsbuild/core/package.json').version,
-          port: 3000,
+          port: 3333,
           startScript: 'start:rsbuild:lazy',
           startedRegex: /in (.+) (s|ms)/,
           buildScript: 'build:rsbuild',
