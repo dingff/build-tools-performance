@@ -239,7 +239,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase());
   }
 
-  const defaultTools = ['rsbuild', 'unpack', 'rolldown-vite'];
+  const defaultTools = ['rsbuild', 'unpack', 'rolldown-vite', 'farm'];
   return defaultTools;
 };
 
