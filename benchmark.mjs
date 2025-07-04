@@ -376,6 +376,9 @@ async function runBenchmark() {
       color.dim('navigating to' + ` http://localhost:${buildTool.port}`),
     );
 
+    // Wait a bit more for the server to be fully ready
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     await page.goto(`http://localhost:${buildTool.port}`, {
       timeout: 60000,
     });
