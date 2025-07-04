@@ -10,9 +10,9 @@ export default defineConfig({
   css: {
     transformer: 'lightningcss',
   },
-  experiments: {
-    css: true,
-  },
+  // experiments: {
+  //   css: true,
+  // },
   dev: {
     lazyCompilation: Boolean(process.env.LAZY),
   },
