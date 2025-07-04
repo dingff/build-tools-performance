@@ -28,7 +28,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@unpackjs/cli": "^2.2.0",
-    "@unpackjs/core": "^2.3.6",
+    "@unpackjs/core": "^2.3.7",
     "@unpackjs/plugin-react": "^2.1.0",
     "@vitejs/plugin-react-oxc": "^0.2.3",
     "@vitejs/plugin-react-swc": "^3.10.2",
@@ -78,6 +78,7 @@
     "start:unpack": "unpack dev",
     "start:unpack:lazy": "cross-env LAZY=true unpack dev",
     "start:unpack:prebundle": "cross-env LAZY=true PREBUNDLE=true unpack dev",
+    "start:unpack:experiments": "cross-env LAZY=true PREBUNDLE=true EXPERIMENTS_CSS=true unpack dev",
     "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs"
   },

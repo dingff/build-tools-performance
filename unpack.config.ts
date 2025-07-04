@@ -11,9 +11,9 @@ export default defineConfig({
   css: {
     transformer: 'lightningcss',
   },
-  // experiments: {
-  //   css: true,
-  // },
+  experiments: {
+    css: Boolean(process.env.EXPERIMENTS_CSS),
+  },
   dev: {
     lazyCompilation: Boolean(process.env.LAZY),
     prebundle: Boolean(process.env.PREBUNDLE),
