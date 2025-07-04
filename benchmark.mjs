@@ -437,7 +437,7 @@ async function runBenchmark() {
     );
 
     await page.goto(`http://localhost:${buildTool.port}`, {
-      timeout: 60000,
+      timeout: 100000,
     });
 
     let waitResolve = null;
