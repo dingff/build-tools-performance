@@ -447,7 +447,7 @@ async function runBenchmark() {
     );
 
     await page.goto(`http://localhost:${buildTool.port}`, {
-      timeout: 100000,
+      timeout: 180000,
     });
 
     let waitResolve = null;
@@ -485,7 +485,13 @@ async function runBenchmark() {
           waitResolve();
         }
       } else if (event.text().includes('leaf hmr')) {
-        const hmrTime = Date.now() - hmrLeafStart;
+        const match = /(\d+)/.exec(event.text());
+        if (!match) {
+          throw new Error('Failed to match leaf HMR time.');
+        }
+
+        const clientDateNow = Number(match[1]);
+        const hmrTime = clientDateNow - hmrLeafStart;
         logger.success(
           color.dim(buildTool.name) +
             ' leaf HMR in ' +
@@ -499,7 +505,7 @@ async function runBenchmark() {
       }
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx');
     const originalRootFileContent = readFileSync(rootFilePath, 'utf-8');
 
@@ -514,7 +520,7 @@ async function runBenchmark() {
       },
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const leafFilePath = path.join(
       __dirname,
