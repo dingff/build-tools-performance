@@ -15,6 +15,9 @@ export default defineConfig({
   // },
   dev: {
     lazyCompilation: Boolean(process.env.LAZY),
+    prebundle: Boolean(process.env.PREBUNDLE) && {
+      exclude: ['react-router-dom'],
+    },
   },
   typeCheck: false,
 });

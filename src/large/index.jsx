@@ -3,6 +3,10 @@ import ReactDom from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App0 from './f0';
 import './index.css';
+import { Button } from 'antd';
+import { Form } from '@douyinfe/semi-ui';
+import { AddAlarmOutlined } from '@material-ui/icons';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 const App1 = React.lazy(() => import('./f1'));
 const App2 = React.lazy(() => import('./f2'));
@@ -16,6 +20,12 @@ const App8 = React.lazy(() => import('./f8'));
 ReactDom.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
+      <AddAlarmOutlined />
+      <IconArrowLeft />
+      <Button>按钮</Button>
+      <Form>
+        <Form.Input field="name" initValue="semi design"></Form.Input>
+      </Form>
       <App0 />
       <React.Suspense fallback={<div>Loading...</div>}>
         <Routes>
