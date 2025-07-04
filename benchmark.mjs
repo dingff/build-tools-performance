@@ -133,12 +133,63 @@ class BuildTool {
     });
   }
 
-  stopServer() {
-    if (this.child) {
-      this.child.stdout.destroy();
-      this.child.stderr.destroy();
-      kill(this.child.pid ?? 0);
+  async stopServer() {
+    if (!this.child) {
+      return;
     }
+
+    const child = this.child;
+
+    return new Promise((resolve) => {
+      const cleanup = () => {
+        try {
+          // Remove all listeners to prevent memory leaks
+          if (child) {
+            child.removeAllListeners();
+
+            // Destroy streams safely
+            if (child.stdout && !child.stdout.destroyed) {
+              child.stdout.destroy();
+            }
+            if (child.stderr && !child.stderr.destroyed) {
+              child.stderr.destroy();
+            }
+          }
+        } catch (err) {
+          // Ignore cleanup errors
+        }
+
+        this.child = null;
+        resolve(undefined);
+      };
+
+      // Set a timeout to force cleanup if the process doesn't exit gracefully
+      const forceKillTimeout = setTimeout(() => {
+        logger.warn(`Force killing process for ${this.name}`);
+        cleanup();
+      }, 5000);
+
+      // Listen for process exit
+      child.on('exit', () => {
+        clearTimeout(forceKillTimeout);
+        cleanup();
+      });
+
+      // Kill the process tree
+      if (child.pid) {
+        kill(child.pid, (err) => {
+          if (err) {
+            logger.warn(`Failed to kill process ${child.pid}: ${err.message}`);
+            clearTimeout(forceKillTimeout);
+            cleanup();
+          }
+        });
+      } else {
+        // If no PID, just cleanup immediately
+        clearTimeout(forceKillTimeout);
+        cleanup();
+      }
+    });
   }
 
   async build() {
@@ -479,7 +530,7 @@ async function runBenchmark() {
     writeFileSync(rootFilePath, originalRootFileContent);
     writeFileSync(leafFilePath, originalLeafFileContent);
 
-    buildTool.stopServer();
+    await buildTool.stopServer();
 
     await coolDown();
     logger.success(color.dim(buildTool.name) + ' dev server closed');
