@@ -70,6 +70,7 @@
     "start:rsbuild:lazy": "cross-env LAZY=true rsbuild dev",
     "build:rsbuild": "rsbuild build",
     "start:unpack": "unpack dev",
+    "start:unpack:lazy": "cross-env LAZY=true unpack dev",
     "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs"
   },

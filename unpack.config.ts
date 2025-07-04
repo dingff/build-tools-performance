@@ -14,7 +14,7 @@ export default defineConfig({
     css: true,
   },
   dev: {
-    prebundle: true,
+    lazyCompilation: Boolean(process.env.LAZY),
   },
   typeCheck: false,
 });

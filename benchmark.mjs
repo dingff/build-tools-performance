@@ -307,6 +307,15 @@ toolNames.forEach((name) => {
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
+        new BuildTool({
+          name:
+            'Unpack (Lazy) ' + require('@unpackjs/cli/package.json').version,
+          port: 4000,
+          startScript: 'start:unpack:lazy',
+          startedRegex: /ready in (\d+)ms/,
+          buildScript: 'build:unpack',
+          binFilePath: '@unpackjs/cli/bin/index.js',
+        }),
       );
       break;
   }
