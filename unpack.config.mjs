@@ -1,7 +1,8 @@
-import { defineConfig } from '@unpackjs/cli';
-import { pluginReact } from '@unpackjs/plugin-react';
-import path from 'node:path';
-const caseName = process.env.CASE ?? 'medium';
+import path from 'node:path'
+import { defineConfig } from '@unpackjs/cli'
+import { pluginReact } from '@unpackjs/plugin-react'
+
+const caseName = process.env.CASE ?? 'medium'
 
 export default defineConfig({
   entry: path.join(import.meta.dirname, 'src', caseName, 'index.jsx'),
@@ -20,4 +21,4 @@ export default defineConfig({
   },
   typeCheck: false,
   plugins: [pluginReact()],
-});
+})
