@@ -622,6 +622,7 @@ async function getFileSizes(targetDir) {
 
 // average results
 const averageResults = {};
+const averageResultsNumbers = {};
 
 // drop the warmup results
 perfResults = perfResults.slice(warmupTimes);
@@ -630,23 +631,107 @@ for (const result of perfResults) {
   for (const [name, values] of Object.entries(result)) {
     if (!averageResults[name]) {
       averageResults[name] = {};
+      averageResultsNumbers[name] = {};
     }
 
     for (const [key, value] of Object.entries(values)) {
       if (!averageResults[name][key]) {
         averageResults[name][key] = 0;
+        averageResultsNumbers[name][key] = 0;
       }
 
       averageResults[name][key] += Number(value);
+      averageResultsNumbers[name][key] += Number(value);
     }
   }
 }
 
 for (const [name, values] of Object.entries(averageResults)) {
   for (const [key, value] of Object.entries(values)) {
-    averageResults[name][key] = Math.floor(value / perfResults.length) + 'ms';
+    const avgValue = Math.floor(value / perfResults.length);
+    averageResultsNumbers[name][key] = avgValue;
   }
 }
+
+// Calculate multipliers and format with original time
+function calculateAndFormatResults(results) {
+  const metrics = [
+    'startup',
+    'serverStart',
+    'onLoad',
+    'rootHmr',
+    'leafHmr',
+    'prodBuild',
+  ];
+  const formattedResults = {};
+
+  for (const metric of metrics) {
+    // Find the minimum value for this metric
+    let minValue = Infinity;
+    for (const [name, values] of Object.entries(results)) {
+      if (values[metric] && values[metric] < minValue) {
+        minValue = values[metric];
+      }
+    }
+
+    // Format results with multipliers
+    for (const [name, values] of Object.entries(results)) {
+      if (!formattedResults[name]) {
+        formattedResults[name] = {};
+      }
+      if (values[metric]) {
+        const multiplier = values[metric] / minValue;
+        const trophy = multiplier === 1 ? ' 🏆' : '';
+        formattedResults[name][metric] =
+          `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`;
+      }
+    }
+  }
+
+  return formattedResults;
+}
+
+const formattedResults = calculateAndFormatResults(averageResultsNumbers);
+
+// Format bundle sizes with multipliers
+function formatBundleSizesWithMultipliers(sizeResults) {
+  const formattedSizes = {};
+
+  // Convert size strings to numbers for comparison
+  const sizeNumbers = {};
+  for (const [name, sizes] of Object.entries(sizeResults)) {
+    sizeNumbers[name] = {
+      totalSize: parseFloat(sizes.totalSize.replace('kB', '')),
+      totalGzipSize: parseFloat(sizes.totalGzipSize.replace('kB', '')),
+    };
+  }
+
+  // Find minimum sizes
+  let minTotalSize = Infinity;
+  let minGzipSize = Infinity;
+  for (const sizes of Object.values(sizeNumbers)) {
+    if (sizes.totalSize < minTotalSize) minTotalSize = sizes.totalSize;
+    if (sizes.totalGzipSize < minGzipSize) minGzipSize = sizes.totalGzipSize;
+  }
+
+  // Format with multipliers
+  for (const [name, sizes] of Object.entries(sizeNumbers)) {
+    const totalMultiplier = sizes.totalSize / minTotalSize;
+    const gzipMultiplier = sizes.totalGzipSize / minGzipSize;
+
+    const totalTrophy = totalMultiplier === 1 ? ' 🏆' : '';
+    const gzipTrophy = gzipMultiplier === 1 ? ' 🏆' : '';
+
+    formattedSizes[name] = {
+      totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
+      totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+    };
+  }
+
+  return formattedSizes;
+}
+
+const formattedSizes = formatBundleSizesWithMultipliers(sizeResults);
 
 logger.log('');
 logger.success('Benchmark finished!\n');
@@ -665,12 +750,12 @@ console.log(
     ],
     ...buildTools.map(({ name }) => [
       name,
-      averageResults[name].startup,
-      averageResults[name].serverStart,
-      averageResults[name].onLoad,
-      averageResults[name].rootHmr,
-      averageResults[name].leafHmr,
-      averageResults[name].prodBuild,
+      formattedResults[name].startup,
+      formattedResults[name].serverStart,
+      formattedResults[name].onLoad,
+      formattedResults[name].rootHmr,
+      formattedResults[name].leafHmr,
+      formattedResults[name].prodBuild,
     ]),
   ]),
 );
@@ -682,8 +767,8 @@ console.log(
     ['Name', 'Total size', 'Gzipped size'],
     ...buildTools.map(({ name }) => [
       name,
-      sizeResults[name].totalSize,
-      sizeResults[name].totalGzipSize,
+      formattedSizes[name].totalSize,
+      formattedSizes[name].totalGzipSize,
     ]),
   ]),
 );

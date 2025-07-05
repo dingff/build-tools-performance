@@ -3,7 +3,6 @@ import ReactDom from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App0 from './f0';
 import './index.css';
-import { Form } from '@douyinfe/semi-ui';
 
 const App1 = React.lazy(() => import('./f1'));
 const App2 = React.lazy(() => import('./f2'));
@@ -14,9 +13,6 @@ ReactDom.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <App0 />
-      <Form>
-        <Form.Input field="name" initValue="semi design"></Form.Input>
-      </Form>
       <React.Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/f1" element={<App1 />} />
