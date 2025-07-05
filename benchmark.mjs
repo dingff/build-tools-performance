@@ -1,58 +1,52 @@
-// @ts-check
-import { spawn } from 'child_process';
-import { rmSync, appendFile, readFileSync, writeFileSync } from 'node:fs';
-import fse from 'fs-extra';
-import { createRequire } from 'module';
-import path from 'path';
-import puppeteer from 'puppeteer';
-import kill from 'tree-kill';
-import { logger } from 'rslog';
-import color from 'picocolors';
-import glob from 'fast-glob';
-import { gzipSizeSync } from 'gzip-size';
-import { markdownTable } from 'markdown-table';
+// @ts-nocheck
+
+import { spawn } from 'node:child_process'
+import { appendFile, readFileSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import path from 'node:path'
+import glob from 'fast-glob'
+import fse from 'fs-extra'
+import { gzipSizeSync } from 'gzip-size'
+import { markdownTable } from 'markdown-table'
+import color from 'picocolors'
+import puppeteer from 'puppeteer'
+import { logger } from 'rslog'
+import kill from 'tree-kill'
 
 async function coolDown() {
   if (global.gc) {
-    global.gc();
+    global.gc()
   }
-  const COOL_DOWN_TIME = 3000;
-  await new Promise((resolve) => setTimeout(resolve, COOL_DOWN_TIME));
+  const COOL_DOWN_TIME = 3000
+  await new Promise((resolve) => setTimeout(resolve, COOL_DOWN_TIME))
 }
 
-const require = createRequire(import.meta.url);
-const __dirname = import.meta.dirname;
+const require = createRequire(import.meta.url)
+const __dirname = import.meta.dirname
 
-const startConsole = "console.log('Benchmark Start Time', Date.now());";
-const startConsoleRegex = /Benchmark Start Time (\d+)/;
+const startConsole = "console.log('Benchmark Start Time', Date.now());"
+const startConsoleRegex = /Benchmark Start Time (\d+)/
 
-const caseName = process.env.CASE ?? 'medium';
-process.env.CASE = caseName;
+const caseName = process.env.CASE ?? 'medium'
+process.env.CASE = caseName
 
 class BuildTool {
-  constructor({
-    name,
-    port,
-    startScript,
-    startedRegex,
-    buildScript,
-    binFilePath,
-  }) {
-    this.name = name;
-    this.port = port;
-    this.startScript = startScript;
-    this.startedRegex = startedRegex;
-    this.buildScript = buildScript;
-    this.binFilePath = path.join(process.cwd(), 'node_modules', binFilePath);
-    this.hackBinFile();
+  constructor({ name, port, startScript, startedRegex, buildScript, binFilePath }) {
+    this.name = name
+    this.port = port
+    this.startScript = startScript
+    this.startedRegex = startedRegex
+    this.buildScript = buildScript
+    this.binFilePath = path.join(process.cwd(), 'node_modules', binFilePath)
+    this.hackBinFile()
   }
 
   cleanCache() {
     try {
-      fse.removeSync('./node_modules/.cache');
-      fse.removeSync('./node_modules/.vite');
-      fse.removeSync('./node_modules/.farm');
-    } catch (err) {}
+      fse.removeSync('./node_modules/.cache')
+      fse.removeSync('./node_modules/.vite')
+      fse.removeSync('./node_modules/.farm')
+    } catch {}
   }
 
   // Add a `console.log('Benchmark start', Date.now())` to the bin file's second line
@@ -61,24 +55,22 @@ class BuildTool {
       'Setup bin file for',
       color.green(this.name),
       color.dim(`(${this.binFilePath.split('node_modules/')[1]})`),
-    );
+    )
 
-    const binFileContent = readFileSync(this.binFilePath, 'utf-8');
+    const binFileContent = readFileSync(this.binFilePath, 'utf-8')
 
     if (!binFileContent.includes(startConsole)) {
-      const lines = binFileContent.split('\n');
-      lines.splice(1, 0, startConsole);
-      writeFileSync(this.binFilePath, lines.join('\n'));
+      const lines = binFileContent.split('\n')
+      lines.splice(1, 0, startConsole)
+      writeFileSync(this.binFilePath, lines.join('\n'))
     }
   }
 
   async startServer() {
-    this.cleanCache();
+    this.cleanCache()
 
-    logger.log('');
-    logger.start(
-      `Running start command: ${color.bold(color.yellow(this.startScript))}`,
-    );
+    logger.log('')
+    logger.start(`Running start command: ${color.bold(color.yellow(this.startScript))}`)
     return new Promise((resolve, reject) => {
       const child = spawn(`node --run ${this.startScript}`, {
         stdio: ['pipe'],
@@ -87,118 +79,116 @@ class BuildTool {
           ...process.env,
           NO_COLOR: '1',
         },
-      });
-      this.child = child;
-      let startTime = null;
+      })
+      this.child = child
+      let startTime = null
 
       child.stdout.on('data', (data) => {
-        const text = data.toString();
+        const text = data.toString()
 
         if (process.env.DEBUG) {
-          console.log(text);
+          console.log(text)
         }
 
-        const startMatch = startConsoleRegex.exec(text);
+        const startMatch = startConsoleRegex.exec(text)
         if (startMatch) {
-          startTime = startMatch[1];
+          startTime = startMatch[1]
         }
 
-        const match = this.startedRegex.exec(text);
+        const match = this.startedRegex.exec(text)
         if (match) {
           if (!startTime) {
-            throw new Error('Start time not found');
+            throw new Error('Start time not found')
           }
-          const time = Date.now() - startTime;
+          const time = Date.now() - startTime
 
-          resolve(time);
+          resolve(time)
         }
-      });
+      })
 
       child.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`);
-      });
+        console.log(`stderr: ${data}`)
+      })
 
       child.on('error', (error) => {
-        logger.error(`${error.message}`);
-        reject(error);
-      });
+        logger.error(`${error.message}`)
+        reject(error)
+      })
       child.on('exit', (code) => {
         if (code !== 0 && code !== null) {
           logger.error(
             `(${this.name} run ${this.startScript} failed) child process exited with code ${code}`,
-          );
-          reject(code);
+          )
+          reject(code)
         }
-      });
-    });
+      })
+    })
   }
 
   async stopServer() {
     if (!this.child) {
-      return;
+      return
     }
 
-    const child = this.child;
+    const child = this.child
 
     return new Promise((resolve) => {
       const cleanup = () => {
         try {
           // Remove all listeners to prevent memory leaks
           if (child) {
-            child.removeAllListeners();
+            child.removeAllListeners()
 
             // Destroy streams safely
             if (child.stdout && !child.stdout.destroyed) {
-              child.stdout.destroy();
+              child.stdout.destroy()
             }
             if (child.stderr && !child.stderr.destroyed) {
-              child.stderr.destroy();
+              child.stderr.destroy()
             }
           }
-        } catch (err) {
+        } catch {
           // Ignore cleanup errors
         }
 
-        this.child = null;
-        resolve(undefined);
-      };
+        this.child = null
+        resolve(undefined)
+      }
 
       // Set a timeout to force cleanup if the process doesn't exit gracefully
       const forceKillTimeout = setTimeout(() => {
-        logger.warn(`Force killing process for ${this.name}`);
-        cleanup();
-      }, 5000);
+        logger.warn(`Force killing process for ${this.name}`)
+        cleanup()
+      }, 5000)
 
       // Listen for process exit
       child.on('exit', () => {
-        clearTimeout(forceKillTimeout);
-        cleanup();
-      });
+        clearTimeout(forceKillTimeout)
+        cleanup()
+      })
 
       // Kill the process tree
       if (child.pid) {
         kill(child.pid, (err) => {
           if (err) {
-            logger.warn(`Failed to kill process ${child.pid}: ${err.message}`);
-            clearTimeout(forceKillTimeout);
-            cleanup();
+            logger.warn(`Failed to kill process ${child.pid}: ${err.message}`)
+            clearTimeout(forceKillTimeout)
+            cleanup()
           }
-        });
+        })
       } else {
         // If no PID, just cleanup immediately
-        clearTimeout(forceKillTimeout);
-        cleanup();
+        clearTimeout(forceKillTimeout)
+        cleanup()
       }
-    });
+    })
   }
 
   async build() {
-    this.cleanCache();
+    this.cleanCache()
 
-    logger.log('');
-    logger.start(
-      `Running build command: ${color.bold(color.yellow(this.buildScript))}`,
-    );
+    logger.log('')
+    logger.start(`Running build command: ${color.bold(color.yellow(this.buildScript))}`)
     const child = spawn(`node --run ${this.buildScript}`, {
       stdio: ['pipe'],
       shell: true,
@@ -206,45 +196,37 @@ class BuildTool {
         ...process.env,
         NO_COLOR: '1',
       },
-    });
-    const startTime = Date.now();
+    })
+    const startTime = Date.now()
     return new Promise((resolve, reject) => {
       child.on('exit', (code) => {
         if (code === 0) {
-          resolve(Date.now() - startTime);
+          resolve(Date.now() - startTime)
         } else {
-          reject(new Error(`Build failed with exit code ${code}`));
+          reject(new Error(`Build failed with exit code ${code}`))
         }
-      });
-      child.on('error', reject);
-    });
+      })
+      child.on('error', reject)
+    })
   }
 }
 
 const parseToolNames = () => {
-  const allTools = [
-    'rspack',
-    'rsbuild',
-    'unpack',
-    'rolldown-vite',
-    'vite',
-    'webpack',
-    'farm',
-  ];
+  const allTools = ['rspack', 'rsbuild', 'unpack', 'rolldown-vite', 'vite', 'webpack', 'farm']
 
   if (process.env.TOOLS === 'all') {
-    return allTools;
+    return allTools
   }
   if (process.env.TOOLS) {
-    return process.env.TOOLS?.split(',').map((item) => item.toLowerCase());
+    return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['rsbuild', 'unpack', 'rolldown-vite', 'farm'];
-  return defaultTools;
-};
+  const defaultTools = ['rsbuild', 'unpack', 'rolldown-vite', 'farm']
+  return defaultTools
+}
 
-const toolNames = parseToolNames();
-const buildTools = [];
+const toolNames = parseToolNames()
+const buildTools = []
 
 toolNames.forEach((name) => {
   switch (name) {
@@ -259,16 +241,15 @@ toolNames.forEach((name) => {
           binFilePath: '@rspack/cli/bin/rspack.js',
         }),
         new BuildTool({
-          name:
-            'Rspack CLI (Lazy) ' + require('@rspack/core/package.json').version,
+          name: 'Rspack CLI (Lazy) ' + require('@rspack/core/package.json').version,
           port: 8080,
           startScript: 'start:rspack:lazy',
           startedRegex: /in (.+) (s|ms)/,
           buildScript: 'build:rspack',
           binFilePath: '@rspack/cli/bin/rspack.js',
         }),
-      );
-      break;
+      )
+      break
     case 'rsbuild':
       buildTools.push(
         // new BuildTool({
@@ -280,16 +261,15 @@ toolNames.forEach((name) => {
         //   binFilePath: '@rsbuild/core/bin/rsbuild.js',
         // }),
         new BuildTool({
-          name:
-            'Rsbuild (Lazy) ' + require('@rsbuild/core/package.json').version,
+          name: 'Rsbuild (Lazy) ' + require('@rsbuild/core/package.json').version,
           port: 3333,
           startScript: 'start:rsbuild:lazy',
           startedRegex: /in (.+) (s|ms)/,
           buildScript: 'build:rsbuild',
           binFilePath: '@rsbuild/core/bin/rsbuild.js',
         }),
-      );
-      break;
+      )
+      break
     case 'vite':
       buildTools.push(
         new BuildTool({
@@ -300,21 +280,20 @@ toolNames.forEach((name) => {
           buildScript: 'build:vite',
           binFilePath: 'vite/bin/vite.js',
         }),
-      );
-      break;
+      )
+      break
     case 'rolldown-vite':
       buildTools.push(
         new BuildTool({
-          name:
-            'Vite (Rolldown) ' + require('rolldown-vite/package.json').version,
+          name: 'Vite (Rolldown) ' + require('rolldown-vite/package.json').version,
           port: 5173,
           startScript: 'start:rolldown-vite',
           startedRegex: /ready in (\d+) (s|ms)/,
           buildScript: 'build:rolldown-vite',
           binFilePath: 'rolldown-vite/bin/vite.js',
         }),
-      );
-      break;
+      )
+      break
     case 'webpack':
       buildTools.push(
         new BuildTool({
@@ -325,8 +304,8 @@ toolNames.forEach((name) => {
           buildScript: 'build:webpack',
           binFilePath: 'webpack-cli/bin/cli.js',
         }),
-      );
-      break;
+      )
+      break
     case 'farm':
       buildTools.push(
         new BuildTool({
@@ -337,8 +316,8 @@ toolNames.forEach((name) => {
           buildScript: 'build:farm',
           binFilePath: '@farmfe/cli/bin/farm.mjs',
         }),
-      );
-      break;
+      )
+      break
     case 'unpack':
       buildTools.push(
         // new BuildTool({
@@ -350,8 +329,7 @@ toolNames.forEach((name) => {
         //   binFilePath: '@unpackjs/cli/bin/index.js',
         // }),
         new BuildTool({
-          name:
-            'Unpack (Lazy) ' + require('@unpackjs/core/package.json').version,
+          name: 'Unpack (Lazy) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:lazy',
           startedRegex: /ready in (\d+)ms/,
@@ -359,9 +337,7 @@ toolNames.forEach((name) => {
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
         new BuildTool({
-          name:
-            'Unpack (Lazy + Prebundle) ' +
-            require('@unpackjs/core/package.json').version,
+          name: 'Unpack (Lazy + Prebundle) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:prebundle',
           startedRegex: /ready in (\d+)ms/,
@@ -369,27 +345,25 @@ toolNames.forEach((name) => {
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
         new BuildTool({
-          name:
-            'Unpack (Lazy + Prebundle + CSS) ' +
-            require('@unpackjs/core/package.json').version,
+          name: 'Unpack (Lazy + Prebundle + CSS) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:experiments',
           startedRegex: /ready in (\d+)ms/,
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
-      );
-      break;
+      )
+      break
   }
-});
+})
 
-const browser = await puppeteer.launch();
-const { WARMUP_TIMES, RUN_TIMES } = process.env;
-const warmupTimes = WARMUP_TIMES ? Number(WARMUP_TIMES) : 2;
-const runTimes = RUN_TIMES ? Number(RUN_TIMES) : 3;
-const totalTimes = warmupTimes + runTimes;
+const browser = await puppeteer.launch()
+const { WARMUP_TIMES, RUN_TIMES } = process.env
+const warmupTimes = WARMUP_TIMES ? Number(WARMUP_TIMES) : 2
+const runTimes = RUN_TIMES ? Number(RUN_TIMES) : 3
+const totalTimes = warmupTimes + runTimes
 
-logger.log('');
+logger.log('')
 logger.info(
   'Benchmark case ' +
     color.green(`"${caseName}"`) +
@@ -398,118 +372,103 @@ logger.info(
     ' + ' +
     color.green(runTimes + ' measured') +
     ' times',
-);
+)
 
-let perfResults = [];
-let sizeResults = {};
+let perfResults = []
+const sizeResults = {}
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
   }
-  return array;
+  return array
 }
 
 for (let i = 0; i < totalTimes; i++) {
-  await runBenchmark();
+  await runBenchmark()
 }
 
 async function runBenchmark() {
-  const perfResult = {};
+  const perfResult = {}
   // Shuffle the build tools to avoid the cache effect
-  const shuffledBuildTools = shuffleArray([...buildTools]);
+  const shuffledBuildTools = shuffleArray([...buildTools])
 
   for (const buildTool of shuffledBuildTools) {
-    let page = null; // Declare page variable outside try block for error handling
+    let page = null // Declare page variable outside try block for error handling
     try {
-      const time = await buildTool.startServer();
-      page = await browser.newPage();
-      const start = Date.now();
+      const time = await buildTool.startServer()
+      page = await browser.newPage()
+      const start = Date.now()
 
       page.on('load', () => {
-        const loadTime = Date.now() - start;
+        const loadTime = Date.now() - start
         logger.success(
-          color.dim(buildTool.name) +
-            ' startup in ' +
-            color.green(time + loadTime + 'ms'),
-        );
+          color.dim(buildTool.name) + ' startup in ' + color.green(time + loadTime + 'ms'),
+        )
 
         if (!perfResult[buildTool.name]) {
-          perfResult[buildTool.name] = {};
+          perfResult[buildTool.name] = {}
         }
 
-        perfResult[buildTool.name].startup = time + loadTime;
-        perfResult[buildTool.name].serverStart = time;
-        perfResult[buildTool.name].onLoad = loadTime;
-      });
+        perfResult[buildTool.name].startup = time + loadTime
+        perfResult[buildTool.name].serverStart = time
+        perfResult[buildTool.name].onLoad = loadTime
+      })
 
-      logger.info(
-        color.dim('navigating to' + ` http://localhost:${buildTool.port}`),
-      );
+      logger.info(color.dim('navigating to' + ` http://localhost:${buildTool.port}`))
 
       await page.goto(`http://localhost:${buildTool.port}`, {
         timeout: 180000,
-      });
+      })
 
-      let waitResolve = null;
+      let waitResolve = null
       const waitPromise = new Promise((resolve) => {
-        waitResolve = resolve;
-      });
+        waitResolve = resolve
+      })
 
-      let hmrRootStart = -1;
-      let hmrLeafStart = -1;
+      let hmrRootStart = -1
+      let hmrLeafStart = -1
 
       page.on('console', (event) => {
         const isFinished = () => {
-          return (
-            perfResult[buildTool.name]?.rootHmr &&
-            perfResult[buildTool.name]?.leafHmr
-          );
-        };
+          return perfResult[buildTool.name]?.rootHmr && perfResult[buildTool.name]?.leafHmr
+        }
         if (event.text().includes('root hmr')) {
-          const match = /(\d+)/.exec(event.text());
+          const match = /(\d+)/.exec(event.text())
           if (!match) {
-            throw new Error('Failed to match root HMR time.');
+            throw new Error('Failed to match root HMR time.')
           }
 
-          const clientDateNow = Number(match[1]);
-          const hmrTime = clientDateNow - hmrRootStart;
-          logger.success(
-            color.dim(buildTool.name) +
-              ' root HMR in ' +
-              color.green(hmrTime + 'ms'),
-          );
+          const clientDateNow = Number(match[1])
+          const hmrTime = clientDateNow - hmrRootStart
+          logger.success(color.dim(buildTool.name) + ' root HMR in ' + color.green(hmrTime + 'ms'))
 
-          perfResult[buildTool.name].rootHmr = hmrTime;
+          perfResult[buildTool.name].rootHmr = hmrTime
           if (isFinished()) {
-            page.close();
-            waitResolve();
+            page.close()
+            waitResolve()
           }
         } else if (event.text().includes('leaf hmr')) {
-          const match = /(\d+)/.exec(event.text());
+          const match = /(\d+)/.exec(event.text())
           if (!match) {
-            throw new Error('Failed to match leaf HMR time.');
+            throw new Error('Failed to match leaf HMR time.')
           }
 
-          const clientDateNow = Number(match[1]);
-          const hmrTime = clientDateNow - hmrLeafStart;
-          logger.success(
-            color.dim(buildTool.name) +
-              ' leaf HMR in ' +
-              color.green(hmrTime + 'ms'),
-          );
-          perfResult[buildTool.name].leafHmr = hmrTime;
+          const clientDateNow = Number(match[1])
+          const hmrTime = clientDateNow - hmrLeafStart
+          logger.success(color.dim(buildTool.name) + ' leaf HMR in ' + color.green(hmrTime + 'ms'))
+          perfResult[buildTool.name].leafHmr = hmrTime
           if (isFinished()) {
-            page.close();
-            waitResolve();
+            page.close()
+            waitResolve()
           }
         }
-      });
+      })
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx');
-      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8');
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
+      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
 
       appendFile(
         rootFilePath,
@@ -517,272 +476,231 @@ async function runBenchmark() {
     console.log('root hmr', Date.now());
     `,
         (err) => {
-          if (err) throw err;
-          hmrRootStart = Date.now();
+          if (err) throw err
+          hmrRootStart = Date.now()
         },
-      );
+      )
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
-      const leafFilePath = path.join(
-        __dirname,
-        'src',
-        caseName,
-        'd0/d0/d0/f0.jsx',
-      );
-      const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8');
+      const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
+      const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
       appendFile(
         leafFilePath,
         `
       console.log('leaf hmr', Date.now());
       `,
         (err) => {
-          if (err) throw err;
-          hmrLeafStart = Date.now();
+          if (err) throw err
+          hmrLeafStart = Date.now()
         },
-      );
+      )
 
-      await waitPromise;
+      await waitPromise
 
       // restore files
-      writeFileSync(rootFilePath, originalRootFileContent);
-      writeFileSync(leafFilePath, originalLeafFileContent);
+      writeFileSync(rootFilePath, originalRootFileContent)
+      writeFileSync(leafFilePath, originalLeafFileContent)
 
-      await buildTool.stopServer();
+      await buildTool.stopServer()
 
-      await coolDown();
-      logger.success(color.dim(buildTool.name) + ' dev server closed');
+      await coolDown()
+      logger.success(color.dim(buildTool.name) + ' dev server closed')
 
       // Clean up dist dir
-      const distDir = path.join(__dirname, 'dist');
-      await fse.remove(distDir);
+      const distDir = path.join(__dirname, 'dist')
+      await fse.remove(distDir)
 
-      const buildTime = await buildTool.build();
+      const buildTime = await buildTool.build()
 
-      const sizes =
-        sizeResults[buildTool.name] || (await getFileSizes(distDir));
-      sizeResults[buildTool.name] = sizes;
+      const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
+      sizeResults[buildTool.name] = sizes
 
+      logger.success(color.dim(buildTool.name) + ' built in ' + color.green(buildTime + ' ms'))
+      logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
       logger.success(
-        color.dim(buildTool.name) +
-          ' built in ' +
-          color.green(buildTime + ' ms'),
-      );
-      logger.success(
-        color.dim(buildTool.name) +
-          ' total size: ' +
-          color.green(sizes.totalSize),
-      );
-      logger.success(
-        color.dim(buildTool.name) +
-          ' gzipped size: ' +
-          color.green(sizes.totalGzipSize),
-      );
+        color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
+      )
 
-      perfResult[buildTool.name].prodBuild = buildTime;
+      perfResult[buildTool.name].prodBuild = buildTime
 
-      await coolDown();
+      await coolDown()
     } catch (error) {
-      logger.error(
-        color.red(`${buildTool.name} failed:`) + ` ${error.message}`,
-      );
+      logger.error(color.red(`${buildTool.name} failed:`) + ` ${error.message}`)
 
       // Ensure page is closed and server is stopped in case of error
       try {
         if (page && !page.isClosed()) {
-          await page.close();
+          await page.close()
         }
       } catch (pageError) {
-        logger.warn(
-          `Failed to close page for ${buildTool.name}: ${pageError.message}`,
-        );
+        logger.warn(`Failed to close page for ${buildTool.name}: ${pageError.message}`)
       }
 
       try {
-        await buildTool.stopServer();
+        await buildTool.stopServer()
       } catch (stopError) {
-        logger.warn(
-          `Failed to stop server for ${buildTool.name}: ${stopError.message}`,
-        );
+        logger.warn(`Failed to stop server for ${buildTool.name}: ${stopError.message}`)
       }
 
       // Still do cooldown to avoid affecting next tool
-      await coolDown();
-
-      // Continue to next tool instead of failing entire benchmark
-      continue;
+      await coolDown()
     }
   }
 
-  perfResults.push(perfResult);
+  perfResults.push(perfResult)
 }
 
 // fast-glob only accepts posix path
 // https://github.com/mrmlnc/fast-glob#convertpathtopatternpath
 function convertPath(path) {
   if (process.platform === 'win32') {
-    return glob.convertPathToPattern(path);
+    return glob.convertPathToPattern(path)
   }
-  return path;
+  return path
 }
 
 function calcFileSize(len) {
-  const val = len / 1000;
-  return `${val.toFixed(val < 1 ? 2 : 1)}kB`;
+  const val = len / 1000
+  return `${val.toFixed(val < 1 ? 2 : 1)}kB`
 }
 
 async function getFileSizes(targetDir) {
-  let files = await glob(convertPath(path.join(targetDir, '**/*')));
-  let totalSize = 0;
-  let totalGzipSize = 0;
+  let files = await glob(convertPath(path.join(targetDir, '**/*')))
+  let totalSize = 0
+  let totalGzipSize = 0
 
   files = files.filter((file) => {
-    return !(file.endsWith('.map') || file.endsWith('.LICENSE.txt'));
-  });
+    return !(file.endsWith('.map') || file.endsWith('.LICENSE.txt'))
+  })
 
   await Promise.all(
     files.map((file) =>
       fse.readFile(file, 'utf-8').then((content) => {
-        totalSize += Buffer.byteLength(content);
-        totalGzipSize += gzipSizeSync(content);
+        totalSize += Buffer.byteLength(content)
+        totalGzipSize += gzipSizeSync(content)
       }),
     ),
-  );
+  )
 
   return {
     totalSize: calcFileSize(totalSize),
     totalGzipSize: calcFileSize(totalGzipSize),
-  };
+  }
 }
 
 // average results
-const averageResults = {};
-const averageResultsNumbers = {};
+const averageResults = {}
+const averageResultsNumbers = {}
 
 // drop the warmup results
-perfResults = perfResults.slice(warmupTimes);
+perfResults = perfResults.slice(warmupTimes)
 
 for (const result of perfResults) {
   for (const [name, values] of Object.entries(result)) {
     if (!averageResults[name]) {
-      averageResults[name] = {};
-      averageResultsNumbers[name] = {};
+      averageResults[name] = {}
+      averageResultsNumbers[name] = {}
     }
 
     for (const [key, value] of Object.entries(values)) {
       if (!averageResults[name][key]) {
-        averageResults[name][key] = 0;
-        averageResultsNumbers[name][key] = 0;
+        averageResults[name][key] = 0
+        averageResultsNumbers[name][key] = 0
       }
 
-      averageResults[name][key] += Number(value);
-      averageResultsNumbers[name][key] += Number(value);
+      averageResults[name][key] += Number(value)
+      averageResultsNumbers[name][key] += Number(value)
     }
   }
 }
 
 for (const [name, values] of Object.entries(averageResults)) {
   for (const [key, value] of Object.entries(values)) {
-    const avgValue = Math.floor(value / perfResults.length);
-    averageResultsNumbers[name][key] = avgValue;
+    const avgValue = Math.floor(value / perfResults.length)
+    averageResultsNumbers[name][key] = avgValue
   }
 }
 
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
-  const metrics = [
-    'startup',
-    'serverStart',
-    'onLoad',
-    'rootHmr',
-    'leafHmr',
-    'prodBuild',
-  ];
-  const formattedResults = {};
+  const metrics = ['startup', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
+  const formattedResults = {}
 
   for (const metric of metrics) {
     // Find the minimum value for this metric
-    let minValue = Infinity;
-    for (const [name, values] of Object.entries(results)) {
+    let minValue = Number.POSITIVE_INFINITY
+    for (const [, values] of Object.entries(results)) {
       if (values[metric] && values[metric] < minValue) {
-        minValue = values[metric];
+        minValue = values[metric]
       }
     }
 
     // Format results with multipliers
     for (const [name, values] of Object.entries(results)) {
       if (!formattedResults[name]) {
-        formattedResults[name] = {};
+        formattedResults[name] = {}
       }
       if (values[metric]) {
-        const multiplier = values[metric] / minValue;
-        const trophy = multiplier === 1 ? ' 🏆' : '';
-        formattedResults[name][metric] =
-          `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`;
+        const multiplier = values[metric] / minValue
+        const trophy = multiplier === 1 ? ' 🏆' : ''
+        formattedResults[name][metric] = `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`
       }
     }
   }
 
-  return formattedResults;
+  return formattedResults
 }
 
-const formattedResults = calculateAndFormatResults(averageResultsNumbers);
+const formattedResults = calculateAndFormatResults(averageResultsNumbers)
 
 // Format bundle sizes with multipliers
 function formatBundleSizesWithMultipliers(sizeResults) {
-  const formattedSizes = {};
+  const formattedSizes = {}
 
   // Convert size strings to numbers for comparison
-  const sizeNumbers = {};
+  const sizeNumbers = {}
   for (const [name, sizes] of Object.entries(sizeResults)) {
     sizeNumbers[name] = {
-      totalSize: parseFloat(sizes.totalSize.replace('kB', '')),
-      totalGzipSize: parseFloat(sizes.totalGzipSize.replace('kB', '')),
-    };
+      totalSize: Number.parseFloat(sizes.totalSize.replace('kB', '')),
+      totalGzipSize: Number.parseFloat(sizes.totalGzipSize.replace('kB', '')),
+    }
   }
 
   // Find minimum sizes
-  let minTotalSize = Infinity;
-  let minGzipSize = Infinity;
+  let minTotalSize = Number.POSITIVE_INFINITY
+  let minGzipSize = Number.POSITIVE_INFINITY
   for (const sizes of Object.values(sizeNumbers)) {
-    if (sizes.totalSize < minTotalSize) minTotalSize = sizes.totalSize;
-    if (sizes.totalGzipSize < minGzipSize) minGzipSize = sizes.totalGzipSize;
+    if (sizes.totalSize < minTotalSize) minTotalSize = sizes.totalSize
+    if (sizes.totalGzipSize < minGzipSize) minGzipSize = sizes.totalGzipSize
   }
 
   // Format with multipliers
   for (const [name, sizes] of Object.entries(sizeNumbers)) {
-    const totalMultiplier = sizes.totalSize / minTotalSize;
-    const gzipMultiplier = sizes.totalGzipSize / minGzipSize;
+    const totalMultiplier = sizes.totalSize / minTotalSize
+    const gzipMultiplier = sizes.totalGzipSize / minGzipSize
 
-    const totalTrophy = totalMultiplier === 1 ? ' 🏆' : '';
-    const gzipTrophy = gzipMultiplier === 1 ? ' 🏆' : '';
+    const totalTrophy = totalMultiplier === 1 ? ' 🏆' : ''
+    const gzipTrophy = gzipMultiplier === 1 ? ' 🏆' : ''
 
     formattedSizes[name] = {
       totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
       totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
-    };
+    }
   }
 
-  return formattedSizes;
+  return formattedSizes
 }
 
-const formattedSizes = formatBundleSizesWithMultipliers(sizeResults);
+const formattedSizes = formatBundleSizesWithMultipliers(sizeResults)
 
-logger.log('');
-logger.success('Benchmark finished!\n');
+logger.log('')
+logger.success('Benchmark finished!\n')
 
-logger.info('Build performance:\n');
+logger.info('Build performance:\n')
 console.log(
   markdownTable([
-    [
-      'Name',
-      'Startup',
-      'Server start',
-      'Page load',
-      'Root HMR',
-      'Leaf HMR',
-      'Prod build',
-    ],
+    ['Name', 'Startup', 'Server start', 'Page load', 'Root HMR', 'Leaf HMR', 'Prod build'],
     ...buildTools.map(({ name }) => [
       name,
       formattedResults[name]?.startup || 'Failed',
@@ -793,10 +711,10 @@ console.log(
       formattedResults[name]?.prodBuild || 'Failed',
     ]),
   ]),
-);
+)
 
-logger.log('');
-logger.info('Bundle sizes:\n');
+logger.log('')
+logger.info('Bundle sizes:\n')
 console.log(
   markdownTable([
     ['Name', 'Total size', 'Gzipped size'],
@@ -806,6 +724,6 @@ console.log(
       formattedSizes[name]?.totalGzipSize || 'Failed',
     ]),
   ]),
-);
+)
 
-process.exit(0);
+process.exit(0)
