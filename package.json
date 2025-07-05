@@ -49,6 +49,7 @@
     "rolldown": "^1.0.0-beta.23",
     "rolldown-vite": "^7.0.4",
     "rslog": "^1.2.9",
+    "string-width": "^7.2.0",
     "swc-loader": "^0.2.6",
     "terser-webpack-plugin": "^5.3.14",
     "tree-kill": "^1.2.2",

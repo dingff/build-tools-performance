@@ -11,6 +11,7 @@ import { markdownTable } from 'markdown-table'
 import color from 'picocolors'
 import puppeteer from 'puppeteer'
 import { logger } from 'rslog'
+import stringWidth from 'string-width'
 import kill from 'tree-kill'
 
 async function coolDown() {
@@ -699,31 +700,41 @@ logger.success('Benchmark finished!\n')
 
 logger.info('Build performance:\n')
 console.log(
-  markdownTable([
-    ['Name', 'Startup', 'Server start', 'Page load', 'Root HMR', 'Leaf HMR', 'Prod build'],
-    ...buildTools.map(({ name }) => [
-      name,
-      formattedResults[name]?.startup || 'Failed',
-      formattedResults[name]?.serverStart || 'Failed',
-      formattedResults[name]?.onLoad || 'Failed',
-      formattedResults[name]?.rootHmr || 'Failed',
-      formattedResults[name]?.leafHmr || 'Failed',
-      formattedResults[name]?.prodBuild || 'Failed',
-    ]),
-  ]),
+  markdownTable(
+    [
+      ['Name', 'Startup', 'Server start', 'Page load', 'Root HMR', 'Leaf HMR', 'Prod build'],
+      ...buildTools.map(({ name }) => [
+        name,
+        formattedResults[name]?.startup || 'Failed',
+        formattedResults[name]?.serverStart || 'Failed',
+        formattedResults[name]?.onLoad || 'Failed',
+        formattedResults[name]?.rootHmr || 'Failed',
+        formattedResults[name]?.leafHmr || 'Failed',
+        formattedResults[name]?.prodBuild || 'Failed',
+      ]),
+    ],
+    {
+      stringLength: stringWidth,
+    },
+  ),
 )
 
 logger.log('')
 logger.info('Bundle sizes:\n')
 console.log(
-  markdownTable([
-    ['Name', 'Total size', 'Gzipped size'],
-    ...buildTools.map(({ name }) => [
-      name,
-      formattedSizes[name]?.totalSize || 'Failed',
-      formattedSizes[name]?.totalGzipSize || 'Failed',
-    ]),
-  ]),
+  markdownTable(
+    [
+      ['Name', 'Total size', 'Gzipped size'],
+      ...buildTools.map(({ name }) => [
+        name,
+        formattedSizes[name]?.totalSize || 'Failed',
+        formattedSizes[name]?.totalGzipSize || 'Failed',
+      ]),
+    ],
+    {
+      stringLength: stringWidth,
+    },
+  ),
 )
 
 process.exit(0)
