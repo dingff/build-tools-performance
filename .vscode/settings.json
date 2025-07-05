@@ -1,14 +1,8 @@
 {
-  "cSpell.words": [
-    "clsx",
-    "farmfe",
-    "pmmmwh",
-    "rolldown",
-    "rspack",
-    "turbopack"
-  ],
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "cSpell.words": ["clsx", "farmfe", "pmmmwh", "rolldown", "rspack", "turbopack"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "editor.defaultFormatter": "biomejs.biome"
 }
