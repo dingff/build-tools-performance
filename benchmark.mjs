@@ -717,7 +717,7 @@ function calculateAndFormatResults(results) {
       }
       if (values[metric] && typeof values[metric] === 'number') {
         const multiplier = values[metric] / minValue
-        const trophy = multiplier === 1 ? ' ⚡' : ''
+        const trophy = multiplier === 1 ? ' *' : ''
         formattedResults[name][metric] = `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`
       } else {
         formattedResults[name][metric] = values[metric] || 'Failed'
@@ -792,8 +792,8 @@ function formatBundleSizesWithMultipliers(sizeResults) {
       const gzipMultiplier =
         minGzipSize !== Number.POSITIVE_INFINITY ? sizes.totalGzipSize / minGzipSize : 1
 
-      const totalTrophy = totalMultiplier === 1 ? ' ⚡' : ''
-      const gzipTrophy = gzipMultiplier === 1 ? ' ⚡' : ''
+      const totalTrophy = totalMultiplier === 1 ? ' *' : ''
+      const gzipTrophy = gzipMultiplier === 1 ? ' *' : ''
 
       formattedSizes[name] = {
         totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
