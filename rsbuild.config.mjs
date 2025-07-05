@@ -1,9 +1,9 @@
 // @ts-check
-import path from 'node:path';
-import { defineConfig } from '@rsbuild/core';
-import { pluginReact } from '@rsbuild/plugin-react';
+import path from 'node:path'
+import { defineConfig } from '@rsbuild/core'
+import { pluginReact } from '@rsbuild/plugin-react'
 
-const caseName = process.env.CASE ?? 'medium';
+const caseName = process.env.CASE ?? 'medium'
 
 export default defineConfig({
   plugins: [pluginReact()],
@@ -18,4 +18,7 @@ export default defineConfig({
   server: {
     port: 3333,
   },
-});
+  performance: {
+    printFileSize: false,
+  },
+})
