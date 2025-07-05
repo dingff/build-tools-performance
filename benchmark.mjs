@@ -199,15 +199,44 @@ class BuildTool {
       },
     })
     const startTime = Date.now()
+
     return new Promise((resolve, reject) => {
+      // Add timeout to prevent hanging builds
+      const buildTimeout = setTimeout(
+        () => {
+          logger.warn(`Build timeout for ${this.name}, killing process...`)
+          if (child.pid) {
+            kill(child.pid, (err) => {
+              if (err) {
+                logger.warn(`Failed to kill build process ${child.pid}: ${err.message}`)
+              }
+            })
+          }
+          reject(new Error('Build timeout after 3 minutes'))
+        },
+        3 * 60 * 1000,
+      ) // 3 minutes timeout
+
       child.on('exit', (code) => {
+        clearTimeout(buildTimeout)
         if (code === 0) {
           resolve(Date.now() - startTime)
         } else {
           reject(new Error(`Build failed with exit code ${code}`))
         }
       })
-      child.on('error', reject)
+
+      child.on('error', (error) => {
+        clearTimeout(buildTimeout)
+        reject(error)
+      })
+
+      // Log stderr for debugging
+      child.stderr.on('data', (data) => {
+        if (process.env.DEBUG) {
+          console.log(`${this.name} stderr: ${data}`)
+        }
+      })
     })
   }
 }
@@ -512,18 +541,27 @@ async function runBenchmark() {
       const distDir = path.join(__dirname, 'dist')
       await fse.remove(distDir)
 
-      const buildTime = await buildTool.build()
+      try {
+        const buildTime = await buildTool.build()
 
-      const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
-      sizeResults[buildTool.name] = sizes
+        const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
+        sizeResults[buildTool.name] = sizes
 
-      logger.success(color.dim(buildTool.name) + ' built in ' + color.green(buildTime + ' ms'))
-      logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
-      logger.success(
-        color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
-      )
+        logger.success(color.dim(buildTool.name) + ' built in ' + color.green(buildTime + ' ms'))
+        logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
+        logger.success(
+          color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
+        )
 
-      perfResult[buildTool.name].prodBuild = buildTime
+        perfResult[buildTool.name].prodBuild = buildTime
+      } catch (buildError) {
+        logger.error(color.red(`${buildTool.name} build failed:`) + ` ${buildError.message}`)
+        perfResult[buildTool.name].prodBuild = 'Failed'
+        sizeResults[buildTool.name] = {
+          totalSize: 'Failed',
+          totalGzipSize: 'Failed',
+        }
+      }
 
       await coolDown()
     } catch (error) {
@@ -567,26 +605,38 @@ function calcFileSize(len) {
 }
 
 async function getFileSizes(targetDir) {
-  let files = await glob(convertPath(path.join(targetDir, '**/*')))
-  let totalSize = 0
-  let totalGzipSize = 0
+  try {
+    let files = await glob(convertPath(path.join(targetDir, '**/*')))
+    let totalSize = 0
+    let totalGzipSize = 0
 
-  files = files.filter((file) => {
-    return !(file.endsWith('.map') || file.endsWith('.LICENSE.txt'))
-  })
+    files = files.filter((file) => {
+      return !(file.endsWith('.map') || file.endsWith('.LICENSE.txt'))
+    })
 
-  await Promise.all(
-    files.map((file) =>
-      fse.readFile(file, 'utf-8').then((content) => {
-        totalSize += Buffer.byteLength(content)
-        totalGzipSize += gzipSizeSync(content)
+    await Promise.all(
+      files.map(async (file) => {
+        try {
+          const content = await fse.readFile(file, 'utf-8')
+          totalSize += Buffer.byteLength(content)
+          totalGzipSize += gzipSizeSync(content)
+        } catch (error) {
+          logger.warn(`Failed to read file ${file}: ${error.message}`)
+          // Continue processing other files
+        }
       }),
-    ),
-  )
+    )
 
-  return {
-    totalSize: calcFileSize(totalSize),
-    totalGzipSize: calcFileSize(totalGzipSize),
+    return {
+      totalSize: calcFileSize(totalSize),
+      totalGzipSize: calcFileSize(totalGzipSize),
+    }
+  } catch (error) {
+    logger.error(`Failed to get file sizes from ${targetDir}: ${error.message}`)
+    return {
+      totalSize: 'Error',
+      totalGzipSize: 'Error',
+    }
   }
 }
 
@@ -596,6 +646,12 @@ const averageResultsNumbers = {}
 
 // drop the warmup results
 perfResults = perfResults.slice(warmupTimes)
+
+// Check if we have any valid results
+if (perfResults.length === 0) {
+  logger.error('No valid performance results to process')
+  process.exit(1)
+}
 
 for (const result of perfResults) {
   for (const [name, values] of Object.entries(result)) {
@@ -610,16 +666,28 @@ for (const result of perfResults) {
         averageResultsNumbers[name][key] = 0
       }
 
-      averageResults[name][key] += Number(value)
-      averageResultsNumbers[name][key] += Number(value)
+      // Only process numeric values, skip 'Failed' strings
+      if (
+        typeof value === 'number' ||
+        (typeof value === 'string' && !Number.isNaN(Number(value)))
+      ) {
+        averageResults[name][key] += Number(value)
+        averageResultsNumbers[name][key] += Number(value)
+      }
     }
   }
 }
 
 for (const [name, values] of Object.entries(averageResults)) {
   for (const [key, value] of Object.entries(values)) {
-    const avgValue = Math.floor(value / perfResults.length)
-    averageResultsNumbers[name][key] = avgValue
+    if (value > 0) {
+      // Only calculate average for values that have data
+      const avgValue = Math.floor(value / perfResults.length)
+      averageResultsNumbers[name][key] = avgValue
+    } else {
+      // Set to 'Failed' if no valid data was collected
+      averageResultsNumbers[name][key] = 'Failed'
+    }
   }
 }
 
@@ -632,9 +700,14 @@ function calculateAndFormatResults(results) {
     // Find the minimum value for this metric
     let minValue = Number.POSITIVE_INFINITY
     for (const [, values] of Object.entries(results)) {
-      if (values[metric] && values[metric] < minValue) {
+      if (values[metric] && typeof values[metric] === 'number' && values[metric] < minValue) {
         minValue = values[metric]
       }
+    }
+
+    // Skip if no valid values found
+    if (minValue === Number.POSITIVE_INFINITY) {
+      continue
     }
 
     // Format results with multipliers
@@ -642,10 +715,12 @@ function calculateAndFormatResults(results) {
       if (!formattedResults[name]) {
         formattedResults[name] = {}
       }
-      if (values[metric]) {
+      if (values[metric] && typeof values[metric] === 'number') {
         const multiplier = values[metric] / minValue
         const trophy = multiplier === 1 ? ' ⚡' : ''
         formattedResults[name][metric] = `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`
+      } else {
+        formattedResults[name][metric] = values[metric] || 'Failed'
       }
     }
   }
@@ -662,31 +737,68 @@ function formatBundleSizesWithMultipliers(sizeResults) {
   // Convert size strings to numbers for comparison
   const sizeNumbers = {}
   for (const [name, sizes] of Object.entries(sizeResults)) {
-    sizeNumbers[name] = {
-      totalSize: Number.parseFloat(sizes.totalSize.replace('kB', '')),
-      totalGzipSize: Number.parseFloat(sizes.totalGzipSize.replace('kB', '')),
+    // Skip failed entries
+    if (
+      sizes.totalSize === 'Failed' ||
+      sizes.totalSize === 'Error' ||
+      sizes.totalGzipSize === 'Failed' ||
+      sizes.totalGzipSize === 'Error'
+    ) {
+      sizeNumbers[name] = {
+        totalSize: 'Failed',
+        totalGzipSize: 'Failed',
+      }
+      continue
+    }
+
+    const totalSize = Number.parseFloat(sizes.totalSize.replace('kB', ''))
+    const totalGzipSize = Number.parseFloat(sizes.totalGzipSize.replace('kB', ''))
+
+    if (Number.isNaN(totalSize) || Number.isNaN(totalGzipSize)) {
+      sizeNumbers[name] = {
+        totalSize: 'Failed',
+        totalGzipSize: 'Failed',
+      }
+    } else {
+      sizeNumbers[name] = {
+        totalSize,
+        totalGzipSize,
+      }
     }
   }
 
-  // Find minimum sizes
+  // Find minimum sizes (only from valid entries)
   let minTotalSize = Number.POSITIVE_INFINITY
   let minGzipSize = Number.POSITIVE_INFINITY
   for (const sizes of Object.values(sizeNumbers)) {
-    if (sizes.totalSize < minTotalSize) minTotalSize = sizes.totalSize
-    if (sizes.totalGzipSize < minGzipSize) minGzipSize = sizes.totalGzipSize
+    if (typeof sizes.totalSize === 'number' && sizes.totalSize < minTotalSize) {
+      minTotalSize = sizes.totalSize
+    }
+    if (typeof sizes.totalGzipSize === 'number' && sizes.totalGzipSize < minGzipSize) {
+      minGzipSize = sizes.totalGzipSize
+    }
   }
 
   // Format with multipliers
   for (const [name, sizes] of Object.entries(sizeNumbers)) {
-    const totalMultiplier = sizes.totalSize / minTotalSize
-    const gzipMultiplier = sizes.totalGzipSize / minGzipSize
+    if (sizes.totalSize === 'Failed' || sizes.totalGzipSize === 'Failed') {
+      formattedSizes[name] = {
+        totalSize: 'Failed',
+        totalGzipSize: 'Failed',
+      }
+    } else {
+      const totalMultiplier =
+        minTotalSize !== Number.POSITIVE_INFINITY ? sizes.totalSize / minTotalSize : 1
+      const gzipMultiplier =
+        minGzipSize !== Number.POSITIVE_INFINITY ? sizes.totalGzipSize / minGzipSize : 1
 
-    const totalTrophy = totalMultiplier === 1 ? ' ⚡' : ''
-    const gzipTrophy = gzipMultiplier === 1 ? ' ⚡' : ''
+      const totalTrophy = totalMultiplier === 1 ? ' ⚡' : ''
+      const gzipTrophy = gzipMultiplier === 1 ? ' ⚡' : ''
 
-    formattedSizes[name] = {
-      totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
-      totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+      formattedSizes[name] = {
+        totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
+        totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+      }
     }
   }
 
