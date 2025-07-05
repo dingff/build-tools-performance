@@ -421,162 +421,197 @@ async function runBenchmark() {
   const shuffledBuildTools = shuffleArray([...buildTools]);
 
   for (const buildTool of shuffledBuildTools) {
-    const time = await buildTool.startServer();
-    const page = await browser.newPage();
-    const start = Date.now();
+    let page = null; // Declare page variable outside try block for error handling
+    try {
+      const time = await buildTool.startServer();
+      page = await browser.newPage();
+      const start = Date.now();
 
-    page.on('load', () => {
-      const loadTime = Date.now() - start;
-      logger.success(
-        color.dim(buildTool.name) +
-          ' startup in ' +
-          color.green(time + loadTime + 'ms'),
+      page.on('load', () => {
+        const loadTime = Date.now() - start;
+        logger.success(
+          color.dim(buildTool.name) +
+            ' startup in ' +
+            color.green(time + loadTime + 'ms'),
+        );
+
+        if (!perfResult[buildTool.name]) {
+          perfResult[buildTool.name] = {};
+        }
+
+        perfResult[buildTool.name].startup = time + loadTime;
+        perfResult[buildTool.name].serverStart = time;
+        perfResult[buildTool.name].onLoad = loadTime;
+      });
+
+      logger.info(
+        color.dim('navigating to' + ` http://localhost:${buildTool.port}`),
       );
 
-      if (!perfResult[buildTool.name]) {
-        perfResult[buildTool.name] = {};
-      }
+      await page.goto(`http://localhost:${buildTool.port}`, {
+        timeout: 180000,
+      });
 
-      perfResult[buildTool.name].startup = time + loadTime;
-      perfResult[buildTool.name].serverStart = time;
-      perfResult[buildTool.name].onLoad = loadTime;
-    });
+      let waitResolve = null;
+      const waitPromise = new Promise((resolve) => {
+        waitResolve = resolve;
+      });
 
-    logger.info(
-      color.dim('navigating to' + ` http://localhost:${buildTool.port}`),
-    );
+      let hmrRootStart = -1;
+      let hmrLeafStart = -1;
 
-    await page.goto(`http://localhost:${buildTool.port}`, {
-      timeout: 180000,
-    });
+      page.on('console', (event) => {
+        const isFinished = () => {
+          return (
+            perfResult[buildTool.name]?.rootHmr &&
+            perfResult[buildTool.name]?.leafHmr
+          );
+        };
+        if (event.text().includes('root hmr')) {
+          const match = /(\d+)/.exec(event.text());
+          if (!match) {
+            throw new Error('Failed to match root HMR time.');
+          }
 
-    let waitResolve = null;
-    const waitPromise = new Promise((resolve) => {
-      waitResolve = resolve;
-    });
+          const clientDateNow = Number(match[1]);
+          const hmrTime = clientDateNow - hmrRootStart;
+          logger.success(
+            color.dim(buildTool.name) +
+              ' root HMR in ' +
+              color.green(hmrTime + 'ms'),
+          );
 
-    let hmrRootStart = -1;
-    let hmrLeafStart = -1;
+          perfResult[buildTool.name].rootHmr = hmrTime;
+          if (isFinished()) {
+            page.close();
+            waitResolve();
+          }
+        } else if (event.text().includes('leaf hmr')) {
+          const match = /(\d+)/.exec(event.text());
+          if (!match) {
+            throw new Error('Failed to match leaf HMR time.');
+          }
 
-    page.on('console', (event) => {
-      const isFinished = () => {
-        return (
-          perfResult[buildTool.name]?.rootHmr &&
-          perfResult[buildTool.name]?.leafHmr
-        );
-      };
-      if (event.text().includes('root hmr')) {
-        const match = /(\d+)/.exec(event.text());
-        if (!match) {
-          throw new Error('Failed to match root HMR time.');
+          const clientDateNow = Number(match[1]);
+          const hmrTime = clientDateNow - hmrLeafStart;
+          logger.success(
+            color.dim(buildTool.name) +
+              ' leaf HMR in ' +
+              color.green(hmrTime + 'ms'),
+          );
+          perfResult[buildTool.name].leafHmr = hmrTime;
+          if (isFinished()) {
+            page.close();
+            waitResolve();
+          }
         }
+      });
 
-        const clientDateNow = Number(match[1]);
-        const hmrTime = clientDateNow - hmrRootStart;
-        logger.success(
-          color.dim(buildTool.name) +
-            ' root HMR in ' +
-            color.green(hmrTime + 'ms'),
-        );
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx');
+      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8');
 
-        perfResult[buildTool.name].rootHmr = hmrTime;
-        if (isFinished()) {
-          page.close();
-          waitResolve();
-        }
-      } else if (event.text().includes('leaf hmr')) {
-        const match = /(\d+)/.exec(event.text());
-        if (!match) {
-          throw new Error('Failed to match leaf HMR time.');
-        }
-
-        const clientDateNow = Number(match[1]);
-        const hmrTime = clientDateNow - hmrLeafStart;
-        logger.success(
-          color.dim(buildTool.name) +
-            ' leaf HMR in ' +
-            color.green(hmrTime + 'ms'),
-        );
-        perfResult[buildTool.name].leafHmr = hmrTime;
-        if (isFinished()) {
-          page.close();
-          waitResolve();
-        }
-      }
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx');
-    const originalRootFileContent = readFileSync(rootFilePath, 'utf-8');
-
-    appendFile(
-      rootFilePath,
-      `
+      appendFile(
+        rootFilePath,
+        `
     console.log('root hmr', Date.now());
     `,
-      (err) => {
-        if (err) throw err;
-        hmrRootStart = Date.now();
-      },
-    );
+        (err) => {
+          if (err) throw err;
+          hmrRootStart = Date.now();
+        },
+      );
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const leafFilePath = path.join(
-      __dirname,
-      'src',
-      caseName,
-      'd0/d0/d0/f0.jsx',
-    );
-    const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8');
-    appendFile(
-      leafFilePath,
-      `
+      const leafFilePath = path.join(
+        __dirname,
+        'src',
+        caseName,
+        'd0/d0/d0/f0.jsx',
+      );
+      const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8');
+      appendFile(
+        leafFilePath,
+        `
       console.log('leaf hmr', Date.now());
       `,
-      (err) => {
-        if (err) throw err;
-        hmrLeafStart = Date.now();
-      },
-    );
+        (err) => {
+          if (err) throw err;
+          hmrLeafStart = Date.now();
+        },
+      );
 
-    await waitPromise;
+      await waitPromise;
 
-    // restore files
-    writeFileSync(rootFilePath, originalRootFileContent);
-    writeFileSync(leafFilePath, originalLeafFileContent);
+      // restore files
+      writeFileSync(rootFilePath, originalRootFileContent);
+      writeFileSync(leafFilePath, originalLeafFileContent);
 
-    await buildTool.stopServer();
+      await buildTool.stopServer();
 
-    await coolDown();
-    logger.success(color.dim(buildTool.name) + ' dev server closed');
+      await coolDown();
+      logger.success(color.dim(buildTool.name) + ' dev server closed');
 
-    // Clean up dist dir
-    const distDir = path.join(__dirname, 'dist');
-    await fse.remove(distDir);
+      // Clean up dist dir
+      const distDir = path.join(__dirname, 'dist');
+      await fse.remove(distDir);
 
-    const buildTime = await buildTool.build();
+      const buildTime = await buildTool.build();
 
-    const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir));
-    sizeResults[buildTool.name] = sizes;
+      const sizes =
+        sizeResults[buildTool.name] || (await getFileSizes(distDir));
+      sizeResults[buildTool.name] = sizes;
 
-    logger.success(
-      color.dim(buildTool.name) + ' built in ' + color.green(buildTime + ' ms'),
-    );
-    logger.success(
-      color.dim(buildTool.name) +
-        ' total size: ' +
-        color.green(sizes.totalSize),
-    );
-    logger.success(
-      color.dim(buildTool.name) +
-        ' gzipped size: ' +
-        color.green(sizes.totalGzipSize),
-    );
+      logger.success(
+        color.dim(buildTool.name) +
+          ' built in ' +
+          color.green(buildTime + ' ms'),
+      );
+      logger.success(
+        color.dim(buildTool.name) +
+          ' total size: ' +
+          color.green(sizes.totalSize),
+      );
+      logger.success(
+        color.dim(buildTool.name) +
+          ' gzipped size: ' +
+          color.green(sizes.totalGzipSize),
+      );
 
-    perfResult[buildTool.name].prodBuild = buildTime;
+      perfResult[buildTool.name].prodBuild = buildTime;
 
-    await coolDown();
+      await coolDown();
+    } catch (error) {
+      logger.error(
+        color.red(`${buildTool.name} failed:`) + ` ${error.message}`,
+      );
+
+      // Ensure page is closed and server is stopped in case of error
+      try {
+        if (page && !page.isClosed()) {
+          await page.close();
+        }
+      } catch (pageError) {
+        logger.warn(
+          `Failed to close page for ${buildTool.name}: ${pageError.message}`,
+        );
+      }
+
+      try {
+        await buildTool.stopServer();
+      } catch (stopError) {
+        logger.warn(
+          `Failed to stop server for ${buildTool.name}: ${stopError.message}`,
+        );
+      }
+
+      // Still do cooldown to avoid affecting next tool
+      await coolDown();
+
+      // Continue to next tool instead of failing entire benchmark
+      continue;
+    }
   }
 
   perfResults.push(perfResult);
@@ -750,12 +785,12 @@ console.log(
     ],
     ...buildTools.map(({ name }) => [
       name,
-      formattedResults[name].startup,
-      formattedResults[name].serverStart,
-      formattedResults[name].onLoad,
-      formattedResults[name].rootHmr,
-      formattedResults[name].leafHmr,
-      formattedResults[name].prodBuild,
+      formattedResults[name]?.startup || 'Failed',
+      formattedResults[name]?.serverStart || 'Failed',
+      formattedResults[name]?.onLoad || 'Failed',
+      formattedResults[name]?.rootHmr || 'Failed',
+      formattedResults[name]?.leafHmr || 'Failed',
+      formattedResults[name]?.prodBuild || 'Failed',
     ]),
   ]),
 );
@@ -767,8 +802,8 @@ console.log(
     ['Name', 'Total size', 'Gzipped size'],
     ...buildTools.map(({ name }) => [
       name,
-      formattedSizes[name].totalSize,
-      formattedSizes[name].totalGzipSize,
+      formattedSizes[name]?.totalSize || 'Failed',
+      formattedSizes[name]?.totalGzipSize || 'Failed',
     ]),
   ]),
 );
