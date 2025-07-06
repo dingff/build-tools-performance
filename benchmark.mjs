@@ -268,53 +268,27 @@ class BuildTool {
   // Extract actual build time from bundler output
   extractBuildTime(text) {
     // Farm: Build completed in 353ms
-    const farmMatch = text.match(/Build completed in (\d+(?:\.\d+)?)(ms|s)/i)
+    const farmMatch = text.match(/Build completed in (\d+(?:\.\d+)?)\s*(ms|s)/i)
     if (farmMatch) {
       const time = Number.parseFloat(farmMatch[1])
       const unit = farmMatch[2].toLowerCase()
       return unit === 's' ? time * 1000 : time
     }
 
-    // Rsbuild: built in 0.22 s
-    const rsbuildMatch = text.match(/built in (\d+(?:\.\d+)?)\s*(ms|s)/i)
-    if (rsbuildMatch) {
-      const time = Number.parseFloat(rsbuildMatch[1])
-      const unit = rsbuildMatch[2].toLowerCase()
+    // Rsbuild, Vite, Unpack: built in 167ms / built in 0.22 s
+    const builtInMatch = text.match(/built in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    if (builtInMatch) {
+      const time = Number.parseFloat(builtInMatch[1])
+      const unit = builtInMatch[2].toLowerCase()
       return unit === 's' ? time * 1000 : time
     }
-
-    // Unpack: built in 167ms
-    const unpackMatch = text.match(/built in (\d+(?:\.\d+)?)(ms|s)/i)
-    if (unpackMatch) {
-      const time = Number.parseFloat(unpackMatch[1])
-      const unit = unpackMatch[2].toLowerCase()
-      return unit === 's' ? time * 1000 : time
-    }
-
-    // Vite: built in 167ms
-    const viteMatch = text.match(/built in (\d+(?:\.\d+)?)\s*(ms|s)/i)
-    if (viteMatch) {
-      const time = Number.parseFloat(viteMatch[1])
-      const unit = viteMatch[2].toLowerCase()
-      return unit === 's' ? time * 1000 : time
-    }
-
-    // Webpack: compiled successfully in 1234 ms
-    const webpackMatch = text.match(/compiled successfully in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    // Webpack & Rspack: in 1234 ms
+    const webpackMatch = text.match(/ in (\d+(?:\.\d+)?)\s*(ms|s)/i)
     if (webpackMatch) {
       const time = Number.parseFloat(webpackMatch[1])
       const unit = webpackMatch[2].toLowerCase()
       return unit === 's' ? time * 1000 : time
     }
-
-    // Rspack: compiled in 1.23s
-    const rspackMatch = text.match(/compiled in (\d+(?:\.\d+)?)(ms|s)/i)
-    if (rspackMatch) {
-      const time = Number.parseFloat(rspackMatch[1])
-      const unit = rspackMatch[2].toLowerCase()
-      return unit === 's' ? time * 1000 : time
-    }
-
     return null
   }
 }
@@ -907,8 +881,8 @@ console.log(
         'Page load',
         'Root HMR',
         'Leaf HMR',
-        'Build time',
-        'Prep time',
+        'Prod build',
+        'Prepare',
       ],
       ...buildTools.map(({ name }) => [
         name,
