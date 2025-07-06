@@ -1,13 +1,13 @@
-const path = require('node:path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const path = require('node:path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
-const isProd = process.env.NODE_ENV === 'production';
-const caseName = process.env.CASE ?? 'medium';
-const caseDir = path.join(__dirname, './src', caseName);
+const isProd = process.env.NODE_ENV === 'production'
+const caseName = process.env.CASE ?? 'medium'
+const caseDir = path.join(__dirname, './src', caseName)
 
 // webpack.config.js
 module.exports = {
@@ -74,4 +74,10 @@ module.exports = {
         ]
       : [],
   },
-};
+  experiments: {
+    lazyCompilation: {
+      entries: false,
+      imports: true,
+    },
+  },
+}
