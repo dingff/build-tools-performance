@@ -198,11 +198,11 @@ class BuildTool {
         NO_COLOR: '1',
       },
     })
-    const startTime = Date.now()
 
     return new Promise((resolve, reject) => {
       let actualBuildTime = null
       let outputBuffer = ''
+      let startTime = null
 
       // Add timeout to prevent hanging builds
       const buildTimeout = setTimeout(
@@ -229,6 +229,12 @@ class BuildTool {
           console.log(`${this.name} stdout: ${text}`)
         }
 
+        // Extract start time from bin file output
+        const startMatch = startConsoleRegex.exec(text)
+        if (startMatch) {
+          startTime = Number(startMatch[1])
+        }
+
         // Extract actual build time from different bundlers
         actualBuildTime = this.extractBuildTime(text) || actualBuildTime
       })
@@ -236,6 +242,10 @@ class BuildTool {
       child.on('exit', (code) => {
         clearTimeout(buildTimeout)
         if (code === 0) {
+          if (!startTime) {
+            throw new Error('Build start time not found')
+          }
+
           const totalTime = Date.now() - startTime
 
           // If we couldn't extract build time from stdout, try from the full buffer
