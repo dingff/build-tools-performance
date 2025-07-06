@@ -280,16 +280,8 @@ toolNames.forEach((name) => {
       break
     case 'rsbuild':
       buildTools.push(
-        // new BuildTool({
-        //   name: 'Rsbuild ' + require('@rsbuild/core/package.json').version,
-        //   port: 3333,
-        //   startScript: 'start:rsbuild',
-        //   startedRegex: /in (.+) (s|ms)/,
-        //   buildScript: 'build:rsbuild',
-        //   binFilePath: '@rsbuild/core/bin/rsbuild.js',
-        // }),
         new BuildTool({
-          name: 'Rsbuild (Lazy) ' + require('@rsbuild/core/package.json').version,
+          name: 'Rsbuild' + require('@rsbuild/core/package.json').version,
           port: 3333,
           startScript: 'start:rsbuild:lazy',
           startedRegex: /in (.+) (s|ms)/,
@@ -337,7 +329,7 @@ toolNames.forEach((name) => {
     case 'farm':
       buildTools.push(
         new BuildTool({
-          name: 'Farm (Lazy) ' + require('@farmfe/core/package.json').version,
+          name: 'Farm' + require('@farmfe/core/package.json').version,
           port: 9000,
           startScript: 'start:farm',
           startedRegex: /Ready in (.+)(s|ms)/,
@@ -348,16 +340,8 @@ toolNames.forEach((name) => {
       break
     case 'unpack':
       buildTools.push(
-        // new BuildTool({
-        //   name: 'Unpack ' + require('@unpackjs/core/package.json').version,
-        //   port: 4000,
-        //   startScript: 'start:unpack',
-        //   startedRegex: /ready in (\d+)ms/,
-        //   buildScript: 'build:unpack',
-        //   binFilePath: '@unpackjs/cli/bin/index.js',
-        // }),
         new BuildTool({
-          name: 'Unpack (Lazy) ' + require('@unpackjs/core/package.json').version,
+          name: 'Unpack' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:lazy',
           startedRegex: /ready in (\d+)ms/,
@@ -365,7 +349,7 @@ toolNames.forEach((name) => {
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
         new BuildTool({
-          name: 'Unpack (Lazy + Prebundle) ' + require('@unpackjs/core/package.json').version,
+          name: 'Unpack (Prebundle) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:prebundle',
           startedRegex: /ready in (\d+)ms/,
@@ -373,7 +357,7 @@ toolNames.forEach((name) => {
           binFilePath: '@unpackjs/cli/bin/index.js',
         }),
         new BuildTool({
-          name: 'Unpack (Lazy + Prebundle + CSS) ' + require('@unpackjs/core/package.json').version,
+          name: 'Unpack (Prebundle + CSS) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:experiments',
           startedRegex: /ready in (\d+)ms/,
