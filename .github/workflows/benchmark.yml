@@ -1,14 +1,10 @@
 name: Benchmark
 
 on:
-  pull_request:
-    branches: [main]
-
-  push:
-    branches: [main]
-
-  merge_group:
-
+  schedule:
+    # Run daily at 7:00 AM Beijing time (UTC 23:00)
+    - cron: '0 23 * * *'
+  
   workflow_dispatch:
 
 jobs:
@@ -20,7 +16,7 @@ jobs:
         os: [macos-15]
         # Failed to run Vite on Windows
         # os: [macos-15, windows-latest]
-        case: [medium]
+        case: [small, medium]
 
     steps:
       - name: Checkout
