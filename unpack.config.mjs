@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { defineConfig } from '@unpackjs/cli'
+import { defineConfig } from '@unpackjs/core'
 import { pluginReact } from '@unpackjs/plugin-react'
 
 const caseName = process.env.CASE ?? 'medium'
