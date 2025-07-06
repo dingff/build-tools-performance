@@ -199,6 +199,9 @@ class BuildTool {
     const startTime = Date.now()
 
     return new Promise((resolve, reject) => {
+      let actualBuildTime = null
+      let outputBuffer = ''
+
       // Add timeout to prevent hanging builds
       const buildTimeout = setTimeout(
         () => {
@@ -215,10 +218,34 @@ class BuildTool {
         3 * 60 * 1000,
       ) // 3 minutes timeout
 
+      // Capture stdout to extract build time
+      child.stdout.on('data', (data) => {
+        const text = data.toString()
+        outputBuffer += text
+
+        if (process.env.DEBUG) {
+          console.log(`${this.name} stdout: ${text}`)
+        }
+
+        // Extract actual build time from different bundlers
+        actualBuildTime = this.extractBuildTime(text) || actualBuildTime
+      })
+
       child.on('exit', (code) => {
         clearTimeout(buildTimeout)
         if (code === 0) {
-          resolve(Date.now() - startTime)
+          const totalTime = Date.now() - startTime
+
+          // If we couldn't extract build time from stdout, try from the full buffer
+          if (!actualBuildTime) {
+            actualBuildTime = this.extractBuildTime(outputBuffer)
+          }
+
+          resolve({
+            totalTime,
+            actualBuildTime: actualBuildTime || totalTime, // fallback to total time
+            prepTime: actualBuildTime ? totalTime - actualBuildTime : 0,
+          })
         } else {
           reject(new Error(`Build failed with exit code ${code}`))
         }
@@ -236,6 +263,59 @@ class BuildTool {
         }
       })
     })
+  }
+
+  // Extract actual build time from bundler output
+  extractBuildTime(text) {
+    // Farm: Build completed in 353ms
+    const farmMatch = text.match(/Build completed in (\d+(?:\.\d+)?)(ms|s)/i)
+    if (farmMatch) {
+      const time = Number.parseFloat(farmMatch[1])
+      const unit = farmMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    // Rsbuild: built in 0.22 s
+    const rsbuildMatch = text.match(/built in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    if (rsbuildMatch) {
+      const time = Number.parseFloat(rsbuildMatch[1])
+      const unit = rsbuildMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    // Unpack: built in 167ms
+    const unpackMatch = text.match(/built in (\d+(?:\.\d+)?)(ms|s)/i)
+    if (unpackMatch) {
+      const time = Number.parseFloat(unpackMatch[1])
+      const unit = unpackMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    // Vite: built in 167ms
+    const viteMatch = text.match(/built in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    if (viteMatch) {
+      const time = Number.parseFloat(viteMatch[1])
+      const unit = viteMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    // Webpack: compiled successfully in 1234 ms
+    const webpackMatch = text.match(/compiled successfully in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    if (webpackMatch) {
+      const time = Number.parseFloat(webpackMatch[1])
+      const unit = webpackMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    // Rspack: compiled in 1.23s
+    const rspackMatch = text.match(/compiled in (\d+(?:\.\d+)?)(ms|s)/i)
+    if (rspackMatch) {
+      const time = Number.parseFloat(rspackMatch[1])
+      const unit = rspackMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
+    return null
   }
 }
 
@@ -281,7 +361,7 @@ toolNames.forEach((name) => {
     case 'rsbuild':
       buildTools.push(
         new BuildTool({
-          name: 'Rsbuild' + require('@rsbuild/core/package.json').version,
+          name: 'Rsbuild ' + require('@rsbuild/core/package.json').version,
           port: 3333,
           startScript: 'start:rsbuild:lazy',
           startedRegex: /in (.+) (s|ms)/,
@@ -329,7 +409,7 @@ toolNames.forEach((name) => {
     case 'farm':
       buildTools.push(
         new BuildTool({
-          name: 'Farm' + require('@farmfe/core/package.json').version,
+          name: 'Farm ' + require('@farmfe/core/package.json').version,
           port: 9000,
           startScript: 'start:farm',
           startedRegex: /Ready in (.+)(s|ms)/,
@@ -341,7 +421,7 @@ toolNames.forEach((name) => {
     case 'unpack':
       buildTools.push(
         new BuildTool({
-          name: 'Unpack' + require('@unpackjs/core/package.json').version,
+          name: 'Unpack ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:lazy',
           startedRegex: /ready in (\d+)ms/,
@@ -524,21 +604,37 @@ async function runBenchmark() {
       await fse.remove(distDir)
 
       try {
-        const buildTime = await buildTool.build()
+        const buildResult = await buildTool.build()
 
         const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
         sizeResults[buildTool.name] = sizes
 
-        logger.success(color.dim(buildTool.name) + ' built in ' + color.green(buildTime + ' ms'))
+        logger.success(
+          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalTime + ' ms'),
+        )
+        logger.success(
+          color.dim(buildTool.name) +
+            ' actual build: ' +
+            color.green(Math.round(buildResult.actualBuildTime) + ' ms'),
+        )
+        logger.success(
+          color.dim(buildTool.name) +
+            ' prep time: ' +
+            color.green(Math.round(buildResult.prepTime) + ' ms'),
+        )
         logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
         logger.success(
           color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
         )
 
-        perfResult[buildTool.name].prodBuild = buildTime
+        perfResult[buildTool.name].prodBuild = Math.round(buildResult.actualBuildTime)
+        perfResult[buildTool.name].prepTime = Math.round(buildResult.prepTime)
+        perfResult[buildTool.name].totalBuildTime = buildResult.totalTime
       } catch (buildError) {
         logger.error(color.red(`${buildTool.name} build failed:`) + ` ${buildError.message}`)
         perfResult[buildTool.name].prodBuild = 'Failed'
+        perfResult[buildTool.name].prepTime = 'Failed'
+        perfResult[buildTool.name].totalBuildTime = 'Failed'
         sizeResults[buildTool.name] = {
           totalSize: 'Failed',
           totalGzipSize: 'Failed',
@@ -675,7 +771,15 @@ for (const [name, values] of Object.entries(averageResults)) {
 
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
-  const metrics = ['startup', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
+  const metrics = [
+    'startup',
+    'serverStart',
+    'onLoad',
+    'rootHmr',
+    'leafHmr',
+    'prodBuild',
+    'prepTime',
+  ]
   const formattedResults = {}
 
   for (const metric of metrics) {
@@ -796,7 +900,16 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'Startup', 'Server start', 'Page load', 'Root HMR', 'Leaf HMR', 'Prod build'],
+      [
+        'Name',
+        'Startup',
+        'Server start',
+        'Page load',
+        'Root HMR',
+        'Leaf HMR',
+        'Build time',
+        'Prep time',
+      ],
       ...buildTools.map(({ name }) => [
         name,
         formattedResults[name]?.startup || 'Failed',
@@ -805,6 +918,7 @@ console.log(
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
+        formattedResults[name]?.prepTime || 'Failed',
       ]),
     ],
     {
