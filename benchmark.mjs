@@ -12,6 +12,8 @@ import { logger } from 'rslog'
 import stringWidth from 'string-width'
 import kill from 'tree-kill'
 
+logger.info('process.env.CI', process.env.CI)
+
 async function coolDown() {
   if (global.gc) {
     global.gc()
