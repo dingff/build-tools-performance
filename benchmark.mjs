@@ -636,7 +636,7 @@ async function runBenchmark() {
         logger.warn(`Failed to stop server for ${buildTool.name}: ${stopError.message}`)
       }
 
-      // Still do cooldown to avoid affecting next tool
+      // Still do coolDown to avoid affecting next tool
       await coolDown()
     }
   }
