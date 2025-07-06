@@ -593,7 +593,7 @@ async function runBenchmark() {
         )
         logger.success(
           color.dim(buildTool.name) +
-            ' prep time: ' +
+            ' prepare: ' +
             color.green(Math.round(buildResult.prepTime) + ' ms'),
         )
         logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
