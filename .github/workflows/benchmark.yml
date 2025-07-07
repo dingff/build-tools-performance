@@ -6,6 +6,16 @@ on:
     - cron: '0 23 * * *'
   
   workflow_dispatch:
+    inputs:
+      case:
+        description: 'Select test case to run'
+        required: true
+        default: 'small'
+        type: choice
+        options:
+          - small
+          - medium
+          - large
 
 jobs:
   benchmark:
@@ -15,7 +25,7 @@ jobs:
       matrix:
         os: [macos-15]
         # os: [macos-15, windows-latest]
-        case: [small, medium]
+        case: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.case)) || fromJSON('["small", "medium"]') }}
 
     steps:
       - name: Checkout
