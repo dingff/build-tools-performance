@@ -15,7 +15,7 @@ jobs:
       matrix:
         os: [macos-15]
         # os: [macos-15, windows-latest]
-        case: [small, medium, large]
+        case: [small, medium]
 
     steps:
       - name: Checkout

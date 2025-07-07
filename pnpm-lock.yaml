@@ -79,14 +79,14 @@ importers:
         specifier: ^19.1.6
         version: 19.1.6(@types/react@19.1.8)
       '@unpackjs/cli':
-        specifier: ^2.2.1
-        version: 2.2.1(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9))
+        specifier: ^2.2.2
+        version: 2.2.2(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9))
       '@unpackjs/core':
-        specifier: ^2.4.0
-        version: 2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
+        specifier: ^2.4.1
+        version: 2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
       '@unpackjs/plugin-react':
         specifier: ^2.1.0
-        version: 2.1.0(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)
+        version: 2.1.0(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)
       '@vitejs/plugin-react-oxc':
         specifier: ^0.2.3
         version: 0.2.3(vite@7.0.2(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.41.0))
@@ -2493,15 +2493,15 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
-  '@unpackjs/cli@2.2.1':
-    resolution: {integrity: sha512-pVnYSKq3ugbpKsPilpZeAfrQbtv6KGOaipj8UFL7zxLECOMUT82v8Fw/zOBfxjbxIu4h+tikRNzJqJri2T50rA==}
+  '@unpackjs/cli@2.2.2':
+    resolution: {integrity: sha512-rZtsZGyp8cE8NIkST/4bSH8Ht1dMSXJRut/1tIbpTpSxDVLpW+MNnOZRVsEemGo3zy6trzlvMfaDFD0itjslYw==}
     hasBin: true
     peerDependencies:
       '@unpackjs/core': 2.x
       '@unpackjs/plugin-react': 2.x
 
-  '@unpackjs/core@2.4.0':
-    resolution: {integrity: sha512-Y4ZNQXkaH03EYw7Dijfacxk2MEcKAPqouyk7Db47hWw6mZJTwYKIrvnSdlxG8vGA8clcuWq14fHv+vmsqrq18A==}
+  '@unpackjs/core@2.4.1':
+    resolution: {integrity: sha512-3GUIlq0mVRsN7j3vNfvAA9OOUo+JDil4nVtgebWhOu4BCMC/HcOMZ2Txk88OI5B+ZO5iDMVgaqrJ4D+eemgBXA==}
 
   '@unpackjs/plugin-react@2.1.0':
     resolution: {integrity: sha512-A0AT7Oz0+D4n90AKOtRQgP9PmYo/GDCe9lZxoj5Dw/iFEtCPSWOoQ03FA2zVqJ7/ThmGepP1OvnPIeuqFuUTPw==}
@@ -8931,13 +8931,13 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@unpackjs/cli@2.2.1(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9))':
+  '@unpackjs/cli@2.2.2(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9))':
     dependencies:
-      '@unpackjs/core': 2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
-      '@unpackjs/plugin-react': 2.1.0(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)
+      '@unpackjs/core': 2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
+      '@unpackjs/plugin-react': 2.1.0(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)
       cac: 6.7.14
 
-  '@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))':
+  '@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))':
     dependencies:
       '@rspack/core': 1.4.4(@swc/helpers@0.5.17)
       '@types/less': 3.0.8
@@ -8974,7 +8974,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)':
+  '@unpackjs/plugin-react@2.1.0(@unpackjs/core@2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9)))(type-fest@0.21.3)(typescript@5.8.3)(webpack-dev-server@5.2.2)(webpack@5.99.9)':
     dependencies:
       '@babel/core': 7.27.4
       '@babel/plugin-proposal-decorators': 7.27.1(@babel/core@7.27.4)
@@ -8984,7 +8984,7 @@ snapshots:
       '@svgr/webpack': 8.1.0(typescript@5.8.3)
       '@swc/core': 1.12.7(@swc/helpers@0.5.17)
       '@swc/helpers': 0.5.17
-      '@unpackjs/core': 2.4.0(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
+      '@unpackjs/core': 2.4.1(@swc/core@1.12.7(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)(esbuild@0.25.5)(typescript@5.8.3)(webpack-cli@6.0.1(webpack-dev-server@5.2.2)(webpack@5.99.9))
       babel-plugin-react-compiler: 19.1.0-rc.2
       launch-editor: 2.10.0
       react-refresh: 0.17.0
