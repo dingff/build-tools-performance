@@ -14,7 +14,6 @@ export default defineConfig({
   },
   dev: {
     lazyCompilation: Boolean(process.env.LAZY),
-    progressBar: process.env.NODE_ENV !== 'development',
   },
   server: {
     port: 3333,
