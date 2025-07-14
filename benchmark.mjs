@@ -755,7 +755,7 @@ for (const result of perfResults) {
       // Only process numeric values, skip 'Failed' strings
       if (
         typeof value === 'number' ||
-        (typeof value === 'string' && !Number.isNaN(Number(value)) && value !== 'Failed')
+        (typeof value === 'string' && !Number.isNaN(Number(value)))
       ) {
         averageResults[name][key] += Number(value)
         averageResultsNumbers[name][key] += Number(value)
