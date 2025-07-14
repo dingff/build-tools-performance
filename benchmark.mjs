@@ -501,9 +501,22 @@ async function runBenchmark() {
       })
 
       let waitResolve = null
-      const waitPromise = new Promise((resolve) => {
+      let waitReject = null
+      const waitPromise = new Promise((resolve, reject) => {
         waitResolve = resolve
+        waitReject = reject
       })
+
+      // Add HMR timeout (10 seconds total for both root and leaf HMR)
+      const hmrTimeout = setTimeout(() => {
+        logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
+        perfResult[buildTool.name].rootHmr = 'Failed'
+        perfResult[buildTool.name].leafHmr = 'Failed'
+        if (page && !page.isClosed()) {
+          page.close()
+        }
+        waitReject(new Error('HMR timeout'))
+      }, 10000) // 10 seconds timeout
 
       let hmrRootStart = -1
       let hmrLeafStart = -1
@@ -524,6 +537,7 @@ async function runBenchmark() {
 
           perfResult[buildTool.name].rootHmr = hmrTime
           if (isFinished()) {
+            clearTimeout(hmrTimeout)
             page.close()
             waitResolve()
           }
@@ -538,6 +552,7 @@ async function runBenchmark() {
           logger.success(color.dim(buildTool.name) + ' leaf HMR in ' + color.green(hmrTime + 'ms'))
           perfResult[buildTool.name].leafHmr = hmrTime
           if (isFinished()) {
+            clearTimeout(hmrTimeout)
             page.close()
             waitResolve()
           }
@@ -574,7 +589,14 @@ async function runBenchmark() {
         },
       )
 
-      await waitPromise
+      await waitPromise.catch((error) => {
+        // If HMR timeout occurred, continue with the rest of the benchmark
+        if (error.message === 'HMR timeout') {
+          logger.warn(`Continuing benchmark for ${buildTool.name} after HMR timeout`)
+        } else {
+          throw error
+        }
+      })
 
       // restore files
       writeFileSync(rootFilePath, originalRootFileContent)
@@ -733,7 +755,7 @@ for (const result of perfResults) {
       // Only process numeric values, skip 'Failed' strings
       if (
         typeof value === 'number' ||
-        (typeof value === 'string' && !Number.isNaN(Number(value)))
+        (typeof value === 'string' && !Number.isNaN(Number(value)) && value !== 'Failed')
       ) {
         averageResults[name][key] += Number(value)
         averageResultsNumbers[name][key] += Number(value)
