@@ -1,12 +1,12 @@
 // @ts-check
-import path from 'node:path';
-import { defineConfig } from '@rspack/cli';
-import { rspack } from '@rspack/core';
-import ReactRefreshPlugin from '@rspack/plugin-react-refresh';
+import path from 'node:path'
+import { defineConfig } from '@rspack/cli'
+import { rspack } from '@rspack/core'
+import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 
-const isProduction = process.env.NODE_ENV === 'production';
-const caseName = process.env.CASE ?? 'medium';
-const caseDir = path.join(import.meta.dirname, './src', caseName);
+const isProduction = process.env.NODE_ENV === 'production'
+const caseName = process.env.CASE ?? 'medium'
+const caseDir = path.join(import.meta.dirname, './src', caseName)
 
 export default defineConfig({
   context: import.meta.dirname,
@@ -31,12 +31,7 @@ export default defineConfig({
           /** @type {import('@rspack/core').SwcLoaderOptions} */
           options: {
             env: {
-              targets: [
-                'chrome >= 87',
-                'edge >= 88',
-                'firefox >= 78',
-                'safari >= 14',
-              ],
+              targets: ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'],
             },
             jsc: {
               parser: {
@@ -65,6 +60,6 @@ export default defineConfig({
   experiments: {
     css: true,
     // lazyCompilation should only be enabled in development mode
-    lazyCompilation: Boolean(process.env.LAZY) && !isProduction,
+    lazyCompilation: !isProduction,
   },
-});
+})

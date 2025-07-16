@@ -334,14 +334,6 @@ toolNames.forEach((name) => {
           buildScript: 'build:rspack',
           binFilePath: '@rspack/cli/bin/rspack.js',
         }),
-        new BuildTool({
-          name: 'Rspack CLI (Lazy) ' + require('@rspack/core/package.json').version,
-          port: 8080,
-          startScript: 'start:rspack:lazy',
-          startedRegex: /in (.+) (s|ms)/,
-          buildScript: 'build:rspack',
-          binFilePath: '@rspack/cli/bin/rspack.js',
-        }),
       )
       break
     case 'rsbuild':
@@ -349,7 +341,7 @@ toolNames.forEach((name) => {
         new BuildTool({
           name: 'Rsbuild ' + require('@rsbuild/core/package.json').version,
           port: 3333,
-          startScript: 'start:rsbuild:lazy',
+          startScript: 'start:rsbuild',
           startedRegex: /in (.+) (s|ms)/,
           buildScript: 'build:rsbuild',
           binFilePath: '@rsbuild/core/bin/rsbuild.js',
@@ -409,7 +401,7 @@ toolNames.forEach((name) => {
         new BuildTool({
           name: 'Unpack ' + require('@unpackjs/core/package.json').version,
           port: 4000,
-          startScript: 'start:unpack:lazy',
+          startScript: 'start:unpack',
           startedRegex: /ready in (\d+)ms/,
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/index.js',

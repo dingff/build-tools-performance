@@ -13,7 +13,7 @@ export default defineConfig({
     },
   },
   dev: {
-    lazyCompilation: Boolean(process.env.LAZY),
+    lazyCompilation: true,
   },
   server: {
     port: 3333,

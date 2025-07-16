@@ -16,7 +16,6 @@ export default defineConfig({
     css: Boolean(process.env.EXPERIMENTS_CSS),
   },
   dev: {
-    lazyCompilation: Boolean(process.env.LAZY),
     prebundle: Boolean(process.env.PREBUNDLE),
   },
   typeCheck: false,
