@@ -315,7 +315,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['rsbuild', 'unpack', 'rolldown-vite', 'farm', 'vite', 'webpack']
+  const defaultTools = ['rsbuild', 'unpack', 'farm', 'rolldown-vite', 'vite', 'webpack']
   return defaultTools
 }
 
