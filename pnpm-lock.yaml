@@ -79,14 +79,14 @@ importers:
         specifier: ^19.1.6
         version: 19.1.6(@types/react@19.1.8)
       '@unpackjs/cli':
-        specifier: ^3.0.0
-        version: 3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(@unpackjs/plugin-react@3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3))
+        specifier: ^3.0.1
+        version: 3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(@unpackjs/plugin-react@3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3))
       '@unpackjs/core':
-        specifier: ^3.1.0
-        version: 3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
+        specifier: ^3.1.1
+        version: 3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
       '@unpackjs/plugin-react':
-        specifier: ^3.0.0
-        version: 3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)
+        specifier: ^3.0.1
+        version: 3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)
       '@vitejs/plugin-react-oxc':
         specifier: ^0.2.3
         version: 0.2.3(vite@7.0.4(@types/node@22.16.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.41.0))
@@ -127,8 +127,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1
       puppeteer:
-        specifier: ^24.13.0
-        version: 24.13.0(typescript@5.8.3)
+        specifier: ^24.14.0
+        version: 24.14.0(typescript@5.8.3)
       react-refresh:
         specifier: ^0.17.0
         version: 0.17.0
@@ -1422,91 +1422,91 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@oxc-minify/binding-android-arm64@0.77.0':
-    resolution: {integrity: sha512-UJETCHBBzTHQlC+uT/PZGRreMXL3JkwQ8F00Au5gDc1Yom1wTUNxxSI9E0QxeV7cyKK9fJI3NA2Z9/LjAxIgXw==}
+  '@oxc-minify/binding-android-arm64@0.77.1':
+    resolution: {integrity: sha512-NDu8wVwDZgpsTsfOKB8grPem16myaGgDJ1V0sk/3JEKm8H1H40O4s1qmgDmPF8etpm4iezy83hSj66mhzcCpXA==}
     engines: {node: '>=14.0.0'}
     cpu: [arm64]
     os: [android]
 
-  '@oxc-minify/binding-darwin-arm64@0.77.0':
-    resolution: {integrity: sha512-lo/40+Gn0BSmt1ZJaD8hguMTI7+ZQvoov3LCF6CezwohN6unUejSauK+MrXfZqy18s/8u8X56khkOHdvoccm4A==}
+  '@oxc-minify/binding-darwin-arm64@0.77.1':
+    resolution: {integrity: sha512-w4/wFkuo3uhKkobh8vM+pXK8nW6E9UFoVFRzosPYqLyjWcbKAmNW7xv+6jWDuBp0FlXCOil7KOq8N2iHsi8GVQ==}
     engines: {node: '>=14.0.0'}
     cpu: [arm64]
     os: [darwin]
 
-  '@oxc-minify/binding-darwin-x64@0.77.0':
-    resolution: {integrity: sha512-E2wPrKzLgdM70HWHsqr6DmHqOwhjMC3niNY5/fHnLW/6QE84b2KHKzxUurPQm/irWKx4JyJ5lFF9dubQrrn6Uw==}
+  '@oxc-minify/binding-darwin-x64@0.77.1':
+    resolution: {integrity: sha512-btHVrZxGEEVH0GdEfsOHk6sHn0FCIOVCMXAME2VVWvCVI7KxKBj+xUIoIod66LUwvi4LsI2jooXIhyxV/CMdqA==}
     engines: {node: '>=14.0.0'}
     cpu: [x64]
     os: [darwin]
 
-  '@oxc-minify/binding-freebsd-x64@0.77.0':
-    resolution: {integrity: sha512-uAciz4XfTk+SB3Y5SuZGObW8eZlMe79GsGVP/dj0Hp2HoEWELmpt5bRGPluoc3LJ6L/8hfHgc5TKHjCDSPqhPQ==}
+  '@oxc-minify/binding-freebsd-x64@0.77.1':
+    resolution: {integrity: sha512-rPPZFcMNLCegSCG4JZ/HM39HLIAQOSaVMOuzTQMlXrxIY4CTqMzsROx/SFgMbn1txeVMYpgGHZz0Sv8bOE9D1A==}
     engines: {node: '>=14.0.0'}
     cpu: [x64]
     os: [freebsd]
 
-  '@oxc-minify/binding-linux-arm-gnueabihf@0.77.0':
-    resolution: {integrity: sha512-+Io+v2/alqh9vEepyjvyjZISO7/IfoJocBRCVVjMN9Vpuni1fCBVHI9lJ1RM/nhErpwnbGBjV+CTj5wRCxz1HA==}
+  '@oxc-minify/binding-linux-arm-gnueabihf@0.77.1':
+    resolution: {integrity: sha512-cac/JfR3D6wLnTmJGzKa922ROMg5DgTyyvySlaSCNkzABjH/1WmBWz/CiNF6oLdFC81A+rVvOChOXW1q/kitHw==}
     engines: {node: '>=14.0.0'}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-minify/binding-linux-arm-musleabihf@0.77.0':
-    resolution: {integrity: sha512-xTxRWiEEcbwJVIfEMbM28Y0j6yD0Lid5roHvbWMlX8yaH/boUogHIsuBwkTXtTHuWpy9IJsNl6JXgc1CIHQcbA==}
+  '@oxc-minify/binding-linux-arm-musleabihf@0.77.1':
+    resolution: {integrity: sha512-zrU0QTH5RWA2XlajF+3SOKsHbTJBPcBkxZkA/DD+VykkX9600PRUQPpaFakzWjSPR7xQSJcW8qBMWq9Xyg/OVw==}
     engines: {node: '>=14.0.0'}
     cpu: [arm]
     os: [linux]
 
-  '@oxc-minify/binding-linux-arm64-gnu@0.77.0':
-    resolution: {integrity: sha512-Z7PCo5yaZmf56NrWYgMUOWLfP5FAMQ4lj75g8A7X0nJSrRycUfcgLNRiwHBScaxoPe/qvoEaD6ycPahGwGzIyg==}
+  '@oxc-minify/binding-linux-arm64-gnu@0.77.1':
+    resolution: {integrity: sha512-CYyr4CbTMIqGS9G4bQbUvat9Fuw/99rik3zspHdpGZgLJbK3QCh1KywVBliVmYpdf/OmziCzrcBavMMBwx3xzQ==}
     engines: {node: '>=14.0.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-minify/binding-linux-arm64-musl@0.77.0':
-    resolution: {integrity: sha512-/vqtQycDxdYopxe5IUZbpDt9U63l16oUEI/Ht/xR+xCzkRn426h9c7IXFKesSZ4XvKyPQCsUiRCGb3hvvT7Ejw==}
+  '@oxc-minify/binding-linux-arm64-musl@0.77.1':
+    resolution: {integrity: sha512-/bK2/4H2g19YjC/DYyQqiEtYi5aFMqWJ75zt2/CyyK27c3XR6dMIecPTV85i+R8R9b+ghzR0WzplQ3OUz/QO4w==}
     engines: {node: '>=14.0.0'}
     cpu: [arm64]
     os: [linux]
 
-  '@oxc-minify/binding-linux-riscv64-gnu@0.77.0':
-    resolution: {integrity: sha512-vytmZYz1jZVkKms4bMzm2b05VQeT6iyq4xHjoi0UybCvtrTFhrcDmazrbDfoiExSVQzQ+Id+37nWvkAbLrqKfw==}
+  '@oxc-minify/binding-linux-riscv64-gnu@0.77.1':
+    resolution: {integrity: sha512-Lu3/n94q75FGl34uipNzzQoSFgV2WFmWAABU8S6c/u16zZ59GXOKylxMnTDpCyeoNobvblfdJfJkkkqXwcZxSg==}
     engines: {node: '>=14.0.0'}
     cpu: [riscv64]
     os: [linux]
 
-  '@oxc-minify/binding-linux-s390x-gnu@0.77.0':
-    resolution: {integrity: sha512-KszYiqEFBlO2JrO0TdzFw1fasu5YMCaaGBZpf5KgPifXPPvcN4PeE9kPtMtXyWjEDVRjMy1SrG2DllW9QVHPSw==}
+  '@oxc-minify/binding-linux-s390x-gnu@0.77.1':
+    resolution: {integrity: sha512-EwLvSY9LOmfTdJAM6gWfUdPbQHfA8vB5g+nTeoYKCzU7p4rarpcj9o0PPtIT2+eFTg6b81o6Jd84EFlTKtvolA==}
     engines: {node: '>=14.0.0'}
     cpu: [s390x]
     os: [linux]
 
-  '@oxc-minify/binding-linux-x64-gnu@0.77.0':
-    resolution: {integrity: sha512-v4Xi/FNvkLSHn4T6Q0lBmLjJLEKKIjrfHdhfS+XkUpY5bfQAdfZCmum36ySZaDk2KUQxF5UtLj1qM+xxVbIhAQ==}
+  '@oxc-minify/binding-linux-x64-gnu@0.77.1':
+    resolution: {integrity: sha512-zq7w3oz/Ua4ZGHzzldpBYq90Byfh4QpCNhQfciwJzC+My72HDvcEf7oBATqHnLZ/8jt92Uc4LOq1qja7itIE0w==}
     engines: {node: '>=14.0.0'}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-minify/binding-linux-x64-musl@0.77.0':
-    resolution: {integrity: sha512-fWJ+hUQX2INB7uaJ0FqKj9szblipW6DDEJ3bzHKU8QZLQiSWti8iZfykN7GSOilrOaH/p8OOx4w7CqWmAOZ5xg==}
+  '@oxc-minify/binding-linux-x64-musl@0.77.1':
+    resolution: {integrity: sha512-7yZtdiloIMwTxnuBCAJsMe3DZ5z4fFoGTNuTA+KvcANdY8gFrjUPhsgFjaGsQJ+8hpkv1N9OI858c/Pbhu1xZQ==}
     engines: {node: '>=14.0.0'}
     cpu: [x64]
     os: [linux]
 
-  '@oxc-minify/binding-wasm32-wasi@0.77.0':
-    resolution: {integrity: sha512-zYRjTWMN/G0CrVSZVuRDzvEWYeowAq7w6goi2Dr2Gxov6CfZ4TjSj9qKIgDPBUeRKgToJ9vkr8g+jcC3dwOhJg==}
+  '@oxc-minify/binding-wasm32-wasi@0.77.1':
+    resolution: {integrity: sha512-OCaCqq2y4u+bzx3tzd8hdzdJPkRd6r6w+Q6ufrEfvgbP0JWYLdG144MNKVzJ4hlpDkS/10SBi7OjjEiyvJt43A==}
     engines: {node: '>=14.0.0'}
     cpu: [wasm32]
 
-  '@oxc-minify/binding-win32-arm64-msvc@0.77.0':
-    resolution: {integrity: sha512-D/j/77sxJSfCDsxTJZw+wXKdWHVZ+vgcDQctcTW/pMw+i3XHKK1+11O7k+HwQC/T3Stk1pvqTkOnLp68VblPvQ==}
+  '@oxc-minify/binding-win32-arm64-msvc@0.77.1':
+    resolution: {integrity: sha512-n3p4hkJTRNhtipbJDVHHSHQ7+ggIiYJIId3954TM5Jrz7QdNDxaYFhqqPmyuHGtzRGFV6P5ckVbVbp+Egen8bw==}
     engines: {node: '>=14.0.0'}
     cpu: [arm64]
     os: [win32]
 
-  '@oxc-minify/binding-win32-x64-msvc@0.77.0':
-    resolution: {integrity: sha512-Nw1YadQ0wevnwLE6LF2LG9a2iOXgegE3HZH2lBTzVFu/H/HgG7Lqi6LMdAjpRqW9KiZkSLl1wNExrBrt9h7wrg==}
+  '@oxc-minify/binding-win32-x64-msvc@0.77.1':
+    resolution: {integrity: sha512-5EaDGcBf0yTqhZbD77QZZ1fnPHrc84JiIOPAIdfK8mryV4H990U7JVyV5quyriPuoKwvcktXhip32vgEWWqyaA==}
     engines: {node: '>=14.0.0'}
     cpu: [x64]
     os: [win32]
@@ -1558,8 +1558,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@puppeteer/browsers@2.10.5':
-    resolution: {integrity: sha512-eifa0o+i8dERnngJwKrfp3dEq7ia5XFyoqB17S4gK8GhsQE4/P8nxOfQSE0zQHxzzLo/cmF+7+ywEQ7wK7Fb+w==}
+  '@puppeteer/browsers@2.10.6':
+    resolution: {integrity: sha512-pHUn6ZRt39bP3698HFQlu2ZHCkS/lPcpv7fVQcGBSzNNygw171UXAKrCUhy+TEMw4lEttOKDgNpb04hwUAJeiQ==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2430,18 +2430,18 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
-  '@unpackjs/cli@3.0.0':
-    resolution: {integrity: sha512-znTz/zYsOBdTqKG1UZd5d7g9N9sRHfj7SjZ9bwH50GKYbrcsqZtpd/ebpQrABxVOYpRnBrNuRegQrfsJZiDAqA==}
+  '@unpackjs/cli@3.0.1':
+    resolution: {integrity: sha512-rmk8It/Z+Df9LiF8+onGxG3ndxcR99WcPc6jX9oiQ8aHq0Qz/j/eaD2lS3Y1Hg0sMorSvmxmd15zHKTzwVHaDA==}
     hasBin: true
     peerDependencies:
       '@unpackjs/core': 3.x
       '@unpackjs/plugin-react': 3.x
 
-  '@unpackjs/core@3.1.0':
-    resolution: {integrity: sha512-g7A2B53V4IaSB0AvngiV795FeNN3x0ZVTCDrP4c1bgdJz0CilJS8M+hHI07ZnWOYnCpqn9dHsIUMHVRwlG4SRg==}
+  '@unpackjs/core@3.1.1':
+    resolution: {integrity: sha512-b0uv81/razK+Cvr/PIcAzcIwFgODN8juOEQa7Vi3egG8mVbNASy7cQTHEPCvyaCNUgVYqGP4c4Cp8nFbXgUCWQ==}
 
-  '@unpackjs/plugin-react@3.0.0':
-    resolution: {integrity: sha512-UIPeiwXmx1lXiYWjWz2eCBY1cUhDiQPqFD3psXFwnvIpVpuzqgNOqj3nLbHTeeCQAfcjrCo3+9PB9PFcLAcnJw==}
+  '@unpackjs/plugin-react@3.0.1':
+    resolution: {integrity: sha512-GQJzWNjteu+oAccXppX6hMXc2O4+Uf36DXLQLtFhx/5PCDhIGiUxWoh9UpBFrqXp9dXhErXYrDaxO4BWBG1oFw==}
     peerDependencies:
       '@unpackjs/core': 3.x
 
@@ -2873,8 +2873,8 @@ packages:
     resolution: {integrity: sha512-rNjApaLzuwaOTjCiT8lSDdGN1APCiqkChLMJxJPWLunPAt5fy8xgU9/jNOchV84wfIxrA0lRQB7oCT8jrn/wrQ==}
     engines: {node: '>=6.0'}
 
-  chromium-bidi@7.1.0:
-    resolution: {integrity: sha512-UVYuuZfwi7AIiV+OWIRePZD6kX1bSNxoWjEsYG+Xkb97hzQIt9qnV662I5A6BAcdKO4bcZQVrkK/VhNHzFjNDg==}
+  chromium-bidi@7.1.1:
+    resolution: {integrity: sha512-L2BKQ0rSLADgbPMIdDh3wnYHs3EiUiMay2Sq0CTolheaADmWIf6Pe+T9LJRcnh5rcMz0U7MVk0cQVvKsGRMa1g==}
     peerDependencies:
       devtools-protocol: '*'
 
@@ -4755,8 +4755,8 @@ packages:
   outdent@0.5.0:
     resolution: {integrity: sha512-/jHxFIzoMXdqPzTaCpFzAAWhpkSjZPF4Vsn6jAfNpmbH/ymsmd7Qc6VE9BGn0L6YMj6uwpQLxCECpus4ukKS9Q==}
 
-  oxc-minify@0.77.0:
-    resolution: {integrity: sha512-/UJvDp0lq1Mri5/Jj8fYMQK4xpoSRm+WNek2PTVP86SSU1/tvx9Rmf4OAqNeJov3uZTtCGgDjeeQbMf/Nj+B6Q==}
+  oxc-minify@0.77.1:
+    resolution: {integrity: sha512-0d4JdAYFzwm5jllLQHwqnhj+17ktIEFZXH8o+4Z9DD2KYh9m8gQmyrLzSOdahXnB8tnuKA2hLkHeBvyC01vYgQ==}
     engines: {node: '>=14.0.0'}
 
   p-filter@2.1.0:
@@ -5129,12 +5129,12 @@ packages:
   pump@3.0.2:
     resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
 
-  puppeteer-core@24.13.0:
-    resolution: {integrity: sha512-2Mr1zFCMfAJpKN5mRGqDAmwVEtS6qsalLnUZJn1uJxMdbZLMiqNuMf12gDmZGizg0CjvcfXxoaJhEZB8W0DXlw==}
+  puppeteer-core@24.14.0:
+    resolution: {integrity: sha512-NO9XpCl+i8oB0zJp81iPhzMo2QK8/JTj4ramSvTpGCo9CPCNo4AZ8qVOGpSgXzlcOfOT3VHOkzTfPo08GOE5jA==}
     engines: {node: '>=18'}
 
-  puppeteer@24.13.0:
-    resolution: {integrity: sha512-3dpT7LIdlRBJBGKb7SjJeno/C3cl0bBpgwie+cxvf8PKmK502QdRU9TT/hvfchyFG7BzJKBHPxK5Boholx7zow==}
+  puppeteer@24.14.0:
+    resolution: {integrity: sha512-GB7suRDkp9pUnxpNGAORICQCtw11KFbg6U2iJXVTflzJLK5D1qzq8xOOmLgN/QnDBpDMdpn96ri52XkuN83Giw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -5934,8 +5934,8 @@ packages:
     resolution: {integrity: sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg==}
     engines: {node: '>=6'}
 
-  tar-fs@3.0.9:
-    resolution: {integrity: sha512-XF4w9Xp+ZQgifKakjZYmFdkLoSWd34VGKcsTCwlNWM7QG3ZbaxnTsaBwnjFZqHRf/rROxaR8rXnbtwdvaDI+lA==}
+  tar-fs@3.1.0:
+    resolution: {integrity: sha512-5Mty5y/sOF1YWj1J6GiBodjlDc05CUR8PKXrsnFAiSG0xA+GHeWLovaZPYUDXkH/1iKRf2+M5+OrRgzC7O9b7w==}
 
   tar-stream@3.1.7:
     resolution: {integrity: sha512-qJj60CXt7IU1Ffyc3NJMjh6EkuCFej46zUqJ4J7pqYlThyd9bO0XBTmcOIhSzZJVWfsLks0+nle/j538YAW9RQ==}
@@ -7943,51 +7943,51 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@oxc-minify/binding-android-arm64@0.77.0':
+  '@oxc-minify/binding-android-arm64@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-darwin-arm64@0.77.0':
+  '@oxc-minify/binding-darwin-arm64@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-darwin-x64@0.77.0':
+  '@oxc-minify/binding-darwin-x64@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-freebsd-x64@0.77.0':
+  '@oxc-minify/binding-freebsd-x64@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-arm-gnueabihf@0.77.0':
+  '@oxc-minify/binding-linux-arm-gnueabihf@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-arm-musleabihf@0.77.0':
+  '@oxc-minify/binding-linux-arm-musleabihf@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-arm64-gnu@0.77.0':
+  '@oxc-minify/binding-linux-arm64-gnu@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-arm64-musl@0.77.0':
+  '@oxc-minify/binding-linux-arm64-musl@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-riscv64-gnu@0.77.0':
+  '@oxc-minify/binding-linux-riscv64-gnu@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-s390x-gnu@0.77.0':
+  '@oxc-minify/binding-linux-s390x-gnu@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-x64-gnu@0.77.0':
+  '@oxc-minify/binding-linux-x64-gnu@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-linux-x64-musl@0.77.0':
+  '@oxc-minify/binding-linux-x64-musl@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-wasm32-wasi@0.77.0':
+  '@oxc-minify/binding-wasm32-wasi@0.77.1':
     dependencies:
       '@napi-rs/wasm-runtime': 0.2.12
     optional: true
 
-  '@oxc-minify/binding-win32-arm64-msvc@0.77.0':
+  '@oxc-minify/binding-win32-arm64-msvc@0.77.1':
     optional: true
 
-  '@oxc-minify/binding-win32-x64-msvc@0.77.0':
+  '@oxc-minify/binding-win32-x64-msvc@0.77.1':
     optional: true
 
   '@oxc-project/runtime@0.72.2': {}
@@ -8017,14 +8017,14 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@puppeteer/browsers@2.10.5':
+  '@puppeteer/browsers@2.10.6':
     dependencies:
       debug: 4.4.1
       extract-zip: 2.0.1
       progress: 2.0.3
       proxy-agent: 6.5.0
       semver: 7.7.2
-      tar-fs: 3.0.9
+      tar-fs: 3.1.0
       yargs: 17.7.2
     transitivePeerDependencies:
       - bare-buffer
@@ -8797,13 +8797,13 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@unpackjs/cli@3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(@unpackjs/plugin-react@3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3))':
+  '@unpackjs/cli@3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(@unpackjs/plugin-react@3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3))':
     dependencies:
-      '@unpackjs/core': 3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
-      '@unpackjs/plugin-react': 3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)
+      '@unpackjs/core': 3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
+      '@unpackjs/plugin-react': 3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)
       cac: 6.7.14
 
-  '@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)':
+  '@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)':
     dependencies:
       '@rspack/core': 1.4.8(@swc/helpers@0.5.17)
       '@types/less': 3.0.8
@@ -8812,7 +8812,7 @@ snapshots:
       dotenv-expand: 12.0.2
       express: 5.1.0
       jiti: 2.4.2
-      oxc-minify: 0.77.0
+      oxc-minify: 0.77.1
       picocolors: 1.1.1
       portfinder: 1.0.37
       postcss: 8.5.6
@@ -8831,12 +8831,12 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@unpackjs/plugin-react@3.0.0(@unpackjs/core@3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)':
+  '@unpackjs/plugin-react@3.0.1(@unpackjs/core@3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2))(typescript@5.8.3)':
     dependencies:
       '@rspack/plugin-react-refresh': 1.4.3(react-refresh@0.17.0)
       '@svgr/webpack': 8.1.0(typescript@5.8.3)
       '@swc/helpers': 0.5.17
-      '@unpackjs/core': 3.1.0(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
+      '@unpackjs/core': 3.1.1(@swc/helpers@0.5.17)(typescript@5.8.3)(webpack-cli@6.0.1)(webpack@5.100.2)
       launch-editor: 2.10.0
       react-refresh: 0.17.0
     transitivePeerDependencies:
@@ -9341,7 +9341,7 @@ snapshots:
 
   chrome-trace-event@1.0.4: {}
 
-  chromium-bidi@7.1.0(devtools-protocol@0.0.1464554):
+  chromium-bidi@7.1.1(devtools-protocol@0.0.1464554):
     dependencies:
       devtools-protocol: 0.0.1464554
       mitt: 3.0.1
@@ -11576,23 +11576,23 @@ snapshots:
 
   outdent@0.5.0: {}
 
-  oxc-minify@0.77.0:
+  oxc-minify@0.77.1:
     optionalDependencies:
-      '@oxc-minify/binding-android-arm64': 0.77.0
-      '@oxc-minify/binding-darwin-arm64': 0.77.0
-      '@oxc-minify/binding-darwin-x64': 0.77.0
-      '@oxc-minify/binding-freebsd-x64': 0.77.0
-      '@oxc-minify/binding-linux-arm-gnueabihf': 0.77.0
-      '@oxc-minify/binding-linux-arm-musleabihf': 0.77.0
-      '@oxc-minify/binding-linux-arm64-gnu': 0.77.0
-      '@oxc-minify/binding-linux-arm64-musl': 0.77.0
-      '@oxc-minify/binding-linux-riscv64-gnu': 0.77.0
-      '@oxc-minify/binding-linux-s390x-gnu': 0.77.0
-      '@oxc-minify/binding-linux-x64-gnu': 0.77.0
-      '@oxc-minify/binding-linux-x64-musl': 0.77.0
-      '@oxc-minify/binding-wasm32-wasi': 0.77.0
-      '@oxc-minify/binding-win32-arm64-msvc': 0.77.0
-      '@oxc-minify/binding-win32-x64-msvc': 0.77.0
+      '@oxc-minify/binding-android-arm64': 0.77.1
+      '@oxc-minify/binding-darwin-arm64': 0.77.1
+      '@oxc-minify/binding-darwin-x64': 0.77.1
+      '@oxc-minify/binding-freebsd-x64': 0.77.1
+      '@oxc-minify/binding-linux-arm-gnueabihf': 0.77.1
+      '@oxc-minify/binding-linux-arm-musleabihf': 0.77.1
+      '@oxc-minify/binding-linux-arm64-gnu': 0.77.1
+      '@oxc-minify/binding-linux-arm64-musl': 0.77.1
+      '@oxc-minify/binding-linux-riscv64-gnu': 0.77.1
+      '@oxc-minify/binding-linux-s390x-gnu': 0.77.1
+      '@oxc-minify/binding-linux-x64-gnu': 0.77.1
+      '@oxc-minify/binding-linux-x64-musl': 0.77.1
+      '@oxc-minify/binding-wasm32-wasi': 0.77.1
+      '@oxc-minify/binding-win32-arm64-msvc': 0.77.1
+      '@oxc-minify/binding-win32-x64-msvc': 0.77.1
 
   p-filter@2.1.0:
     dependencies:
@@ -11981,10 +11981,10 @@ snapshots:
       end-of-stream: 1.4.4
       once: 1.4.0
 
-  puppeteer-core@24.13.0:
+  puppeteer-core@24.14.0:
     dependencies:
-      '@puppeteer/browsers': 2.10.5
-      chromium-bidi: 7.1.0(devtools-protocol@0.0.1464554)
+      '@puppeteer/browsers': 2.10.6
+      chromium-bidi: 7.1.1(devtools-protocol@0.0.1464554)
       debug: 4.4.1
       devtools-protocol: 0.0.1464554
       typed-query-selector: 2.12.0
@@ -11995,13 +11995,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  puppeteer@24.13.0(typescript@5.8.3):
+  puppeteer@24.14.0(typescript@5.8.3):
     dependencies:
-      '@puppeteer/browsers': 2.10.5
-      chromium-bidi: 7.1.0(devtools-protocol@0.0.1464554)
+      '@puppeteer/browsers': 2.10.6
+      chromium-bidi: 7.1.1(devtools-protocol@0.0.1464554)
       cosmiconfig: 9.0.0(typescript@5.8.3)
       devtools-protocol: 0.0.1464554
-      puppeteer-core: 24.13.0
+      puppeteer-core: 24.14.0
       typed-query-selector: 2.12.0
     transitivePeerDependencies:
       - bare-buffer
@@ -13063,7 +13063,7 @@ snapshots:
 
   tapable@2.2.2: {}
 
-  tar-fs@3.0.9:
+  tar-fs@3.1.0:
     dependencies:
       pump: 3.0.2
       tar-stream: 3.1.7
