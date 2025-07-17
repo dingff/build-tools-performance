@@ -60,6 +60,11 @@ export default defineConfig({
   experiments: {
     css: true,
     // lazyCompilation should only be enabled in development mode
-    lazyCompilation: !isProduction,
+    lazyCompilation: !isProduction
+      ? {
+          entries: false,
+          imports: true,
+        }
+      : false,
   },
 })

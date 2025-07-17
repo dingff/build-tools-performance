@@ -76,9 +76,11 @@ module.exports = {
       : [],
   },
   experiments: {
-    lazyCompilation: {
-      entries: false,
-      imports: true,
-    },
+    lazyCompilation: !isProd
+      ? {
+          entries: false,
+          imports: true,
+        }
+      : false,
   },
 }
