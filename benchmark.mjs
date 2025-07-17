@@ -294,6 +294,15 @@ class BuildTool {
       const unit = builtInMatch[2].toLowerCase()
       return unit === 's' ? time * 1000 : time
     }
+
+    // Rsbuild, Vite, Unpack with minutes: built in 1m 12s
+    const builtInMinutesMatch = text.match(/built in (\d+)m\s*(\d+)\s*s/i)
+    if (builtInMinutesMatch) {
+      const minutes = Number.parseInt(builtInMinutesMatch[1])
+      const seconds = Number.parseInt(builtInMinutesMatch[2])
+      return (minutes * 60 + seconds) * 1000
+    }
+
     // Webpack & Rspack: in 1234 ms
     const webpackMatch = text.match(/ in (\d+(?:\.\d+)?)\s*(ms|s)/i)
     if (webpackMatch) {
@@ -605,9 +614,6 @@ async function runBenchmark() {
 
       try {
         const buildResult = await buildTool.build()
-
-        // Wait for 500ms to ensure all files are written to disk
-        await new Promise((resolve) => setTimeout(resolve, 500))
 
         const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
         sizeResults[buildTool.name] = sizes
