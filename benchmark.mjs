@@ -606,6 +606,9 @@ async function runBenchmark() {
       try {
         const buildResult = await buildTool.build()
 
+        // Wait for 500ms to ensure all files are written to disk
+        await new Promise((resolve) => setTimeout(resolve, 500))
+
         const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
         sizeResults[buildTool.name] = sizes
 
