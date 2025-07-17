@@ -2,8 +2,7 @@ const path = require('node:path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const { EsbuildPlugin } = require('esbuild-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
 const caseName = process.env.CASE ?? 'medium'
@@ -64,16 +63,12 @@ module.exports = {
   ].filter(Boolean),
   optimization: {
     minimize: isProd,
-    minimizer: isProd
-      ? [
-          new CssMinimizerPlugin({
-            minify: CssMinimizerPlugin.swcMinify,
-          }),
-          new TerserPlugin({
-            minify: TerserPlugin.swcMinify,
-          }),
-        ]
-      : [],
+    minimizer: [
+      new EsbuildPlugin({
+        target: 'es2022',
+        css: true, // Apply minification to CSS assets
+      }),
+    ],
   },
   experiments: {
     lazyCompilation: !isProd
