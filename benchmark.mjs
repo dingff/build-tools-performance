@@ -840,7 +840,12 @@ function formatBundleSizesWithMultipliers(sizeResults) {
     const totalSize = Number.parseFloat(sizes.totalSize.replace('kB', ''))
     const totalGzipSize = Number.parseFloat(sizes.totalGzipSize.replace('kB', ''))
 
-    if (Number.isNaN(totalSize) || Number.isNaN(totalGzipSize)) {
+    if (
+      Number.isNaN(totalSize) ||
+      Number.isNaN(totalGzipSize) ||
+      totalSize === 0 ||
+      totalGzipSize === 0
+    ) {
       sizeNumbers[name] = {
         totalSize: 'Failed',
         totalGzipSize: 'Failed',
@@ -853,14 +858,22 @@ function formatBundleSizesWithMultipliers(sizeResults) {
     }
   }
 
-  // Find minimum sizes (only from valid entries)
+  // Find minimum sizes (only from valid entries with size > 0)
   let minTotalSize = Number.POSITIVE_INFINITY
   let minGzipSize = Number.POSITIVE_INFINITY
   for (const sizes of Object.values(sizeNumbers)) {
-    if (typeof sizes.totalSize === 'number' && sizes.totalSize < minTotalSize) {
+    if (
+      typeof sizes.totalSize === 'number' &&
+      sizes.totalSize > 0 &&
+      sizes.totalSize < minTotalSize
+    ) {
       minTotalSize = sizes.totalSize
     }
-    if (typeof sizes.totalGzipSize === 'number' && sizes.totalGzipSize < minGzipSize) {
+    if (
+      typeof sizes.totalGzipSize === 'number' &&
+      sizes.totalGzipSize > 0 &&
+      sizes.totalGzipSize < minGzipSize
+    ) {
       minGzipSize = sizes.totalGzipSize
     }
   }
@@ -874,16 +887,28 @@ function formatBundleSizesWithMultipliers(sizeResults) {
       }
     } else {
       const totalMultiplier =
-        minTotalSize !== Number.POSITIVE_INFINITY ? sizes.totalSize / minTotalSize : 1
+        minTotalSize !== Number.POSITIVE_INFINITY && sizes.totalSize > 0
+          ? sizes.totalSize / minTotalSize
+          : 1
       const gzipMultiplier =
-        minGzipSize !== Number.POSITIVE_INFINITY ? sizes.totalGzipSize / minGzipSize : 1
+        minGzipSize !== Number.POSITIVE_INFINITY && sizes.totalGzipSize > 0
+          ? sizes.totalGzipSize / minGzipSize
+          : 1
 
       const totalTrophy = totalMultiplier === 1 ? color.green(' ◆') : ''
       const gzipTrophy = gzipMultiplier === 1 ? color.green(' ◆') : ''
 
-      formattedSizes[name] = {
-        totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
-        totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+      // Don't show multipliers for entries with 0 size
+      if (sizes.totalSize === 0 || sizes.totalGzipSize === 0) {
+        formattedSizes[name] = {
+          totalSize: `${sizes.totalSize}kB`,
+          totalGzipSize: `${sizes.totalGzipSize}kB`,
+        }
+      } else {
+        formattedSizes[name] = {
+          totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
+          totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+        }
       }
     }
   }
