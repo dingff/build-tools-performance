@@ -1,8 +1,8 @@
-import path from 'node:path';
-import { defineConfig } from '@farmfe/core';
+import path from 'node:path'
+import { defineConfig } from '@farmfe/core'
 
-const isProduction = process.env.NODE_ENV === 'production';
-const caseName = process.env.CASE ?? 'medium';
+const isProduction = process.env.NODE_ENV === 'production'
+const caseName = process.env.CASE ?? 'medium'
 
 export default defineConfig({
   compilation: {
@@ -12,6 +12,7 @@ export default defineConfig({
       index: path.resolve(__dirname, 'src', caseName, 'index.html'),
     },
     lazyCompilation: true,
+    persistentCache: false,
   },
   plugins: ['@farmfe/plugin-react'],
-});
+})
