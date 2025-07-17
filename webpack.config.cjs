@@ -11,6 +11,7 @@ const caseDir = path.join(__dirname, './src', caseName)
 
 // webpack.config.js
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   entry: path.join(caseDir, 'index.jsx'),
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.ts', '.tsx'],
