@@ -279,6 +279,14 @@ class BuildTool {
 
   // Extract prod build time from bundler output
   extractBuildTime(text) {
+    // Next.js: Compiled successfully in 4.1s
+    const nextMatch = text.match(/Compiled successfully in (\d+(?:\.\d+)?)\s*(ms|s)/i)
+    if (nextMatch) {
+      const time = Number.parseFloat(nextMatch[1])
+      const unit = nextMatch[2].toLowerCase()
+      return unit === 's' ? time * 1000 : time
+    }
+
     // Farm: Build completed in 353ms
     const farmMatch = text.match(/Build completed in (\d+(?:\.\d+)?)\s*(ms|s)/i)
     if (farmMatch) {
