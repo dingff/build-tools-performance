@@ -84,7 +84,7 @@ class BuildTool {
       this.child = child
       let startTime = null
 
-      // Add timeout for server startup (2 minutes)
+      // Add timeout for server startup (5 minutes)
       const startTimeout = setTimeout(
         () => {
           logger.warn(`Server startup timeout for ${this.name}, killing process...`)
@@ -97,8 +97,8 @@ class BuildTool {
           }
           reject(new Error('Server startup timeout after 2 minutes'))
         },
-        2 * 60 * 1000,
-      ) // 2 minutes timeout
+        5 * 60 * 1000,
+      )
 
       child.stdout.on('data', (data) => {
         const text = data.toString()
