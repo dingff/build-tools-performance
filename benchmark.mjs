@@ -546,14 +546,12 @@ async function runBenchmark() {
       logger.info(color.dim('navigating to' + ` http://localhost:${buildTool.port}`))
 
       await page.goto(`http://localhost:${buildTool.port}`, {
-        timeout: process.env.CI ? 300000 : 180000, // 5 minutes in CI, 3 minutes locally
+        timeout: 180000,
         waitUntil: 'networkidle0', // Wait for network to be idle
       })
 
       // Additional wait to ensure page is fully interactive before HMR tests
-      if (process.env.CI) {
-        await new Promise((resolve) => setTimeout(resolve, 3000))
-      }
+      await new Promise((resolve) => setTimeout(resolve, 3000))
 
       let waitResolve = null
       let waitReject = null
@@ -562,8 +560,8 @@ async function runBenchmark() {
         waitReject = reject
       })
 
-      // Add HMR timeout (longer in CI environment)
-      const hmrTimeoutDuration = process.env.CI ? 60000 : 30000 // 60s in CI, 30s locally
+      // Add HMR timeout
+      const hmrTimeoutDuration = 30000
       const hmrTimeout = setTimeout(() => {
         logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
         if (!perfResult[buildTool.name]) {
@@ -585,10 +583,6 @@ async function runBenchmark() {
         perfResult[buildTool.name] = {}
       }
 
-      // First, set up the file modification and start times
-      // Wait longer in CI environment for server to be fully ready
-      const initialWaitTime = process.env.CI ? 5000 : 2000
-      await new Promise((resolve) => setTimeout(resolve, initialWaitTime))
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
 
@@ -695,7 +689,7 @@ async function runBenchmark() {
         }
       })
 
-      await new Promise((resolve) => setTimeout(resolve, process.env.CI ? 3000 : 2000))
+      await new Promise((resolve) => setTimeout(resolve, 3000))
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
