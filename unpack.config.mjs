@@ -20,4 +20,7 @@ export default defineConfig({
   },
   typeCheck: false,
   plugins: [pluginReact()],
+  build: {
+    target: 'es2022',
+  },
 })
