@@ -31,9 +31,6 @@ export default defineConfig({
           loader: 'builtin:swc-loader',
           /** @type {import('@rspack/core').SwcLoaderOptions} */
           options: {
-            env: {
-              targets: ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'],
-            },
             jsc: {
               target: 'es2022',
               parser: {

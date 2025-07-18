@@ -24,7 +24,6 @@ module.exports = {
         use: {
           loader: 'swc-loader',
           options: {
-            sourceMap: true,
             jsc: {
               target: 'es2022',
               parser: {
