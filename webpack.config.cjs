@@ -11,6 +11,7 @@ const caseDir = path.join(__dirname, './src', caseName)
 // webpack.config.js
 module.exports = {
   mode: isProd ? 'production' : 'development',
+  target: ['web', 'es2022'],
   entry: path.join(caseDir, 'index.jsx'),
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.ts', '.tsx'],
@@ -24,6 +25,7 @@ module.exports = {
           options: {
             sourceMap: true,
             jsc: {
+              target: 'es2022',
               parser: {
                 syntax: 'typescript',
                 tsx: true,

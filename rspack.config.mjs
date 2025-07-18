@@ -11,6 +11,7 @@ const caseDir = path.join(import.meta.dirname, './src', caseName)
 export default defineConfig({
   context: import.meta.dirname,
   devtool: isProduction ? false : undefined,
+  target: ['web', 'es2022'],
   entry: {
     main: path.join(caseDir, 'index.jsx'),
   },
@@ -34,6 +35,7 @@ export default defineConfig({
               targets: ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'],
             },
             jsc: {
+              target: 'es2022',
               parser: {
                 syntax: 'typescript',
                 tsx: true,
