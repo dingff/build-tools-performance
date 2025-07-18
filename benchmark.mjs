@@ -315,7 +315,16 @@ class BuildTool {
 }
 
 const parseToolNames = () => {
-  const allTools = ['rspack', 'rsbuild', 'unpack', 'rolldown-vite', 'vite', 'webpack', 'farm']
+  const allTools = [
+    'rspack',
+    'rsbuild',
+    'unpack',
+    'next',
+    'farm',
+    'rolldown-vite',
+    'vite',
+    'webpack',
+  ]
 
   if (process.env.TOOLS === 'all') {
     return allTools
@@ -324,7 +333,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['rsbuild', 'unpack', 'farm', 'rolldown-vite', 'vite', 'webpack']
+  const defaultTools = ['rsbuild', 'unpack', 'next', 'farm', 'rolldown-vite', 'vite', 'webpack']
   return defaultTools
 }
 
@@ -431,6 +440,18 @@ toolNames.forEach((name) => {
         //   buildScript: 'build:unpack',
         //   binFilePath: '@unpackjs/cli/bin/index.js',
         // }),
+      )
+      break
+    case 'next':
+      buildTools.push(
+        new BuildTool({
+          name: 'Next.js (Turbopack) ' + require('next/package.json').version,
+          port: 3200,
+          startScript: 'start:next',
+          startedRegex: /Ready in (\d+)ms/,
+          buildScript: 'build:next',
+          binFilePath: 'next/dist/bin/next',
+        }),
       )
       break
   }
