@@ -595,12 +595,6 @@ async function runBenchmark() {
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
 
-      if (process.env.CI) {
-        logger.info(
-          `${buildTool.name}: Starting root HMR test at ${new Date(fileModStartTime).toISOString()}`,
-        )
-      }
-
       // Use synchronous write to ensure timing is accurate
       writeFileSync(
         rootFilePath,
@@ -615,10 +609,6 @@ async function runBenchmark() {
 
       // Now set up the console event listener after the file is written
       page.on('console', (event) => {
-        if (process.env.CI) {
-          logger.info(`${buildTool.name}: Console event received: ${event.text()}`)
-        }
-
         const isFinished = () => {
           return (
             perfResult[buildTool.name]?.rootHmr !== undefined &&
@@ -661,9 +651,6 @@ async function runBenchmark() {
 
           if (isFinished()) {
             clearTimeout(hmrTimeout)
-            if (process.env.CI) {
-              logger.info(`${buildTool.name}: Root HMR test completed successfully`)
-            }
             page.close()
             waitResolve()
           }
@@ -702,9 +689,6 @@ async function runBenchmark() {
 
           if (isFinished()) {
             clearTimeout(hmrTimeout)
-            if (process.env.CI) {
-              logger.info(`${buildTool.name}: Leaf HMR test completed successfully`)
-            }
             page.close()
             waitResolve()
           }
@@ -718,12 +702,6 @@ async function runBenchmark() {
 
       // Record the timestamp when we start the file modification process
       const leafFileModStartTime = Date.now()
-
-      if (process.env.CI) {
-        logger.info(
-          `${buildTool.name}: Starting leaf HMR test at ${new Date(leafFileModStartTime).toISOString()}`,
-        )
-      }
 
       // Use synchronous write to ensure timing is accurate
       writeFileSync(
