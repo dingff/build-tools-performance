@@ -200,7 +200,7 @@ class BuildTool {
     })
 
     return new Promise((resolve, reject) => {
-      let actualBuildTime = null
+      let prodBuild = null
       let outputBuffer = ''
       let startTime = null
 
@@ -235,8 +235,8 @@ class BuildTool {
           startTime = Number(startMatch[1])
         }
 
-        // Extract actual build time from different bundlers
-        actualBuildTime = this.extractBuildTime(text) || actualBuildTime
+        // Extract prod build time from different bundlers
+        prodBuild = this.extractBuildTime(text) || prodBuild
       })
 
       child.on('exit', (code) => {
@@ -246,17 +246,17 @@ class BuildTool {
             throw new Error('Build start time not found')
           }
 
-          const totalTime = Date.now() - startTime
+          const totalBuild = Date.now() - startTime
 
           // If we couldn't extract build time from stdout, try from the full buffer
-          if (!actualBuildTime) {
-            actualBuildTime = this.extractBuildTime(outputBuffer)
+          if (!prodBuild) {
+            prodBuild = this.extractBuildTime(outputBuffer)
           }
 
           resolve({
-            totalTime,
-            actualBuildTime: actualBuildTime || totalTime, // fallback to total time
-            prepTime: actualBuildTime ? totalTime - actualBuildTime : 0,
+            totalBuild,
+            prodBuild,
+            prepare: totalBuild - prodBuild,
           })
         } else {
           reject(new Error(`Build failed with exit code ${code}`))
@@ -277,7 +277,7 @@ class BuildTool {
     })
   }
 
-  // Extract actual build time from bundler output
+  // Extract prod build time from bundler output
   extractBuildTime(text) {
     // Farm: Build completed in 353ms
     const farmMatch = text.match(/Build completed in (\d+(?:\.\d+)?)\s*(ms|s)/i)
@@ -483,14 +483,14 @@ async function runBenchmark() {
       page.on('load', () => {
         const loadTime = Date.now() - start
         logger.success(
-          color.dim(buildTool.name) + ' startup in ' + color.green(time + loadTime + 'ms'),
+          color.dim(buildTool.name) + ' dev cold start in ' + color.green(time + loadTime + 'ms'),
         )
 
         if (!perfResult[buildTool.name]) {
           perfResult[buildTool.name] = {}
         }
 
-        perfResult[buildTool.name].startup = time + loadTime
+        perfResult[buildTool.name].devColdStart = time + loadTime
         perfResult[buildTool.name].serverStart = time
         perfResult[buildTool.name].onLoad = loadTime
       })
@@ -619,31 +619,31 @@ async function runBenchmark() {
         sizeResults[buildTool.name] = sizes
 
         logger.success(
-          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalTime + ' ms'),
+          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalBuild + ' ms'),
         )
         logger.success(
           color.dim(buildTool.name) +
-            ' actual build: ' +
-            color.green(Math.round(buildResult.actualBuildTime) + ' ms'),
+            ' prod build: ' +
+            color.green(Math.round(buildResult.prodBuild) + ' ms'),
         )
         logger.success(
           color.dim(buildTool.name) +
             ' prepare: ' +
-            color.green(Math.round(buildResult.prepTime) + ' ms'),
+            color.green(Math.round(buildResult.prepare) + ' ms'),
         )
         logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
         logger.success(
           color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
         )
 
-        perfResult[buildTool.name].prodBuild = Math.round(buildResult.actualBuildTime)
-        perfResult[buildTool.name].prepTime = Math.round(buildResult.prepTime)
-        perfResult[buildTool.name].totalBuildTime = buildResult.totalTime
+        perfResult[buildTool.name].prodBuild = Math.round(buildResult.prodBuild)
+        perfResult[buildTool.name].prepare = Math.round(buildResult.prepare)
+        perfResult[buildTool.name].totalBuild = buildResult.totalBuild
       } catch (buildError) {
         logger.error(color.red(`${buildTool.name} build failed:`) + ` ${buildError.message}`)
         perfResult[buildTool.name].prodBuild = 'Failed'
-        perfResult[buildTool.name].prepTime = 'Failed'
-        perfResult[buildTool.name].totalBuildTime = 'Failed'
+        perfResult[buildTool.name].prepare = 'Failed'
+        perfResult[buildTool.name].totalBuild = 'Failed'
         sizeResults[buildTool.name] = {
           totalSize: 'Failed',
           totalGzipSize: 'Failed',
@@ -781,13 +781,13 @@ for (const [name, values] of Object.entries(averageResults)) {
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
   const metrics = [
-    'startup',
+    'devColdStart',
     'serverStart',
     'onLoad',
     'rootHmr',
     'leafHmr',
     'prodBuild',
-    'prepTime',
+    'prepare',
   ]
 
   const formattedResults = {}
@@ -842,23 +842,23 @@ function calculateAndFormatResults(results) {
     }
   }
 
-  // Process Dev cold start (special case: startup = serverStart + onLoad)
+  // Process Dev cold start (special case: devColdStart = serverStart + onLoad)
   let minDevColdStart = Number.POSITIVE_INFINITY
   for (const [, values] of resultsEntries) {
-    const startupValue = getNumericValue(values, 'startup')
-    if (startupValue !== null && startupValue < minDevColdStart) {
-      minDevColdStart = startupValue
+    const devColdStartValue = getNumericValue(values, 'devColdStart')
+    if (devColdStartValue !== null && devColdStartValue < minDevColdStart) {
+      minDevColdStart = devColdStartValue
     }
   }
 
   if (minDevColdStart !== Number.POSITIVE_INFINITY) {
     for (const [name, values] of resultsEntries) {
-      const startupValue = getNumericValue(values, 'startup')
+      const devColdStartValue = getNumericValue(values, 'devColdStart')
       const serverStartValue = getNumericValue(values, 'serverStart')
       const onLoadValue = getNumericValue(values, 'onLoad')
 
-      if (startupValue !== null && serverStartValue !== null && onLoadValue !== null) {
-        const multiplier = startupValue / minDevColdStart
+      if (devColdStartValue !== null && serverStartValue !== null && onLoadValue !== null) {
+        const multiplier = devColdStartValue / minDevColdStart
         const trophy = multiplier === 1 ? color.green(' ◆') : ''
 
         if (!formattedResults[name]) {
@@ -866,7 +866,7 @@ function calculateAndFormatResults(results) {
         }
 
         formattedResults[name].devColdStart =
-          `${startupValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x${trophy}`
+          `${devColdStartValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x${trophy}`
       } else {
         if (!formattedResults[name]) {
           formattedResults[name] = {}
@@ -997,7 +997,7 @@ console.log(
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
-        formattedResults[name]?.prepTime || 'Failed',
+        formattedResults[name]?.prepare || 'Failed',
       ]),
     ],
     {
