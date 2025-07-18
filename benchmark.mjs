@@ -546,8 +546,14 @@ async function runBenchmark() {
       logger.info(color.dim('navigating to' + ` http://localhost:${buildTool.port}`))
 
       await page.goto(`http://localhost:${buildTool.port}`, {
-        timeout: 180000,
+        timeout: process.env.CI ? 300000 : 180000, // 5 minutes in CI, 3 minutes locally
+        waitUntil: 'networkidle0', // Wait for network to be idle
       })
+
+      // Additional wait to ensure page is fully interactive before HMR tests
+      if (process.env.CI) {
+        await new Promise((resolve) => setTimeout(resolve, 3000))
+      }
 
       let waitResolve = null
       let waitReject = null
@@ -556,7 +562,8 @@ async function runBenchmark() {
         waitReject = reject
       })
 
-      // Add HMR timeout (20 seconds total for both root and leaf HMR)
+      // Add HMR timeout (longer in CI environment)
+      const hmrTimeoutDuration = process.env.CI ? 60000 : 30000 // 60s in CI, 30s locally
       const hmrTimeout = setTimeout(() => {
         logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
         if (!perfResult[buildTool.name]) {
@@ -568,7 +575,7 @@ async function runBenchmark() {
           page.close()
         }
         waitReject(new Error('HMR timeout'))
-      }, 20000) // 20 seconds timeout
+      }, hmrTimeoutDuration)
 
       let hmrRootStart = -1
       let hmrLeafStart = -1
@@ -579,12 +586,20 @@ async function runBenchmark() {
       }
 
       // First, set up the file modification and start times
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      // Wait longer in CI environment for server to be fully ready
+      const initialWaitTime = process.env.CI ? 5000 : 2000
+      await new Promise((resolve) => setTimeout(resolve, initialWaitTime))
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
 
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
+
+      if (process.env.CI) {
+        logger.info(
+          `${buildTool.name}: Starting root HMR test at ${new Date(fileModStartTime).toISOString()}`,
+        )
+      }
 
       // Use synchronous write to ensure timing is accurate
       writeFileSync(
@@ -600,6 +615,10 @@ async function runBenchmark() {
 
       // Now set up the console event listener after the file is written
       page.on('console', (event) => {
+        if (process.env.CI) {
+          logger.info(`${buildTool.name}: Console event received: ${event.text()}`)
+        }
+
         const isFinished = () => {
           return (
             perfResult[buildTool.name]?.rootHmr !== undefined &&
@@ -642,6 +661,9 @@ async function runBenchmark() {
 
           if (isFinished()) {
             clearTimeout(hmrTimeout)
+            if (process.env.CI) {
+              logger.info(`${buildTool.name}: Root HMR test completed successfully`)
+            }
             page.close()
             waitResolve()
           }
@@ -680,19 +702,28 @@ async function runBenchmark() {
 
           if (isFinished()) {
             clearTimeout(hmrTimeout)
+            if (process.env.CI) {
+              logger.info(`${buildTool.name}: Leaf HMR test completed successfully`)
+            }
             page.close()
             waitResolve()
           }
         }
       })
 
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, process.env.CI ? 3000 : 2000))
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
 
       // Record the timestamp when we start the file modification process
       const leafFileModStartTime = Date.now()
+
+      if (process.env.CI) {
+        logger.info(
+          `${buildTool.name}: Starting leaf HMR test at ${new Date(leafFileModStartTime).toISOString()}`,
+        )
+      }
 
       // Use synchronous write to ensure timing is accurate
       writeFileSync(
