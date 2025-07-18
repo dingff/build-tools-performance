@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { appendFile, readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import glob from 'fast-glob'
@@ -559,6 +559,9 @@ async function runBenchmark() {
       // Add HMR timeout (20 seconds total for both root and leaf HMR)
       const hmrTimeout = setTimeout(() => {
         logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
+        if (!perfResult[buildTool.name]) {
+          perfResult[buildTool.name] = {}
+        }
         perfResult[buildTool.name].rootHmr = 'Failed'
         perfResult[buildTool.name].leafHmr = 'Failed'
         if (page && !page.isClosed()) {
@@ -570,36 +573,111 @@ async function runBenchmark() {
       let hmrRootStart = -1
       let hmrLeafStart = -1
 
+      // Ensure perfResult object is initialized
+      if (!perfResult[buildTool.name]) {
+        perfResult[buildTool.name] = {}
+      }
+
+      // First, set up the file modification and start times
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
+      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
+
+      // Record the timestamp when we start the file modification process
+      const fileModStartTime = Date.now()
+
+      // Use synchronous write to ensure timing is accurate
+      writeFileSync(
+        rootFilePath,
+        originalRootFileContent +
+          `
+    console.log('root hmr', ${fileModStartTime});
+    `,
+      )
+
+      // Set start time to the file modification time for consistent measurement
+      hmrRootStart = fileModStartTime
+
+      // Now set up the console event listener after the file is written
       page.on('console', (event) => {
         const isFinished = () => {
-          return perfResult[buildTool.name]?.rootHmr && perfResult[buildTool.name]?.leafHmr
+          return (
+            perfResult[buildTool.name]?.rootHmr !== undefined &&
+            perfResult[buildTool.name]?.leafHmr !== undefined
+          )
         }
-        if (event.text().includes('root hmr')) {
+
+        if (
+          event.text().includes('root hmr') &&
+          perfResult[buildTool.name]?.rootHmr === undefined
+        ) {
           const match = /(\d+)/.exec(event.text())
           if (!match) {
-            throw new Error('Failed to match root HMR time.')
+            logger.warn(`${buildTool.name} failed to match root HMR time from: ${event.text()}`)
+            perfResult[buildTool.name].rootHmr = 'Failed'
+            return
           }
 
-          const clientDateNow = Number(match[1])
-          const hmrTime = clientDateNow - hmrRootStart
-          logger.success(color.dim(buildTool.name) + ' root HMR in ' + color.green(hmrTime + 'ms'))
+          // Check if hmrRootStart was properly set
+          if (hmrRootStart === -1) {
+            logger.warn(`${buildTool.name} root HMR start time not set, skipping measurement`)
+            perfResult[buildTool.name].rootHmr = 'Failed'
+          } else {
+            // Since we're now using the file modification time in the console.log,
+            // we calculate HMR time as the difference between when the event was processed
+            // and when the file was modified
+            const currentTime = Date.now()
+            const hmrTime = currentTime - hmrRootStart
+            // Sanity check for reasonable HMR time (should be less than 30 seconds)
+            if (hmrTime < 0 || hmrTime > 30000) {
+              logger.warn(`${buildTool.name} root HMR time seems invalid: ${hmrTime}ms`)
+              perfResult[buildTool.name].rootHmr = 'Failed'
+            } else {
+              logger.success(
+                color.dim(buildTool.name) + ' root HMR in ' + color.green(hmrTime + 'ms'),
+              )
+              perfResult[buildTool.name].rootHmr = hmrTime
+            }
+          }
 
-          perfResult[buildTool.name].rootHmr = hmrTime
           if (isFinished()) {
             clearTimeout(hmrTimeout)
             page.close()
             waitResolve()
           }
-        } else if (event.text().includes('leaf hmr')) {
+        } else if (
+          event.text().includes('leaf hmr') &&
+          perfResult[buildTool.name]?.leafHmr === undefined
+        ) {
           const match = /(\d+)/.exec(event.text())
           if (!match) {
-            throw new Error('Failed to match leaf HMR time.')
+            logger.warn(`${buildTool.name} failed to match leaf HMR time from: ${event.text()}`)
+            perfResult[buildTool.name].leafHmr = 'Failed'
+            return
           }
 
-          const clientDateNow = Number(match[1])
-          const hmrTime = clientDateNow - hmrLeafStart
-          logger.success(color.dim(buildTool.name) + ' leaf HMR in ' + color.green(hmrTime + 'ms'))
-          perfResult[buildTool.name].leafHmr = hmrTime
+          // Check if hmrLeafStart was properly set
+          if (hmrLeafStart === -1) {
+            logger.warn(`${buildTool.name} leaf HMR start time not set, skipping measurement`)
+            perfResult[buildTool.name].leafHmr = 'Failed'
+          } else {
+            // Since we're now using the file modification time in the console.log,
+            // we calculate HMR time as the difference between when the event was processed
+            // and when the file was modified
+            const currentTime = Date.now()
+            const hmrTime = currentTime - hmrLeafStart
+            // Sanity check for reasonable HMR time (should be less than 30 seconds)
+            if (hmrTime < 0 || hmrTime > 30000) {
+              logger.warn(`${buildTool.name} leaf HMR time seems invalid: ${hmrTime}ms`)
+              perfResult[buildTool.name].leafHmr = 'Failed'
+            } else {
+              logger.success(
+                color.dim(buildTool.name) + ' leaf HMR in ' + color.green(hmrTime + 'ms'),
+              )
+              perfResult[buildTool.name].leafHmr = hmrTime
+            }
+          }
+
           if (isFinished()) {
             clearTimeout(hmrTimeout)
             page.close()
@@ -609,34 +687,24 @@ async function runBenchmark() {
       })
 
       await new Promise((resolve) => setTimeout(resolve, 2000))
-      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
-      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
-
-      appendFile(
-        rootFilePath,
-        `
-    console.log('root hmr', Date.now());
-    `,
-        (err) => {
-          if (err) throw err
-          hmrRootStart = Date.now()
-        },
-      )
-
-      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
-      appendFile(
+
+      // Record the timestamp when we start the file modification process
+      const leafFileModStartTime = Date.now()
+
+      // Use synchronous write to ensure timing is accurate
+      writeFileSync(
         leafFilePath,
-        `
-      console.log('leaf hmr', Date.now());
+        originalLeafFileContent +
+          `
+      console.log('leaf hmr', ${leafFileModStartTime});
       `,
-        (err) => {
-          if (err) throw err
-          hmrLeafStart = Date.now()
-        },
       )
+
+      // Set start time to the file modification time for consistent measurement
+      hmrLeafStart = leafFileModStartTime
 
       await waitPromise.catch((error) => {
         // If HMR timeout occurred, continue with the rest of the benchmark
