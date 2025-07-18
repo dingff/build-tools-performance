@@ -789,14 +789,45 @@ function calculateAndFormatResults(results) {
     'prodBuild',
     'prepTime',
   ]
-  const formattedResults = {}
 
+  const formattedResults = {}
+  const resultsEntries = Object.entries(results)
+
+  // Helper function to safely get numeric value
+  const getNumericValue = (values, metric) => {
+    const value = values[metric]
+    return value && typeof value === 'number' ? value : null
+  }
+
+  // Helper function to format metric result
+  const formatMetricResult = (name, values, metric, minValue, customFormatter = null) => {
+    if (!formattedResults[name]) {
+      formattedResults[name] = {}
+    }
+
+    const numericValue = getNumericValue(values, metric)
+    if (numericValue !== null && minValue !== Number.POSITIVE_INFINITY) {
+      const multiplier = numericValue / minValue
+      const trophy = multiplier === 1 ? color.green(' ◆') : ''
+
+      if (customFormatter) {
+        formattedResults[name][metric] = customFormatter(numericValue, multiplier, trophy, values)
+      } else {
+        formattedResults[name][metric] = `${numericValue}ms (${multiplier.toFixed(1)}x)${trophy}`
+      }
+    } else {
+      formattedResults[name][metric] = values[metric] || 'Failed'
+    }
+  }
+
+  // Process standard metrics
   for (const metric of metrics) {
-    // Find the minimum value for this metric
+    // Find minimum value for this metric
     let minValue = Number.POSITIVE_INFINITY
-    for (const [, values] of Object.entries(results)) {
-      if (values[metric] && typeof values[metric] === 'number' && values[metric] < minValue) {
-        minValue = values[metric]
+    for (const [, values] of resultsEntries) {
+      const numericValue = getNumericValue(values, metric)
+      if (numericValue !== null && numericValue < minValue) {
+        minValue = numericValue
       }
     }
 
@@ -805,17 +836,42 @@ function calculateAndFormatResults(results) {
       continue
     }
 
-    // Format results with multipliers
-    for (const [name, values] of Object.entries(results)) {
-      if (!formattedResults[name]) {
-        formattedResults[name] = {}
-      }
-      if (values[metric] && typeof values[metric] === 'number') {
-        const multiplier = values[metric] / minValue
+    // Format results for this metric
+    for (const [name, values] of resultsEntries) {
+      formatMetricResult(name, values, metric, minValue)
+    }
+  }
+
+  // Process Dev cold start (special case: startup = serverStart + onLoad)
+  let minDevColdStart = Number.POSITIVE_INFINITY
+  for (const [, values] of resultsEntries) {
+    const startupValue = getNumericValue(values, 'startup')
+    if (startupValue !== null && startupValue < minDevColdStart) {
+      minDevColdStart = startupValue
+    }
+  }
+
+  if (minDevColdStart !== Number.POSITIVE_INFINITY) {
+    for (const [name, values] of resultsEntries) {
+      const startupValue = getNumericValue(values, 'startup')
+      const serverStartValue = getNumericValue(values, 'serverStart')
+      const onLoadValue = getNumericValue(values, 'onLoad')
+
+      if (startupValue !== null && serverStartValue !== null && onLoadValue !== null) {
+        const multiplier = startupValue / minDevColdStart
         const trophy = multiplier === 1 ? color.green(' ◆') : ''
-        formattedResults[name][metric] = `${values[metric]}ms (${multiplier.toFixed(1)}x)${trophy}`
+
+        if (!formattedResults[name]) {
+          formattedResults[name] = {}
+        }
+
+        formattedResults[name].devColdStart =
+          `${startupValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x${trophy}`
       } else {
-        formattedResults[name][metric] = values[metric] || 'Failed'
+        if (!formattedResults[name]) {
+          formattedResults[name] = {}
+        }
+        formattedResults[name].devColdStart = 'Failed'
       }
     }
   }
@@ -934,21 +990,10 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      [
-        'Name',
-        'Startup',
-        'Server start',
-        'Page load',
-        'Root HMR',
-        'Leaf HMR',
-        'Prod build',
-        'Prepare',
-      ],
+      ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build', 'Prepare'],
       ...buildTools.map(({ name }) => [
         name,
-        formattedResults[name]?.startup || 'Failed',
-        formattedResults[name]?.serverStart || 'Failed',
-        formattedResults[name]?.onLoad || 'Failed',
+        formattedResults[name]?.devColdStart || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
