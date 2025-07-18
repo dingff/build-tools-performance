@@ -583,25 +583,6 @@ async function runBenchmark() {
         perfResult[buildTool.name] = {}
       }
 
-      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
-      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
-
-      // Record the timestamp when we start the file modification process
-      const fileModStartTime = Date.now()
-
-      // Use synchronous write to ensure timing is accurate
-      writeFileSync(
-        rootFilePath,
-        originalRootFileContent +
-          `
-    console.log('root hmr', ${fileModStartTime});
-    `,
-      )
-
-      // Set start time to the file modification time for consistent measurement
-      hmrRootStart = fileModStartTime
-
-      // Now set up the console event listener after the file is written
       page.on('console', (event) => {
         const isFinished = () => {
           return (
@@ -688,6 +669,24 @@ async function runBenchmark() {
           }
         }
       })
+
+      const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
+      const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
+
+      // Record the timestamp when we start the file modification process
+      const fileModStartTime = Date.now()
+
+      // Use synchronous write to ensure timing is accurate
+      writeFileSync(
+        rootFilePath,
+        originalRootFileContent +
+          `
+    console.log('root hmr', ${fileModStartTime});
+    `,
+      )
+
+      // Set start time to the file modification time for consistent measurement
+      hmrRootStart = fileModStartTime
 
       await new Promise((resolve) => setTimeout(resolve, 3000))
 
