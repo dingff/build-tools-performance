@@ -95,7 +95,7 @@ class BuildTool {
               }
             })
           }
-          reject(new Error('Server startup timeout after 2 minutes'))
+          reject(new Error('Server startup timeout after 5 minutes'))
         },
         5 * 60 * 1000,
       )
