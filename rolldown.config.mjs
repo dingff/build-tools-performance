@@ -1,7 +1,7 @@
 import path from 'path'
 import { defineConfig } from 'rolldown'
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production'
 const caseName = process.env.CASE ?? 'medium'
 
 export default defineConfig({
@@ -12,7 +12,7 @@ export default defineConfig({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   },
   output: {
-    minify: isProduction,
+    minify: isProd,
   },
   transform: {
     target: 'es2022',
