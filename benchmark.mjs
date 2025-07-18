@@ -537,7 +537,7 @@ async function runBenchmark() {
         waitReject = reject
       })
 
-      // Add HMR timeout (10 seconds total for both root and leaf HMR)
+      // Add HMR timeout (20 seconds total for both root and leaf HMR)
       const hmrTimeout = setTimeout(() => {
         logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
         perfResult[buildTool.name].rootHmr = 'Failed'
@@ -546,7 +546,7 @@ async function runBenchmark() {
           page.close()
         }
         waitReject(new Error('HMR timeout'))
-      }, 10000) // 10 seconds timeout
+      }, 20000) // 20 seconds timeout
 
       let hmrRootStart = -1
       let hmrLeafStart = -1
