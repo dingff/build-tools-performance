@@ -10,7 +10,7 @@ const caseDir = path.join(import.meta.dirname, './src', caseName)
 
 export default defineConfig({
   context: import.meta.dirname,
-  devtool: isProd ? false : undefined,
+  devtool: isProd ? false : 'cheap-module-source-map',
   target: ['web', 'es2022'],
   entry: {
     main: path.join(caseDir, 'index.jsx'),
