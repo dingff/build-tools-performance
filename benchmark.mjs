@@ -84,6 +84,22 @@ class BuildTool {
       this.child = child
       let startTime = null
 
+      // Add timeout for server startup (2 minutes)
+      const startTimeout = setTimeout(
+        () => {
+          logger.warn(`Server startup timeout for ${this.name}, killing process...`)
+          if (child.pid) {
+            kill(child.pid, (err) => {
+              if (err) {
+                logger.warn(`Failed to kill startup process ${child.pid}: ${err.message}`)
+              }
+            })
+          }
+          reject(new Error('Server startup timeout after 2 minutes'))
+        },
+        2 * 60 * 1000,
+      ) // 2 minutes timeout
+
       child.stdout.on('data', (data) => {
         const text = data.toString()
 
@@ -103,6 +119,7 @@ class BuildTool {
           }
           const time = Date.now() - startTime
 
+          clearTimeout(startTimeout)
           resolve(time)
         }
       })
@@ -113,6 +130,7 @@ class BuildTool {
 
       child.on('error', (error) => {
         logger.error(`${error.message}`)
+        clearTimeout(startTimeout)
         reject(error)
       })
       child.on('exit', (code) => {
@@ -120,6 +138,7 @@ class BuildTool {
           logger.error(
             `(${this.name} run ${this.startScript} failed) child process exited with code ${code}`,
           )
+          clearTimeout(startTimeout)
           reject(code)
         }
       })
