@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     outDir: path.resolve(__dirname, 'dist'),
     target: 'es2022',
+    reportCompressedSize: false,
   },
   optimizeDeps: {
     // pre-bundle "@iconify-icons/material-symbols/*" is quite slow and should be excluded
