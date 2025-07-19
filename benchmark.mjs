@@ -750,17 +750,17 @@ async function runBenchmark() {
         sizeResults[buildTool.name] = sizes
 
         logger.success(
-          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalBuild + ' ms'),
+          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalBuild + 'ms'),
         )
         logger.success(
           color.dim(buildTool.name) +
             ' prod build: ' +
-            color.green(Math.round(buildResult.prodBuild) + ' ms'),
+            color.green(Math.round(buildResult.prodBuild) + 'ms'),
         )
         logger.success(
           color.dim(buildTool.name) +
             ' prepare: ' +
-            color.green(Math.round(buildResult.prepare) + ' ms'),
+            color.green(Math.round(buildResult.prepare) + 'ms'),
         )
         logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
         logger.success(
