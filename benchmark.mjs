@@ -475,7 +475,7 @@ toolNames.forEach((name) => {
           name: 'Next.js (Turbopack) ' + require('next/package.json').version,
           port: 3200,
           startScript: 'start:next',
-          startedRegex: /Ready in (\d+)ms/,
+          startedRegex: /Ready in (\d+(?:\.\d+)?)\s*(ms|s)/,
           buildScript: 'build:next',
           binFilePath: 'next/dist/bin/next',
         }),
