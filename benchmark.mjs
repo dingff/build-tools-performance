@@ -245,7 +245,7 @@ class BuildTool {
         outputBuffer += text
 
         if (process.env.DEBUG) {
-          console.log(`${this.name} stdout: ${text}`)
+          console.log(`[${this.name}] stdout: ${text}`)
         }
 
         // Extract start time from bin file output
@@ -290,7 +290,7 @@ class BuildTool {
       // Log stderr for debugging
       child.stderr.on('data', (data) => {
         if (process.env.DEBUG) {
-          console.log(`${this.name} stderr: ${data}`)
+          console.log(`[${this.name}] stderr: ${data}`)
         }
       })
     })
@@ -561,7 +561,7 @@ async function runBenchmark() {
       })
 
       // Add HMR timeout
-      const hmrTimeoutDuration = 30000
+      const hmrTimeoutDuration = 60000
       const hmrTimeout = setTimeout(() => {
         logger.warn(`HMR timeout for ${buildTool.name}, skipping HMR tests...`)
         if (!perfResult[buildTool.name]) {
@@ -585,7 +585,7 @@ async function runBenchmark() {
 
       page.on('console', (event) => {
         if (process.env.DEBUG) {
-          console.log(`[${buildTool.name}] Console: ${event.text()}`)
+          console.log(`[${buildTool.name}] page console: ${event.text()}`)
         }
 
         const isFinished = () => {
