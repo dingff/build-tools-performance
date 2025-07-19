@@ -25,7 +25,7 @@ jobs:
       matrix:
         os: [macos-15]
         # os: [macos-15, windows-latest]
-        case: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.case)) || fromJSON('["small", "medium"]') }}
+        case: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.case)) || fromJSON('["large"]') }}
 
     steps:
       - name: Checkout
