@@ -487,7 +487,9 @@ toolNames.forEach((name) => {
   }
 })
 
-const browser = await puppeteer.launch()
+const browser = await puppeteer.launch({
+  protocolTimeout: 5 * 60 * 1000, // 5 minutes timeout for protocol operations
+})
 const { WARMUP_TIMES, RUN_TIMES } = process.env
 const warmupTimes = WARMUP_TIMES ? Number(WARMUP_TIMES) : 2
 const runTimes = RUN_TIMES ? Number(RUN_TIMES) : 3
