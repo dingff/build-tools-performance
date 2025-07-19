@@ -61,7 +61,7 @@
   },
   "scripts": {
     "benchmark": "node benchmark.mjs",
-    "benchmark:debug": "DEBUG=true WARMUP_TIMES=0 RUN_TIMES=1 node benchmark.mjs",
+    "benchmark:debug": "cross-env DEBUG=true WARMUP_TIMES=0 RUN_TIMES=1 node benchmark.mjs",
     "clean": "rm -rf ./node_modules/.cache && rm -rf ./node_modules/.vite && rm -rf ./node_modules/.farm",
     "start:farm": "farm start",
     "build:farm": "farm build",
@@ -80,8 +80,8 @@
     "start:unpack:experiments": "cross-env PREBUNDLE=true EXPERIMENTS_CSS=true unpack dev",
     "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs",
-    "start:next": "node scripts/changeNextEntry.mjs && NODE_OPTIONS='--max-old-space-size=8192' next dev --turbopack --port 3200",
-    "build:next": "node scripts/changeNextEntry.mjs && next build --turbopack"
+    "start:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next dev --turbopack --port 3200",
+    "build:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next build --turbopack"
   },
   "engines": {
     "node": ">=22.17.0"
