@@ -12,6 +12,7 @@ import { logger } from 'rslog'
 import stringWidth from 'string-width'
 import kill from 'tree-kill'
 
+const isCI = !!process.env.CI
 logger.info('process.env.CI', process.env.CI)
 
 async function coolDown() {
@@ -553,7 +554,7 @@ async function runBenchmark() {
       })
 
       // Additional wait to ensure page is fully interactive before HMR tests
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await new Promise((resolve) => setTimeout(resolve, isCI ? 10000 : 3000))
 
       let waitResolve = null
       let waitReject = null
@@ -698,7 +699,7 @@ async function runBenchmark() {
       // Set start time to the file modification time for consistent measurement
       hmrRootStart = fileModStartTime
 
-      await new Promise((resolve) => setTimeout(resolve, process.env.CI ? 10000 : 3000))
+      await new Promise((resolve) => setTimeout(resolve, isCI ? 10000 : 3000))
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
