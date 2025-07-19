@@ -848,6 +848,7 @@ async function getFileSizes(targetDir) {
 // average results
 const averageResults = {}
 const averageResultsNumbers = {}
+const validCounts = {}
 
 // drop the warmup results
 perfResults = perfResults.slice(warmupTimes)
@@ -863,12 +864,14 @@ for (const result of perfResults) {
     if (!averageResults[name]) {
       averageResults[name] = {}
       averageResultsNumbers[name] = {}
+      validCounts[name] = {}
     }
 
     for (const [key, value] of Object.entries(values)) {
       if (!averageResults[name][key]) {
         averageResults[name][key] = 0
         averageResultsNumbers[name][key] = 0
+        validCounts[name][key] = 0
       }
 
       // Only process numeric values, skip 'Failed' strings
@@ -878,6 +881,7 @@ for (const result of perfResults) {
       ) {
         averageResults[name][key] += Number(value)
         averageResultsNumbers[name][key] += Number(value)
+        validCounts[name][key] += 1
       }
     }
   }
@@ -885,9 +889,10 @@ for (const result of perfResults) {
 
 for (const [name, values] of Object.entries(averageResults)) {
   for (const [key, value] of Object.entries(values)) {
-    if (value > 0) {
-      // Only calculate average for values that have data
-      const avgValue = Math.floor(value / perfResults.length)
+    const validCount = validCounts[name][key]
+    if (value > 0 && validCount > 0) {
+      // Calculate average using actual count of valid data
+      const avgValue = Math.floor(value / validCount)
       averageResultsNumbers[name][key] = avgValue
     } else {
       // Set to 'Failed' if no valid data was collected
