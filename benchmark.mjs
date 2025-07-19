@@ -545,7 +545,7 @@ async function runBenchmark() {
         perfResult[buildTool.name].onLoad = loadTime
       })
 
-      logger.info(color.dim('navigating to' + ` http://localhost:${buildTool.port}`))
+      logger.info(color.dim('Navigating to' + ` http://localhost:${buildTool.port}`))
 
       await page.goto(`http://localhost:${buildTool.port}`, {
         timeout: 180000,
@@ -692,7 +692,7 @@ async function runBenchmark() {
       )
 
       if (process.env.DEBUG) {
-        logger.info(`Modified root file: ${rootFilePath}`)
+        logger.info(`Modify root file: ${rootFilePath}`)
       }
 
       // Set start time to the file modification time for consistent measurement
@@ -716,7 +716,7 @@ async function runBenchmark() {
       )
 
       if (process.env.DEBUG) {
-        logger.info(`Modified leaf file: ${leafFilePath}`)
+        logger.info(`Modify leaf file: ${leafFilePath}`)
       }
       // Set start time to the file modification time for consistent measurement
       hmrLeafStart = leafFileModStartTime
