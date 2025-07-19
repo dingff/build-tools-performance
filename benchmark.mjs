@@ -677,10 +677,6 @@ async function runBenchmark() {
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
 
-      if (process.env.DEBUG) {
-        logger.info(`[${buildTool.name}] Modifying root file: ${rootFilePath}`)
-      }
-
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
 
@@ -694,7 +690,7 @@ async function runBenchmark() {
       )
 
       if (process.env.DEBUG) {
-        logger.info(`[${buildTool.name}] Root file modified at: ${fileModStartTime}`)
+        logger.info(`[${buildTool.name}] Modified root file: ${rootFilePath}`)
       }
 
       // Set start time to the file modification time for consistent measurement
@@ -717,6 +713,9 @@ async function runBenchmark() {
       `,
       )
 
+      if (process.env.DEBUG) {
+        logger.info(`[${buildTool.name}] Modified leaf file: ${leafFilePath}`)
+      }
       // Set start time to the file modification time for consistent measurement
       hmrLeafStart = leafFileModStartTime
 
