@@ -698,7 +698,7 @@ async function runBenchmark() {
       // Set start time to the file modification time for consistent measurement
       hmrRootStart = fileModStartTime
 
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      await new Promise((resolve) => setTimeout(resolve, 10000))
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
