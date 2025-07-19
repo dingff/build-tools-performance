@@ -549,7 +549,8 @@ async function runBenchmark() {
       logger.info(color.dim('Navigating to' + ` http://localhost:${buildTool.port}`))
 
       await page.goto(`http://localhost:${buildTool.port}`, {
-        timeout: 180000,
+        // 5 minutes timeout for initial page load
+        timeout: 5 * 60 * 1000,
         waitUntil: 'networkidle0', // Wait for network to be idle
       })
 
