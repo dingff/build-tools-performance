@@ -16,6 +16,11 @@ on:
           - small
           - medium
           - large
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   benchmark:
@@ -47,4 +52,9 @@ jobs:
         run: pnpm install && npx puppeteer browsers install chrome
 
       - name: Run Benchmark
-        run: cross-env CASE=${{ matrix.case }} pnpm benchmark
+        run: |
+          if [ "${{ github.event.inputs.debug }}" = "true" ]; then
+            cross-env CASE=${{ matrix.case }} pnpm benchmark:debug
+          else
+            cross-env CASE=${{ matrix.case }} pnpm benchmark
+          fi
