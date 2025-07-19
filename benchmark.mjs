@@ -125,7 +125,9 @@ class BuildTool {
       })
 
       child.stderr.on('data', (data) => {
-        console.log(`stderr: ${data}`)
+        if (process.env.DEBUG) {
+          console.log(data.toString())
+        }
       })
 
       child.on('error', (error) => {
@@ -245,7 +247,7 @@ class BuildTool {
         outputBuffer += text
 
         if (process.env.DEBUG) {
-          console.log(`[${this.name}] stdout: ${text}`)
+          console.log(text)
         }
 
         // Extract start time from bin file output
@@ -290,7 +292,7 @@ class BuildTool {
       // Log stderr for debugging
       child.stderr.on('data', (data) => {
         if (process.env.DEBUG) {
-          console.log(`[${this.name}] stderr: ${data}`)
+          console.log(data.toString())
         }
       })
     })
@@ -585,7 +587,7 @@ async function runBenchmark() {
 
       page.on('console', (event) => {
         if (process.env.DEBUG) {
-          console.log(`[${buildTool.name}] page console: ${event.text()}`)
+          logger.info(`[${buildTool.name}] page console: ${event.text()}`)
         }
 
         const isFinished = () => {
