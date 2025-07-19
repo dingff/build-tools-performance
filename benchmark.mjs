@@ -584,6 +584,10 @@ async function runBenchmark() {
       }
 
       page.on('console', (event) => {
+        if (process.env.DEBUG) {
+          console.log(`[${buildTool.name}] Console: ${event.text()}`)
+        }
+
         const isFinished = () => {
           return (
             perfResult[buildTool.name]?.rootHmr !== undefined &&
@@ -673,6 +677,10 @@ async function runBenchmark() {
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
 
+      if (process.env.DEBUG) {
+        logger.info(`[${buildTool.name}] Modifying root file: ${rootFilePath}`)
+      }
+
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
 
@@ -684,6 +692,10 @@ async function runBenchmark() {
     console.log('root hmr', ${fileModStartTime});
     `,
       )
+
+      if (process.env.DEBUG) {
+        logger.info(`[${buildTool.name}] Root file modified at: ${fileModStartTime}`)
+      }
 
       // Set start time to the file modification time for consistent measurement
       hmrRootStart = fileModStartTime
