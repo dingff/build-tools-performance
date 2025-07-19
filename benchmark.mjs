@@ -692,7 +692,7 @@ async function runBenchmark() {
       )
 
       if (process.env.DEBUG) {
-        logger.info(`[${buildTool.name}] Modified root file: ${rootFilePath}`)
+        logger.info(`Modified root file: ${rootFilePath}`)
       }
 
       // Set start time to the file modification time for consistent measurement
@@ -716,7 +716,7 @@ async function runBenchmark() {
       )
 
       if (process.env.DEBUG) {
-        logger.info(`[${buildTool.name}] Modified leaf file: ${leafFilePath}`)
+        logger.info(`Modified leaf file: ${leafFilePath}`)
       }
       // Set start time to the file modification time for consistent measurement
       hmrLeafStart = leafFileModStartTime
