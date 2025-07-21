@@ -222,7 +222,7 @@ class BuildTool {
     })
 
     return new Promise((resolve, reject) => {
-      let prodBuild = null
+      let actualBuild = null
       let outputBuffer = ''
       let startTime = null
 
@@ -257,8 +257,8 @@ class BuildTool {
           startTime = Number(startMatch[1])
         }
 
-        // Extract prod build time from different bundlers
-        prodBuild = this.extractBuildTime(text) || prodBuild
+        // Extract actual build time from different bundlers
+        actualBuild = this.extractBuildTime(text) || actualBuild
       })
 
       child.on('exit', (code) => {
@@ -268,17 +268,16 @@ class BuildTool {
             throw new Error('Build start time not found')
           }
 
-          const totalBuild = Date.now() - startTime
+          const prodBuild = Date.now() - startTime
 
           // If we couldn't extract build time from stdout, try from the full buffer
-          if (!prodBuild) {
-            prodBuild = this.extractBuildTime(outputBuffer)
+          if (!actualBuild) {
+            actualBuild = this.extractBuildTime(outputBuffer)
           }
 
           resolve({
-            totalBuild,
             prodBuild,
-            prepare: totalBuild - prodBuild,
+            actualBuild,
           })
         } else {
           reject(new Error(`Build failed with exit code ${code}`))
@@ -299,7 +298,7 @@ class BuildTool {
     })
   }
 
-  // Extract prod build time from bundler output
+  // Extract actual build time from bundler output
   extractBuildTime(text) {
     // Next.js: Compiled successfully in 4.1s
     const nextMatch = text.match(/Compiled successfully in (\d+(?:\.\d+)?)\s*(ms|s)/i)
@@ -754,31 +753,24 @@ async function runBenchmark() {
         sizeResults[buildTool.name] = sizes
 
         logger.success(
-          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.totalBuild + 'ms'),
+          color.dim(buildTool.name) + ' built in ' + color.green(buildResult.prodBuild + 'ms'),
         )
         logger.success(
           color.dim(buildTool.name) +
-            ' prod build: ' +
-            color.green(Math.round(buildResult.prodBuild) + 'ms'),
-        )
-        logger.success(
-          color.dim(buildTool.name) +
-            ' prepare: ' +
-            color.green(Math.round(buildResult.prepare) + 'ms'),
+            ' actual build: ' +
+            color.green(buildResult.actualBuild + 'ms'),
         )
         logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
         logger.success(
           color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
         )
 
-        perfResult[buildTool.name].prodBuild = Math.round(buildResult.prodBuild)
-        perfResult[buildTool.name].prepare = Math.round(buildResult.prepare)
-        perfResult[buildTool.name].totalBuild = buildResult.totalBuild
+        perfResult[buildTool.name].actualBuild = buildResult.actualBuild
+        perfResult[buildTool.name].prodBuild = buildResult.prodBuild
       } catch (buildError) {
         logger.error(color.red(`${buildTool.name} build failed:`) + ` ${buildError.message}`)
+        perfResult[buildTool.name].actualBuild = 'Failed'
         perfResult[buildTool.name].prodBuild = 'Failed'
-        perfResult[buildTool.name].prepare = 'Failed'
-        perfResult[buildTool.name].totalBuild = 'Failed'
         sizeResults[buildTool.name] = {
           totalSize: 'Failed',
           totalGzipSize: 'Failed',
@@ -920,15 +912,7 @@ for (const [name, values] of Object.entries(averageResults)) {
 
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
-  const metrics = [
-    'devColdStart',
-    'serverStart',
-    'onLoad',
-    'rootHmr',
-    'leafHmr',
-    'prodBuild',
-    'prepare',
-  ]
+  const metrics = ['devColdStart', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
 
   const formattedResults = {}
   const resultsEntries = Object.entries(results)
@@ -1012,6 +996,40 @@ function calculateAndFormatResults(results) {
           formattedResults[name] = {}
         }
         formattedResults[name].devColdStart = 'Failed'
+      }
+    }
+  }
+
+  // Process prodBuild (special case: prodBuild = actualBuild + prepare)
+  let minProdBuild = Number.POSITIVE_INFINITY
+  for (const [, values] of resultsEntries) {
+    const prodBuildValue = getNumericValue(values, 'prodBuild')
+    if (prodBuildValue !== null && prodBuildValue < minProdBuild) {
+      minProdBuild = prodBuildValue
+    }
+  }
+
+  if (minProdBuild !== Number.POSITIVE_INFINITY) {
+    for (const [name, values] of resultsEntries) {
+      const prodBuildValue = getNumericValue(values, 'prodBuild')
+      const actualBuildValue = getNumericValue(values, 'actualBuild')
+
+      if (prodBuildValue !== null && actualBuildValue !== null) {
+        const prepareValue = prodBuildValue - actualBuildValue
+        const multiplier = prodBuildValue / minProdBuild
+        const trophy = multiplier === 1 ? color.green(' ◆') : ''
+
+        if (!formattedResults[name]) {
+          formattedResults[name] = {}
+        }
+
+        formattedResults[name].prodBuild =
+          `${prodBuildValue}ms (${actualBuildValue} + ${prepareValue}) ${multiplier.toFixed(1)}x${trophy}`
+      } else {
+        if (!formattedResults[name]) {
+          formattedResults[name] = {}
+        }
+        formattedResults[name].prodBuild = 'Failed'
       }
     }
   }
@@ -1130,14 +1148,13 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build', 'Prepare'],
+      ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
       ...buildTools.map(({ name }) => [
         name,
         formattedResults[name]?.devColdStart || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
-        formattedResults[name]?.prepare || 'Failed',
       ]),
     ],
     {
