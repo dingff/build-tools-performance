@@ -46,7 +46,6 @@ function restoreNextEntry() {
     if (importPattern.test(content)) {
       content = content.replace(importPattern, defaultImportPath)
       writeFileSync(pageFilePath, content, 'utf-8')
-      logger.info('✅ Restored Next.js entry to default (medium)')
     }
   } catch (error) {
     logger.warn(`Failed to restore Next.js entry: ${error.message}`)
@@ -1165,6 +1164,9 @@ const formattedSizes = formatBundleSizesWithMultipliers(sizeResults)
 logger.log('')
 logger.success('Benchmark finished!\n')
 
+// Restore Next.js entry before exiting
+restoreNextEntry()
+
 logger.info('Build performance:\n')
 console.log(
   markdownTable(
@@ -1201,8 +1203,5 @@ console.log(
     },
   ),
 )
-
-// Restore Next.js entry before exiting
-restoreNextEntry()
 
 process.exit(0)
