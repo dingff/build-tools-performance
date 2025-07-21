@@ -32,6 +32,27 @@ const startConsoleRegex = /Benchmark Start Time (\d+)/
 const caseName = process.env.CASE ?? 'medium'
 process.env.CASE = caseName
 
+// Restore Next.js entry to default state
+function restoreNextEntry() {
+  const pageFilePath = path.join(__dirname, 'src/app/page.jsx')
+
+  try {
+    let content = readFileSync(pageFilePath, 'utf-8')
+
+    // Restore to medium as the default case
+    const importPattern = /import\(['"`]\.\.\/(?:small|medium|large)\/main\.jsx['"`]\)/
+    const defaultImportPath = `import('../medium/main.jsx')`
+
+    if (importPattern.test(content)) {
+      content = content.replace(importPattern, defaultImportPath)
+      writeFileSync(pageFilePath, content, 'utf-8')
+      logger.info('✅ Restored Next.js entry to default (medium)')
+    }
+  } catch (error) {
+    logger.warn(`Failed to restore Next.js entry: ${error.message}`)
+  }
+}
+
 class BuildTool {
   constructor({ name, port, startScript, startedRegex, buildScript, binFilePath }) {
     this.name = name
@@ -1180,5 +1201,8 @@ console.log(
     },
   ),
 )
+
+// Restore Next.js entry before exiting
+restoreNextEntry()
 
 process.exit(0)
