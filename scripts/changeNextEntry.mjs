@@ -34,10 +34,7 @@ try {
     // Write back to file
     fs.writeFileSync(pageFilePath, content, 'utf-8')
 
-    console.log('✅ Successfully modified Next.js entry file')
-    console.log(`📁 Case type: ${caseType}`)
-    console.log(`📄 File path: ${pageFilePath}`)
-    console.log(`🔗 Import path: ../${caseType}/main.jsx`)
+    console.log(`✅ Successfully modified Next.js entry to "../${caseType}/main.jsx"`)
   } else {
     console.log('⚠️  No matching import statement found, current content:')
     console.log(content)
