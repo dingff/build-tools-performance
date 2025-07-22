@@ -297,7 +297,7 @@ class BuildTool {
 
           resolve({
             prodBuild,
-            actualBuild,
+            actualBuild: Math.round(actualBuild),
           })
         } else {
           reject(new Error(`Build failed with exit code ${code}`))
