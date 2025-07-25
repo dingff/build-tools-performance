@@ -1020,7 +1020,7 @@ function calculateAndFormatResults(results) {
     }
   }
 
-  // Process prodBuild (special case: prodBuild = actualBuild + prepare)
+  // Process prodBuild (special case: prodBuild = actualBuild + other)
   let minProdBuild = Number.POSITIVE_INFINITY
   for (const [, values] of resultsEntries) {
     const prodBuildValue = getNumericValue(values, 'prodBuild')
@@ -1035,7 +1035,6 @@ function calculateAndFormatResults(results) {
       const actualBuildValue = getNumericValue(values, 'actualBuild')
 
       if (prodBuildValue !== null && actualBuildValue !== null) {
-        const prepareValue = prodBuildValue - actualBuildValue
         const multiplier = prodBuildValue / minProdBuild
         const trophy = multiplier === 1 ? color.green(' ◆') : ''
 
@@ -1044,7 +1043,7 @@ function calculateAndFormatResults(results) {
         }
 
         formattedResults[name].prodBuild =
-          `${prodBuildValue}ms (${actualBuildValue} + ${prepareValue}) ${multiplier.toFixed(1)}x${trophy}`
+          `${prodBuildValue}ms (${actualBuildValue} + ${prodBuildValue - actualBuildValue}) ${multiplier.toFixed(1)}x${trophy}`
       } else {
         if (!formattedResults[name]) {
           formattedResults[name] = {}
