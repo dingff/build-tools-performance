@@ -9,6 +9,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   distDir: 'dist',
+  turbopack: {
+    root: __dirname,
+  },
 }
 
 module.exports = nextConfig
