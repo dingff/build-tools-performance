@@ -79,6 +79,7 @@
     "start:unpack": "unpack dev",
     "start:unpack:prebundle": "cross-env PREBUNDLE=true unpack dev",
     "start:unpack:experiments": "cross-env PREBUNDLE=true EXPERIMENTS_CSS=true unpack dev",
+    "start:unpack:native-watcher": "cross-env NATIVE_WATCHER=true unpack dev",
     "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs",
     "start:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next dev --turbopack --port 3200",

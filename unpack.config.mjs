@@ -23,4 +23,9 @@ export default defineConfig({
   build: {
     target: 'es2022',
   },
+  bundlerConfig: {
+    experiments: {
+      nativeWatcher: Boolean(process.env.NATIVE_WATCHER),
+    },
+  },
 })
