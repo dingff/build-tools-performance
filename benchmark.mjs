@@ -482,9 +482,9 @@ toolNames.forEach((name) => {
           binFilePath: '@unpackjs/cli/bin/unpack.js',
         }),
         // new BuildTool({
-        //   name: 'Unpack (Prebundle + CSS) ' + require('@unpackjs/core/package.json').version,
+        //   name: 'Unpack (Experiments CSS) ' + require('@unpackjs/core/package.json').version,
         //   port: 4000,
-        //   startScript: 'start:unpack:experiments',
+        //   startScript: 'start:unpack:experiments-css',
         //   startedRegex: /ready in (\d+)ms/,
         //   buildScript: 'build:unpack',
         //   binFilePath: '@unpackjs/cli/bin/unpack.js',
