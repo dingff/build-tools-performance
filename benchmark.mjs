@@ -270,30 +270,23 @@ class BuildTool {
         if (process.env.DEBUG) {
           console.log(text)
         }
-
-        // Extract start time from bin file output
-        const startMatch = startConsoleRegex.exec(text)
-        if (startMatch) {
-          startTime = Number(startMatch[1])
-        }
-
-        // Extract actual build time from different bundlers
-        actualBuild = this.extractBuildTime(text) || actualBuild
       })
 
       child.on('exit', (code) => {
         clearTimeout(buildTimeout)
         if (code === 0) {
+          // Extract start time from bin file output
+          const startMatch = startConsoleRegex.exec(outputBuffer)
+          if (startMatch) {
+            startTime = Number(startMatch[1])
+          }
           if (!startTime) {
             throw new Error('Build start time not found')
           }
 
           const prodBuild = Date.now() - startTime
 
-          // If we couldn't extract build time from stdout, try from the full buffer
-          if (!actualBuild) {
-            actualBuild = this.extractBuildTime(outputBuffer)
-          }
+          actualBuild = this.extractBuildTime(outputBuffer)
 
           resolve({
             prodBuild,
