@@ -44,7 +44,7 @@
     "html-webpack-plugin": "^5.6.4",
     "markdown-table": "^3.0.4",
     "mini-css-extract-plugin": "^2.9.4",
-    "next": "^15.5.4",
+    "next": "16.0.0-beta.0",
     "picocolors": "^1.1.1",
     "puppeteer": "^24.23.0",
     "react-refresh": "^0.18.0",
@@ -82,8 +82,8 @@
     "start:unpack:native-watcher": "cross-env NATIVE_WATCHER=true unpack dev",
     "build:unpack": "unpack build",
     "build:rolldown": "cross-env NODE_ENV=production rolldown -c ./rolldown.config.mjs",
-    "start:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next dev --turbopack --port 3200",
-    "build:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next build --turbopack"
+    "start:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next dev --port 3200",
+    "build:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next build"
   },
   "engines": {
     "node": ">=22.17.0"
