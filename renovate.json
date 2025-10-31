@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "All non-breaking updates",
+      "groupName": "All non-breaking dependencies",
       "automerge": true,
       "automergeType": "branch"
     }
