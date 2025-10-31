@@ -3,16 +3,16 @@
   "extends": [
     "config:recommended"
   ],
+  "rangeStrategy": "bump",
   "labels": [
     "dependencies"
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
-      "automerge": true
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "All non-breaking updates",
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
