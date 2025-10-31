@@ -1,10 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:base"
   ],
   "rangeStrategy": "bump",
-  "dependencyDashboardApproval": false,
   "labels": [
     "dependencies"
   ],
