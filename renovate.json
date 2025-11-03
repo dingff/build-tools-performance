@@ -6,7 +6,8 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "all non-breaking dependencies"
+      "groupName": "all non-breaking dependencies",
+      "dependencyDashboardApproval": false
     }
   ]
 }
