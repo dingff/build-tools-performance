@@ -11,6 +11,7 @@ import puppeteer from 'puppeteer'
 import { logger } from 'rslog'
 import stringWidth from 'string-width'
 import kill from 'tree-kill'
+import { updateReadme } from './scripts/updateReadme.mjs'
 
 const isCI = !!process.env.CI
 logger.info('process.env.CI', process.env.CI)
@@ -953,7 +954,7 @@ function calculateAndFormatResults(results) {
     const numericValue = getNumericValue(values, metric)
     if (numericValue !== null && minValue !== Number.POSITIVE_INFINITY) {
       const multiplier = numericValue / minValue
-      const trophy = multiplier === 1 ? color.green(' ◆') : ''
+      const trophy = multiplier === 1 ? ' ◆' : ''
 
       if (customFormatter) {
         formattedResults[name][metric] = customFormatter(numericValue, multiplier, trophy, values)
@@ -1004,7 +1005,7 @@ function calculateAndFormatResults(results) {
 
       if (devColdStartValue !== null && serverStartValue !== null && onLoadValue !== null) {
         const multiplier = devColdStartValue / minDevColdStart
-        const trophy = multiplier === 1 ? color.green(' ◆') : ''
+        const trophy = multiplier === 1 ? ' ◆' : ''
 
         if (!formattedResults[name]) {
           formattedResults[name] = {}
@@ -1037,7 +1038,7 @@ function calculateAndFormatResults(results) {
 
       if (prodBuildValue !== null && actualBuildValue !== null) {
         const multiplier = prodBuildValue / minProdBuild
-        const trophy = multiplier === 1 ? color.green(' ◆') : ''
+        const trophy = multiplier === 1 ? ' ◆' : ''
 
         if (!formattedResults[name]) {
           formattedResults[name] = {}
@@ -1138,8 +1139,8 @@ function formatBundleSizesWithMultipliers(sizeResults) {
           ? sizes.totalGzipSize / minGzipSize
           : 1
 
-      const totalTrophy = totalMultiplier === 1 ? color.green(' ◆') : ''
-      const gzipTrophy = gzipMultiplier === 1 ? color.green(' ◆') : ''
+      const totalTrophy = totalMultiplier === 1 ? ' ◆' : ''
+      const gzipTrophy = gzipMultiplier === 1 ? ' ◆' : ''
 
       // Don't show multipliers for entries with 0 size
       if (sizes.totalSize === 0 || sizes.totalGzipSize === 0) {
@@ -1203,5 +1204,8 @@ console.log(
     },
   ),
 )
+
+// Update README with benchmark results section
+updateReadme({ formattedResults, formattedSizes, buildTools, caseName })
 
 process.exit(0)
