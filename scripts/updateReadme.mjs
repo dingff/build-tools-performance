@@ -1,11 +1,87 @@
 import { readFileSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { markdownTable } from 'markdown-table'
 import { logger } from 'rslog'
 import stringWidth from 'string-width'
 
-export function updateReadme({ formattedResults, formattedSizes, buildTools, caseName }) {
+const require = createRequire(import.meta.url)
+
+const QuickChart = require('quickchart-js')
+
+export function updateReadme({
+  formattedResults,
+  formattedSizes,
+  buildTools,
+  caseName,
+  averageResultsNumbers,
+  sizeResults,
+}) {
   try {
+    const hash32 = (string_) => {
+      let h = 2_166_136_261 >>> 0
+      for (let i = 0; i < string_.length; ) {
+        const cp = string_.codePointAt(i)
+        h ^= cp
+        h = Math.imul(h, 16_777_619)
+        i += cp > 0xff_ff ? 2 : 1
+      }
+      return h >>> 0
+    }
+    const getColorFromName = (name, opacity = 1) => {
+      const GOLDEN_ANGLE = 137.507_764_050_037_85
+      const hv = hash32(name)
+
+      const h = (hv * GOLDEN_ANGLE) % 360
+
+      const sJitter = ((hv >>> 8) & 0xff) / 255
+      const s = 75 + (sJitter - 0.5) * 15 // ~55–70%
+
+      const lJitter = ((hv >>> 16) & 0xff) / 255
+      const l = 50 + (lJitter - 0.5) * 15 // ~60–75%
+
+      return `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, ${opacity})`
+    }
+
+    const chartDimensions = [
+      'devColdStart',
+      'rootHmr',
+      'leafHmr',
+      'prodBuild',
+      'totalSize',
+      'totalGzipSize',
+    ]
+
+    const chartUrls = chartDimensions.map((dimension) => {
+      const labels = buildTools.map(({ name }) => name)
+      const myChart = new QuickChart()
+      myChart.setConfig({
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: dimension,
+              data: labels.map(
+                (name) =>
+                  averageResultsNumbers[name]?.[dimension] || sizeResults[name]?.[dimension],
+              ),
+              backgroundColor: [...labels.map((lbl) => getColorFromName(lbl, 0.7))],
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: dimension,
+          },
+          legend: {
+            display: false,
+          },
+        },
+      })
+      return myChart.getUrl()
+    })
     const readmePath = path.resolve(import.meta.dirname, '..', 'README.md')
 
     const sanitizeBreakdown = (text) => {
@@ -59,7 +135,16 @@ export function updateReadme({ formattedResults, formattedSizes, buildTools, cas
 
     const header = `\n\n## Benchmark Results\n\n- Case: \`${caseName}\`\n- Date: \`${timestamp}\`\n\n`
 
-    const section = `<!-- BENCHMARK:START -->\n${header}**Build performance**\n\n${buildPerfTable}\n\n**Bundle sizes**\n\n${bundleSizesTable}\n<!-- BENCHMARK:END -->\n`
+    // Render charts above the tables in <picture> format
+    const renderPicture = (url) =>
+      `\n<picture>\n\t<source media="(prefers-color-scheme: dark)" srcset="${url}">\n\t<img src="${url}">\n</picture>`
+
+    const chartsSection =
+      Array.isArray(chartUrls) && chartUrls.length > 0
+        ? `${chartUrls.map((url) => renderPicture(url)).join('\n')}\n\n`
+        : ''
+
+    const section = `<!-- BENCHMARK:START -->\n${header}${chartsSection}**Build performance**\n\n${buildPerfTable}\n\n**Bundle sizes**\n\n${bundleSizesTable}\n<!-- BENCHMARK:END -->\n`
 
     let readme = ''
     try {

@@ -25,6 +25,7 @@ async function coolDown() {
 }
 
 const require = createRequire(import.meta.url)
+
 const __dirname = import.meta.dirname
 
 const startConsole = "console.log('Benchmark Start Time', Date.now());"
@@ -1201,8 +1202,17 @@ console.log(
     },
   ),
 )
+
 logger.log('')
+
 // Update README with benchmark results section
-updateReadme({ formattedResults, formattedSizes, buildTools, caseName })
+updateReadme({
+  formattedResults,
+  formattedSizes,
+  buildTools,
+  caseName,
+  averageResultsNumbers,
+  sizeResults,
+})
 
 process.exit(0)
