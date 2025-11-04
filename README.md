@@ -6,34 +6,35 @@ Benchmark comparing JavaScript bundlers and build tools.
 
 ## Benchmark Results
 
-- Case: `small`
-- Date: `2025-11-04 09:38:09`
+- Case: `medium`
+- Date: `2025-11-04`
 
 **Build performance**
 
-| Name                          | Dev cold start              | Root HMR      | Leaf HMR      | Prod build                |
-| ----------------------------- | --------------------------- | ------------- | ------------- | ------------------------- |
-| Rsbuild 1.6.1                 | 2596ms (2162 + 434) 1.3x    | 489ms (5.1x)  | 266ms (3.6x)  | 820ms (610 + 210) 1.1x    |
-| Unpack 3.3.5                  | 2588ms (1395 + 1193) 1.3x   | 321ms (3.3x)  | 279ms (3.8x)  | 3799ms (3030 + 769) 4.9x  |
-| Unpack (Prebundle) 3.3.5      | 12921ms (9638 + 3283) 6.6x  | 126ms (1.3x)  | 391ms (5.3x)  | 2708ms (1900 + 808) 3.5x  |
-| Unpack (Native Watcher) 3.3.5 | 2249ms (1115 + 1134) 1.1x   | 160ms (1.7x)  | 124ms (1.7x)  | 1080ms (722 + 358) 1.4x   |
-| Next.js (Turbopack) 16.0.1    | 11516ms (1363 + 10153) 5.8x | 205ms (2.1x)  | 159ms (2.1x)  | 7512ms (5300 + 2212) 9.7x |
-| Farm 1.7.11                   | 1971ms (1461 + 510) 1.0x ◆  | 96ms (1.0x) ◆ | 204ms (2.8x)  | 934ms (853 + 81) 1.2x     |
-| Vite (Rolldown) 7.1.20        | 8379ms (292 + 8087) 4.3x    | 875ms (9.1x)  | 129ms (1.7x)  | 776ms (533 + 243) 1.0x ◆  |
-| Vite (SWC) 7.1.12             | 8479ms (334 + 8145) 4.3x    | 209ms (2.2x)  | 74ms (1.0x) ◆ | 2896ms (2640 + 256) 3.7x  |
-| webpack (SWC) 5.102.1         | 9168ms (7154 + 2014) 4.7x   | 758ms (7.9x)  | 596ms (8.1x)  | 3924ms (3192 + 732) 5.1x  |
+| Name                          | Dev cold start  | Root HMR       | Leaf HMR       | Prod build      |
+| ----------------------------- | --------------- | -------------- | -------------- | --------------- |
+| Rsbuild 1.6.1                 | 765ms (1.0x) ◆  | 165ms (1.4x)   | 140ms (1.3x)   | 2047ms (1.1x)   |
+| Unpack 3.3.5                  | 1246ms (1.6x)   | 146ms (1.3x)   | 106ms (1.0x) ◆ | 2029ms (1.1x)   |
+| Unpack (Prebundle) 3.3.5      | 1709ms (2.2x)   | 114ms (1.0x) ◆ | 107ms (1.0x)   | 1843ms (1.0x) ◆ |
+| Unpack (Native Watcher) 3.3.5 | 1371ms (1.8x)   | 161ms (1.4x)   | 136ms (1.3x)   | 1906ms (1.0x)   |
+| Next.js (Turbopack) 16.0.1    | 29850ms (39.0x) | 304ms (2.7x)   | 109ms (1.0x)   | 20865ms (11.3x) |
+| Farm 1.7.11                   | 9968ms (13.0x)  | 1061ms (9.3x)  | 194ms (1.8x)   | 8336ms (4.5x)   |
+| Vite (Rolldown) 7.1.20        | 6164ms (8.1x)   | 141ms (1.2x)   | 164ms (1.5x)   | 2805ms (1.5x)   |
+| Vite (SWC) 7.1.12             | 8610ms (11.3x)  | 215ms (1.9x)   | 131ms (1.2x)   | 11993ms (6.5x)  |
+| webpack (SWC) 5.102.1         | 11607ms (15.2x) | 1506ms (13.2x) | 1364ms (12.9x) | 15980ms (8.7x)  |
 
 **Bundle sizes**
 
-| Name                          | Total size       | Gzipped size     |
-| ----------------------------- | ---------------- | ---------------- |
-| Rsbuild 1.6.1                 | 814kB (1.1x)     | 194.7kB (1.0x) ◆ |
-| Unpack 3.3.5                  | 826.2kB (1.1x)   | 200.3kB (1.0x)   |
-| Unpack (Prebundle) 3.3.5      | 826.2kB (1.1x)   | 200.3kB (1.0x)   |
-| Unpack (Native Watcher) 3.3.5 | 826.2kB (1.1x)   | 200.3kB (1.0x)   |
-| Next.js (Turbopack) 16.0.1    | 1861.7kB (2.5x)  | 499.3kB (2.6x)   |
-| Farm 1.7.11                   | 1023.8kB (1.4x)  | 240.8kB (1.2x)   |
-| Vite (Rolldown) 7.1.20        | 762.4kB (1.0x)   | 206.7kB (1.1x)   |
-| Vite (SWC) 7.1.12             | 739.2kB (1.0x) ◆ | 197.6kB (1.0x)   |
-| webpack (SWC) 5.102.1         | 873.1kB (1.2x)   | 237.9kB (1.2x)   |
+| Name                          | Total size        | Gzipped size     |
+| ----------------------------- | ----------------- | ---------------- |
+| Rsbuild 1.6.1                 | 2882.7kB (1.1x)   | 680.6kB (1.0x) ◆ |
+| Unpack 3.3.5                  | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
+| Unpack (Prebundle) 3.3.5      | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
+| Unpack (Native Watcher) 3.3.5 | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
+| Next.js (Turbopack) 16.0.1    | 3701.7kB (1.4x)   | 982.7kB (1.4x)   |
+| Farm 1.7.11                   | 3574.5kB (1.4x)   | 827.3kB (1.2x)   |
+| Vite (Rolldown) 7.1.20        | 2654.3kB (1.0x)   | 726.5kB (1.1x)   |
+| Vite (SWC) 7.1.12             | 2578.5kB (1.0x) ◆ | 690kB (1.0x)     |
+| webpack (SWC) 5.102.1         | 2962.5kB (1.1x)   | 746kB (1.1x)     |
 <!-- BENCHMARK:END -->
+
