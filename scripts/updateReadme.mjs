@@ -53,7 +53,11 @@ export function updateReadme({ formattedResults, formattedSizes, buildTools, cas
       },
     )
 
-    const header = `\n\n## Benchmark Results\n\n- Case: \`${caseName}\`\n\n`
+    const now = new Date()
+    const pad = (n) => String(n).padStart(2, '0')
+    const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+
+    const header = `\n\n## Benchmark Results\n\n- Case: \`${caseName}\`\n- Date: \`${timestamp}\`\n\n`
 
     const section = `<!-- BENCHMARK:START -->\n${header}**Build performance**\n\n${buildPerfTable}\n\n**Bundle sizes**\n\n${bundleSizesTable}\n<!-- BENCHMARK:END -->\n`
 
