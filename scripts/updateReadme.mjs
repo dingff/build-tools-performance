@@ -8,15 +8,30 @@ export function updateReadme({ formattedResults, formattedSizes, buildTools, cas
   try {
     const readmePath = path.resolve(import.meta.dirname, '..', 'README.md')
 
+    const sanitizeBreakdown = (text) => {
+      if (typeof text !== 'string') return text
+      // Remove breakdown like (9638 + 3283)
+      let s = text.replace(/\s*\(\s*\d+\s*\+\s*\d+\s*\)\s*/g, ' ')
+      // Wrap multiplier like 6.6x with parentheses if not already wrapped
+      s = s.replace(/(\d+(?:\.\d+)?)x/g, (m, _num, offset, str) => {
+        const before = str[offset - 1]
+        const after = str[offset + m.length]
+        if (before === '(' && after === ')') return m
+        return `(${m})`
+      })
+      // Normalize spaces
+      return s.replace(/\s{2,}/g, ' ').trim()
+    }
+
     const buildPerfTable = markdownTable(
       [
         ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
         ...buildTools.map(({ name }) => [
           name,
-          formattedResults[name]?.devColdStart || 'Failed',
+          sanitizeBreakdown(formattedResults[name]?.devColdStart || 'Failed'),
           formattedResults[name]?.rootHmr || 'Failed',
           formattedResults[name]?.leafHmr || 'Failed',
-          formattedResults[name]?.prodBuild || 'Failed',
+          sanitizeBreakdown(formattedResults[name]?.prodBuild || 'Failed'),
         ]),
       ],
       {
@@ -38,13 +53,7 @@ export function updateReadme({ formattedResults, formattedSizes, buildTools, cas
       },
     )
 
-    const now = new Date()
-    const pad = (n) => String(n).padStart(2, '0')
-    const timestamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(
-      now.getHours(),
-    )}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
-
-    const header = `\n\n## Benchmark Results\n\n- Case: \`${caseName}\`\n- Date: \`${timestamp}\`\n\n`
+    const header = `\n\n## Benchmark Results\n\n- Case: \`${caseName}\`\n\n`
 
     const section = `<!-- BENCHMARK:START -->\n${header}**Build performance**\n\n${buildPerfTable}\n\n**Bundle sizes**\n\n${bundleSizesTable}\n<!-- BENCHMARK:END -->\n`
 
