@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { markdownTable } from 'markdown-table'
@@ -71,16 +70,6 @@ export function updateReadme({ formattedResults, formattedSizes, buildTools, cas
 
     writeFileSync(readmePath, nextReadme)
     logger.success('README updated with latest benchmark results')
-    // Auto commit README changes
-    try {
-      execSync(`git add ${readmePath}`)
-      const safeMsg =
-        `chore(benchmark): update README results - ${caseName} - ${timestamp}`.replace(/"/g, '\\"')
-      execSync(`git commit -m "${safeMsg}"`)
-      logger.success('Git commit created for README update')
-    } catch (commitErr) {
-      logger.warn('Skipping git commit: ' + commitErr.message)
-    }
   } catch (e) {
     logger.warn('Failed to update README: ' + e.message)
   }

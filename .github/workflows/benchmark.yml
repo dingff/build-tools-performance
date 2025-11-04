@@ -24,6 +24,8 @@ on:
 
 jobs:
   benchmark:
+    permissions:
+      contents: write
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
     strategy:
@@ -36,7 +38,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -58,3 +61,17 @@ jobs:
           else
             cross-env CASE=${{ matrix.case }} pnpm benchmark
           fi
+
+      - name: Commit and Push README changes
+        if: ${{ always() }}
+        run: |
+          set -e
+          if git diff --quiet -- README.md; then
+            echo "No README changes detected; skipping commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore(benchmark): update README results [case=${{ matrix.case }}]"
+          git push
