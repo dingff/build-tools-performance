@@ -782,9 +782,13 @@ async function runBenchmark() {
             ' actual build: ' +
             color.green(buildResult.actualBuild + 'ms'),
         )
-        logger.success(color.dim(buildTool.name) + ' total size: ' + color.green(sizes.totalSize))
         logger.success(
-          color.dim(buildTool.name) + ' gzipped size: ' + color.green(sizes.totalGzipSize),
+          color.dim(buildTool.name) + ' total size: ' + color.green(formatKB(sizes.totalSize)),
+        )
+        logger.success(
+          color.dim(buildTool.name) +
+            ' gzipped size: ' +
+            color.green(formatKB(sizes.totalGzipSize)),
         )
 
         perfResult[buildTool.name].actualBuild = buildResult.actualBuild
@@ -835,8 +839,8 @@ function convertPath(path) {
   return path
 }
 
-function calcFileSize(len) {
-  const val = len / 1000
+// Format a numeric kilobyte value into display string like "814kB"
+function formatKB(val) {
   return `${val.toFixed(val < 1 ? 2 : 1)}kB`
 }
 
@@ -863,9 +867,10 @@ async function getFileSizes(targetDir) {
       }),
     )
 
+    // Return numeric sizes in kilobytes for downstream formatting
     return {
-      totalSize: calcFileSize(totalSize),
-      totalGzipSize: calcFileSize(totalGzipSize),
+      totalSize: totalSize / 1000,
+      totalGzipSize: totalGzipSize / 1000,
     }
   } catch (error) {
     logger.error(`Failed to get file sizes from ${targetDir}: ${error.message}`)
@@ -1064,10 +1069,10 @@ const formattedResults = calculateAndFormatResults(averageResultsNumbers)
 function formatBundleSizesWithMultipliers(sizeResults) {
   const formattedSizes = {}
 
-  // Convert size strings to numbers for comparison
+  // Normalize to numeric kB values for comparison
   const sizeNumbers = {}
   for (const [name, sizes] of Object.entries(sizeResults)) {
-    // Skip failed entries
+    // Skip failed/error entries
     if (
       sizes.totalSize === 'Failed' ||
       sizes.totalSize === 'Error' ||
@@ -1081,14 +1086,13 @@ function formatBundleSizesWithMultipliers(sizeResults) {
       continue
     }
 
-    const totalSize = Number.parseFloat(sizes.totalSize.replace('kB', ''))
-    const totalGzipSize = Number.parseFloat(sizes.totalGzipSize.replace('kB', ''))
-
+    const totalSize = sizes.totalSize
+    const totalGzipSize = sizes.totalGzipSize
     if (
       Number.isNaN(totalSize) ||
       Number.isNaN(totalGzipSize) ||
-      totalSize === 0 ||
-      totalGzipSize === 0
+      totalSize <= 0 ||
+      totalGzipSize <= 0
     ) {
       sizeNumbers[name] = {
         totalSize: 'Failed',
@@ -1142,17 +1146,10 @@ function formatBundleSizesWithMultipliers(sizeResults) {
       const totalTrophy = totalMultiplier === 1 ? ' ◆' : ''
       const gzipTrophy = gzipMultiplier === 1 ? ' ◆' : ''
 
-      // Don't show multipliers for entries with 0 size
-      if (sizes.totalSize === 0 || sizes.totalGzipSize === 0) {
-        formattedSizes[name] = {
-          totalSize: `${sizes.totalSize}kB`,
-          totalGzipSize: `${sizes.totalGzipSize}kB`,
-        }
-      } else {
-        formattedSizes[name] = {
-          totalSize: `${sizes.totalSize}kB (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
-          totalGzipSize: `${sizes.totalGzipSize}kB (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
-        }
+      // Format numeric kB values for output
+      formattedSizes[name] = {
+        totalSize: `${formatKB(sizes.totalSize)} (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
+        totalGzipSize: `${formatKB(sizes.totalGzipSize)} (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
       }
     }
   }
@@ -1204,7 +1201,7 @@ console.log(
     },
   ),
 )
-
+logger.log('')
 // Update README with benchmark results section
 updateReadme({ formattedResults, formattedSizes, buildTools, caseName })
 
