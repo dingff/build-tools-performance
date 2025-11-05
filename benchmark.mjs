@@ -360,11 +360,11 @@ class BuildTool {
 
 const parseToolNames = () => {
   const allTools = [
+    'farm',
     'rspack',
     'rsbuild',
     'unpack',
     'next',
-    'farm',
     'rolldown-vite',
     'vite',
     'webpack',
@@ -377,7 +377,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['rsbuild', 'unpack', 'next', 'farm', 'rolldown-vite', 'vite', 'webpack']
+  const defaultTools = ['farm', 'rsbuild', 'unpack', 'next', 'rolldown-vite', 'vite', 'webpack']
   return defaultTools
 }
 
@@ -461,6 +461,14 @@ toolNames.forEach((name) => {
     case 'unpack':
       buildTools.push(
         new BuildTool({
+          name: 'Unpack (Native Watcher) ' + require('@unpackjs/core/package.json').version,
+          port: 4000,
+          startScript: 'start:unpack:native-watcher',
+          startedRegex: /ready in (\d+) ms/,
+          buildScript: 'build:unpack',
+          binFilePath: '@unpackjs/cli/bin/unpack.js',
+        }),
+        new BuildTool({
           name: 'Unpack ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack',
@@ -484,14 +492,6 @@ toolNames.forEach((name) => {
         //   buildScript: 'build:unpack',
         //   binFilePath: '@unpackjs/cli/bin/unpack.js',
         // }),
-        new BuildTool({
-          name: 'Unpack (Native Watcher) ' + require('@unpackjs/core/package.json').version,
-          port: 4000,
-          startScript: 'start:unpack:native-watcher',
-          startedRegex: /ready in (\d+) ms/,
-          buildScript: 'build:unpack',
-          binFilePath: '@unpackjs/cli/bin/unpack.js',
-        }),
       )
       break
     case 'next':
