@@ -42,14 +42,37 @@ export function updateReadme({
 
       return `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, ${opacity})`
     }
-
     const chartDimensions = [
-      'devColdStart',
-      'rootHmr',
-      'leafHmr',
-      'prodBuild',
-      'totalSize',
-      'totalGzipSize',
+      {
+        name: 'devColdStart',
+        title: 'Dev cold start',
+        unit: 'ms',
+      },
+      {
+        name: 'rootHmr',
+        title: 'Root HMR',
+        unit: 'ms',
+      },
+      {
+        name: 'leafHmr',
+        title: 'Leaf HMR',
+        unit: 'ms',
+      },
+      {
+        name: 'prodBuild',
+        title: 'Prod build',
+        unit: 'ms',
+      },
+      {
+        name: 'totalSize',
+        title: 'Total size',
+        unit: 'kB',
+      },
+      {
+        name: 'totalGzipSize',
+        title: 'Gzipped size',
+        unit: 'kB',
+      },
     ]
 
     const chartUrls = chartDimensions.map((dimension) => {
@@ -61,10 +84,11 @@ export function updateReadme({
           labels,
           datasets: [
             {
-              label: dimension,
+              label: dimension.title,
               data: labels.map(
                 (name) =>
-                  averageResultsNumbers[name]?.[dimension] || sizeResults[name]?.[dimension],
+                  averageResultsNumbers[name]?.[dimension.name] ||
+                  sizeResults[name]?.[dimension.name].toFixed(1),
               ),
               backgroundColor: [...labels.map((lbl) => getColorFromName(lbl, 0.7))],
             },
@@ -73,10 +97,34 @@ export function updateReadme({
         options: {
           title: {
             display: true,
-            text: dimension,
+            text: dimension.title,
           },
           legend: {
             display: false,
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  min: 0,
+                  // Avoid referencing outer variables in QuickChart runtime
+                  // Generate a function with unit literal embedded to prevent "dimension is not defined"
+                  callback: new Function('value', 'return value + "' + dimension.unit + '"'),
+                },
+              },
+            ],
+          },
+          plugins: {
+            datalabels: {
+              anchor: 'end', // 标签锚点位置：'end' 表示在数据条的末端（对于柱状图，通常是顶部）
+              align: 'top', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
+              // color: '#333', // 标签文字的颜色
+              // font: {
+              //   size: 14, // 标签文字的字体大小
+              // },
+              // Same fix here: embed unit literal so runtime doesn't rely on outer scope
+              formatter: new Function('value', 'return value + "' + dimension.unit + '"'),
+            },
           },
         },
       })

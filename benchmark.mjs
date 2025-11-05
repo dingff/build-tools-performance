@@ -842,7 +842,7 @@ function convertPath(path) {
 
 // Format a numeric kilobyte value into display string like "814kB"
 function formatKB(val) {
-  return `${val.toFixed(val < 1 ? 2 : 1)}kB`
+  return `${val.toFixed(1)}kB`
 }
 
 async function getFileSizes(targetDir) {
