@@ -78,6 +78,11 @@ export function updateReadme({
     const chartUrls = chartDimensions.map((dimension) => {
       const labels = buildTools.map(({ name }) => name)
       const myChart = new QuickChart()
+      const dataArr = labels.map(
+        (name) =>
+          averageResultsNumbers[name]?.[dimension.name] ||
+          sizeResults[name]?.[dimension.name].toFixed(1),
+      )
       myChart.setConfig({
         type: 'horizontalBar',
         data: {
@@ -85,11 +90,7 @@ export function updateReadme({
           datasets: [
             {
               label: dimension.title,
-              data: labels.map(
-                (name) =>
-                  averageResultsNumbers[name]?.[dimension.name] ||
-                  sizeResults[name]?.[dimension.name].toFixed(1),
-              ),
+              data: dataArr,
               backgroundColor: [...labels.map((lbl) => getColorFromName(lbl, 0.7))],
             },
           ],
@@ -107,6 +108,7 @@ export function updateReadme({
               {
                 ticks: {
                   min: 0,
+                  suggestedMax: Math.max(...dataArr) * 1.1,
                   // Generate a function with unit literal embedded to prevent "dimension is not defined"
                   // callback: new Function('value', 'return value + "' + dimension.unit + '"'),
                 },
@@ -116,8 +118,8 @@ export function updateReadme({
           plugins: {
             datalabels: {
               anchor: 'end', // 标签锚点位置：'end' 表示在数据条的末端（对于柱状图，通常是顶部）
-              align: 'left', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
-              color: '#fff', // 标签文字的颜色
+              align: 'right', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
+              // color: '#fff', // 标签文字的颜色
               // font: {
               //   size: 14, // 标签文字的字体大小
               // },
