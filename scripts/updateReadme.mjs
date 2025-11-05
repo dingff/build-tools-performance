@@ -97,7 +97,7 @@ export function updateReadme({
         options: {
           title: {
             display: true,
-            text: dimension.title,
+            text: dimension.title + ' (' + dimension.unit + ')',
           },
           legend: {
             display: false,
@@ -109,7 +109,7 @@ export function updateReadme({
                   min: 0,
                   // Avoid referencing outer variables in QuickChart runtime
                   // Generate a function with unit literal embedded to prevent "dimension is not defined"
-                  callback: new Function('value', 'return value + "' + dimension.unit + '"'),
+                  // callback: new Function('value', 'return value + "' + dimension.unit + '"'),
                 },
               },
             ],
@@ -123,7 +123,7 @@ export function updateReadme({
               //   size: 14, // 标签文字的字体大小
               // },
               // Same fix here: embed unit literal so runtime doesn't rely on outer scope
-              formatter: new Function('value', 'return value + "' + dimension.unit + '"'),
+              // formatter: new Function('value', 'return value + "' + dimension.unit + '"'),
             },
           },
         },
