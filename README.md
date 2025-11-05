@@ -6,35 +6,68 @@ Benchmark comparing JavaScript bundlers and build tools.
 
 ## Benchmark Results
 
-- Case: `medium`
+- Case: `large`
 - Date: `2025-11-04`
+
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27devColdStart%27%2Cdata%3A%5B3392%2C3894%2C3144%2C3700%2C85079%2C15348%2C15159%2C24763%2C28985%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27devColdStart%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27devColdStart%27%2Cdata%3A%5B3392%2C3894%2C3144%2C3700%2C85079%2C15348%2C15159%2C24763%2C28985%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27devColdStart%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27rootHmr%27%2Cdata%3A%5B376%2C397%2C328%2C419%2C1477%2C1268%2C1124%2C354%2C4551%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27rootHmr%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27rootHmr%27%2Cdata%3A%5B376%2C397%2C328%2C419%2C1477%2C1268%2C1124%2C354%2C4551%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27rootHmr%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27leafHmr%27%2Cdata%3A%5B251%2C205%2C363%2C256%2C129%2C223%2C156%2C185%2C4529%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27leafHmr%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27leafHmr%27%2Cdata%3A%5B251%2C205%2C363%2C256%2C129%2C223%2C156%2C185%2C4529%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27leafHmr%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27prodBuild%27%2Cdata%3A%5B6677%2C6912%2C7566%2C6580%2C42619%2C20729%2C6171%2C46544%2C44429%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27prodBuild%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27prodBuild%27%2Cdata%3A%5B6677%2C6912%2C7566%2C6580%2C42619%2C20729%2C6171%2C46544%2C44429%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27prodBuild%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27totalSize%27%2Cdata%3A%5B7378.503%2C7468.102%2C7468.102%2C7468.102%2C7912.197%2C10601.101%2C6861.199%2C6714.527%2C7536.316%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27totalSize%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27totalSize%27%2Cdata%3A%5B7378.503%2C7468.102%2C7468.102%2C7468.102%2C7912.197%2C10601.101%2C6861.199%2C6714.527%2C7536.316%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27totalSize%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
+
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27totalGzipSize%27%2Cdata%3A%5B1669.363%2C1705.314%2C1705.314%2C1705.314%2C2015.354%2C2508.397%2C1795.382%2C1733.493%2C1851.589%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27totalGzipSize%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+	<img src="https://quickchart.io/chart?c=%7Btype%3A%27bar%27%2Cdata%3A%7Blabels%3A%5B%27Rsbuild+1.6.1%27%2C%27Unpack+3.3.5%27%2C%27Unpack+%28Prebundle%29+3.3.5%27%2C%27Unpack+%28Native+Watcher%29+3.3.5%27%2C%27Next.js+%28Turbopack%29+16.0.1%27%2C%27Farm+1.7.11%27%2C%27Vite+%28Rolldown%29+7.1.20%27%2C%27Vite+%28SWC%29+7.1.12%27%2C%27webpack+%28SWC%29+5.102.1%27%5D%2Cdatasets%3A%5B%7Blabel%3A%27totalGzipSize%27%2Cdata%3A%5B1669.363%2C1705.314%2C1705.314%2C1705.314%2C2015.354%2C2508.397%2C1795.382%2C1733.493%2C1851.589%5D%2CbackgroundColor%3A%5B%27hsla%28351%2C+77%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28358%2C+76%25%2C+48%25%2C+0.7%29%27%2C%27hsla%28109%2C+76%25%2C+43%25%2C+0.7%29%27%2C%27hsla%28274%2C+79%25%2C+43%25%2C+0.7%29%27%2C%27hsla%2842%2C+72%25%2C+57%25%2C+0.7%29%27%2C%27hsla%2846%2C+79%25%2C+50%25%2C+0.7%29%27%2C%27hsla%28329%2C+69%25%2C+56%25%2C+0.7%29%27%2C%27hsla%28217%2C+81%25%2C+47%25%2C+0.7%29%27%2C%27hsla%28207%2C+79%25%2C+55%25%2C+0.7%29%27%5D%7D%5D%7D%2Coptions%3A%7Btitle%3A%7Bdisplay%3Atrue%2Ctext%3A%27totalGzipSize%27%7D%2Clegend%3A%7Bdisplay%3Afalse%7D%7D%7D&w=500&h=300&ref=qc-js&bkg=%23ffffff&f=png&v=2.9.4">
+</picture>
 
 **Build performance**
 
 | Name                          | Dev cold start  | Root HMR       | Leaf HMR       | Prod build      |
 | ----------------------------- | --------------- | -------------- | -------------- | --------------- |
-| Rsbuild 1.6.1                 | 765ms (1.0x) ◆  | 165ms (1.4x)   | 140ms (1.3x)   | 2047ms (1.1x)   |
-| Unpack 3.3.5                  | 1246ms (1.6x)   | 146ms (1.3x)   | 106ms (1.0x) ◆ | 2029ms (1.1x)   |
-| Unpack (Prebundle) 3.3.5      | 1709ms (2.2x)   | 114ms (1.0x) ◆ | 107ms (1.0x)   | 1843ms (1.0x) ◆ |
-| Unpack (Native Watcher) 3.3.5 | 1371ms (1.8x)   | 161ms (1.4x)   | 136ms (1.3x)   | 1906ms (1.0x)   |
-| Next.js (Turbopack) 16.0.1    | 29850ms (39.0x) | 304ms (2.7x)   | 109ms (1.0x)   | 20865ms (11.3x) |
-| Farm 1.7.11                   | 9968ms (13.0x)  | 1061ms (9.3x)  | 194ms (1.8x)   | 8336ms (4.5x)   |
-| Vite (Rolldown) 7.1.20        | 6164ms (8.1x)   | 141ms (1.2x)   | 164ms (1.5x)   | 2805ms (1.5x)   |
-| Vite (SWC) 7.1.12             | 8610ms (11.3x)  | 215ms (1.9x)   | 131ms (1.2x)   | 11993ms (6.5x)  |
-| webpack (SWC) 5.102.1         | 11607ms (15.2x) | 1506ms (13.2x) | 1364ms (12.9x) | 15980ms (8.7x)  |
+| Rsbuild 1.6.1                 | 3392ms (1.1x)   | 376ms (1.1x)   | 251ms (1.9x)   | 6677ms (1.1x)   |
+| Unpack 3.3.5                  | 3894ms (1.2x)   | 397ms (1.2x)   | 205ms (1.6x)   | 6912ms (1.1x)   |
+| Unpack (Prebundle) 3.3.5      | 3144ms (1.0x) ◆ | 328ms (1.0x) ◆ | 363ms (2.8x)   | 7566ms (1.2x)   |
+| Unpack (Native Watcher) 3.3.5 | 3700ms (1.2x)   | 419ms (1.3x)   | 256ms (2.0x)   | 6580ms (1.1x)   |
+| Next.js (Turbopack) 16.0.1    | 85079ms (27.1x) | 1477ms (4.5x)  | 129ms (1.0x) ◆ | 42619ms (6.9x)  |
+| Farm 1.7.11                   | 15348ms (4.9x)  | 1268ms (3.9x)  | 223ms (1.7x)   | 20729ms (3.4x)  |
+| Vite (Rolldown) 7.1.20        | 15159ms (4.8x)  | 1124ms (3.4x)  | 156ms (1.2x)   | 6171ms (1.0x) ◆ |
+| Vite (SWC) 7.1.12             | 24763ms (7.9x)  | 354ms (1.1x)   | 185ms (1.4x)   | 46544ms (7.5x)  |
+| webpack (SWC) 5.102.1         | 28985ms (9.2x)  | 4551ms (13.9x) | 4529ms (35.1x) | 44429ms (7.2x)  |
 
 **Bundle sizes**
 
-| Name                          | Total size        | Gzipped size     |
-| ----------------------------- | ----------------- | ---------------- |
-| Rsbuild 1.6.1                 | 2882.7kB (1.1x)   | 680.6kB (1.0x) ◆ |
-| Unpack 3.3.5                  | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
-| Unpack (Prebundle) 3.3.5      | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
-| Unpack (Native Watcher) 3.3.5 | 2922.1kB (1.1x)   | 698.7kB (1.0x)   |
-| Next.js (Turbopack) 16.0.1    | 3701.7kB (1.4x)   | 982.7kB (1.4x)   |
-| Farm 1.7.11                   | 3574.5kB (1.4x)   | 827.3kB (1.2x)   |
-| Vite (Rolldown) 7.1.20        | 2654.3kB (1.0x)   | 726.5kB (1.1x)   |
-| Vite (SWC) 7.1.12             | 2578.5kB (1.0x) ◆ | 690kB (1.0x)     |
-| webpack (SWC) 5.102.1         | 2962.5kB (1.1x)   | 746kB (1.1x)     |
+| Name                          | Total size        | Gzipped size      |
+| ----------------------------- | ----------------- | ----------------- |
+| Rsbuild 1.6.1                 | 7378.5kB (1.1x)   | 1669.4kB (1.0x) ◆ |
+| Unpack 3.3.5                  | 7468.1kB (1.1x)   | 1705.3kB (1.0x)   |
+| Unpack (Prebundle) 3.3.5      | 7468.1kB (1.1x)   | 1705.3kB (1.0x)   |
+| Unpack (Native Watcher) 3.3.5 | 7468.1kB (1.1x)   | 1705.3kB (1.0x)   |
+| Next.js (Turbopack) 16.0.1    | 7912.2kB (1.2x)   | 2015.4kB (1.2x)   |
+| Farm 1.7.11                   | 10601.1kB (1.6x)  | 2508.4kB (1.5x)   |
+| Vite (Rolldown) 7.1.20        | 6861.2kB (1.0x)   | 1795.4kB (1.1x)   |
+| Vite (SWC) 7.1.12             | 6714.5kB (1.0x) ◆ | 1733.5kB (1.0x)   |
+| webpack (SWC) 5.102.1         | 7536.3kB (1.1x)   | 1851.6kB (1.1x)   |
 <!-- BENCHMARK:END -->
+
+
 
