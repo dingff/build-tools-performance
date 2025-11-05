@@ -79,7 +79,7 @@ export function updateReadme({
       const labels = buildTools.map(({ name }) => name)
       const myChart = new QuickChart()
       myChart.setConfig({
-        type: 'bar',
+        type: 'horizontalBar',
         data: {
           labels,
           datasets: [
@@ -103,11 +103,10 @@ export function updateReadme({
             display: false,
           },
           scales: {
-            yAxes: [
+            xAxes: [
               {
                 ticks: {
                   min: 0,
-                  // Avoid referencing outer variables in QuickChart runtime
                   // Generate a function with unit literal embedded to prevent "dimension is not defined"
                   // callback: new Function('value', 'return value + "' + dimension.unit + '"'),
                 },
@@ -117,8 +116,8 @@ export function updateReadme({
           plugins: {
             datalabels: {
               anchor: 'end', // 标签锚点位置：'end' 表示在数据条的末端（对于柱状图，通常是顶部）
-              align: 'top', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
-              // color: '#333', // 标签文字的颜色
+              align: 'left', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
+              color: '#fff', // 标签文字的颜色
               // font: {
               //   size: 14, // 标签文字的字体大小
               // },
