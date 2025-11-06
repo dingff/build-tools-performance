@@ -108,11 +108,20 @@ export function updateReadme({
           scales: {
             xAxes: [
               {
+                gridLines: {
+                  display: false,
+                },
                 ticks: {
+                  display: false,
                   min: 0,
                   suggestedMax: Math.max(...dataArr) * 1.1,
-                  // Generate a function with unit literal embedded to prevent "dimension is not defined"
-                  // callback: new Function('value', 'return value + "' + dimension.unit + '"'),
+                },
+              },
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: false,
                 },
               },
             ],
@@ -121,12 +130,6 @@ export function updateReadme({
             datalabels: {
               anchor: 'end', // 标签锚点位置：'end' 表示在数据条的末端（对于柱状图，通常是顶部）
               align: 'right', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
-              // color: '#fff', // 标签文字的颜色
-              // font: {
-              //   size: 14, // 标签文字的字体大小
-              // },
-              // Same fix here: embed unit literal so runtime doesn't rely on outer scope
-              // formatter: new Function('value', 'return value + "' + dimension.unit + '"'),
             },
           },
         },
@@ -186,9 +189,7 @@ export function updateReadme({
 
     const header = `\n\n## Results\n\n- Case: \`${caseName}\`\n- Date: \`${timestamp}\`\n\n`
 
-    // Render charts above the tables in <picture> format
-    const renderPicture = (url) =>
-      `\n<picture>\n\t<source media="(prefers-color-scheme: dark)" srcset="${url}">\n\t<img src="${url}">\n</picture>`
+    const renderPicture = (url) => `\n<picture>\n\t<img src="${url}">\n</picture>`
 
     const chartsSection =
       Array.isArray(chartUrls) && chartUrls.length > 0
