@@ -78,6 +78,8 @@ export function updateReadme({
     const chartUrls = chartDimensions.map((dimension) => {
       const labels = buildTools.map(({ name }) => name)
       const myChart = new QuickChart()
+      myChart.setFormat('svg')
+      myChart.setBackgroundColor('transparent')
       const dataArr = labels.map(
         (name) =>
           averageResultsNumbers[name]?.[dimension.name] ||
