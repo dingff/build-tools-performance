@@ -114,7 +114,7 @@ export function updateReadme({
                 ticks: {
                   display: false,
                   min: 0,
-                  suggestedMax: Math.max(...dataArr) * 1.1,
+                  suggestedMax: Math.max(...dataArr) * 1.15,
                 },
               },
             ],
