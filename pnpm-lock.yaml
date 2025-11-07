@@ -58,11 +58,11 @@ importers:
         specifier: ^0.6.1
         version: 0.6.1(react-refresh@0.18.0)(type-fest@0.21.3)(webpack-dev-server@5.2.2)(webpack@5.102.1)
       '@rsbuild/core':
-        specifier: ^1.6.2
-        version: 1.6.2
+        specifier: ^1.6.3
+        version: 1.6.3
       '@rsbuild/plugin-react':
         specifier: ^1.4.2
-        version: 1.4.2(@rsbuild/core@1.6.2)
+        version: 1.4.2(@rsbuild/core@1.6.3)
       '@rspack/cli':
         specifier: ^1.6.1
         version: 1.6.1(@rspack/core@1.6.1(@swc/helpers@0.5.17))(@types/express@4.17.22)(webpack-cli@6.0.1)(webpack@5.102.1)
@@ -145,8 +145,8 @@ importers:
         specifier: ^1.0.0-beta.47
         version: 1.0.0-beta.11-commit.0a985f3
       rolldown-vite:
-        specifier: ^7.2.1
-        version: 7.2.1(@types/node@24.10.0)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0)
+        specifier: ^7.2.2
+        version: 7.2.2(@types/node@24.10.0)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0)
       rslog:
         specifier: ^1.3.0
         version: 1.3.0
@@ -2127,8 +2127,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@rsbuild/core@1.6.2':
-    resolution: {integrity: sha512-ELlc23tDCYaXCwB//bOIF/Gnx1TtFey/DBgFDD/oN6PK7aKpAGIVSk6n9aHH3GRNXNtG/sLFtjucVm7Le3lvCA==}
+  '@rsbuild/core@1.6.3':
+    resolution: {integrity: sha512-93/j5w+nyzfTjHfch2ram+Y6Og3NUcl46nsrKojD3scBR9nSjYHjJM27pQNi0Oq7Io7vQpTMvxwuSaG7AShfRw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -5642,8 +5642,8 @@ packages:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
 
-  rolldown-vite@7.2.1:
-    resolution: {integrity: sha512-J1QRxf8zlYNvjAY1fB6zW+FLr0K26/IpKFrGM+Za0Ko6meJUMlHBk+LV19gAb8sfSluH4/6dyWKVS2dvNU4RLQ==}
+  rolldown-vite@7.2.2:
+    resolution: {integrity: sha512-Fl3ZdmJhDMJGcqrr342pPVrhugXdOcuNBRBauz4S7QGSRXbQy7y8q5QYJtgkcrG8XjY0EENSZeTk58c3m20FxA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -8570,7 +8570,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.48.1':
     optional: true
 
-  '@rsbuild/core@1.6.2':
+  '@rsbuild/core@1.6.3':
     dependencies:
       '@rspack/core': 1.6.1(@swc/helpers@0.5.17)
       '@rspack/lite-tapable': 1.0.1
@@ -8578,9 +8578,9 @@ snapshots:
       core-js: 3.46.0
       jiti: 2.6.1
 
-  '@rsbuild/plugin-react@1.4.2(@rsbuild/core@1.6.2)':
+  '@rsbuild/plugin-react@1.4.2(@rsbuild/core@1.6.3)':
     dependencies:
-      '@rsbuild/core': 1.6.2
+      '@rsbuild/core': 1.6.3
       '@rspack/plugin-react-refresh': 1.5.2(react-refresh@0.18.0)
       react-refresh: 0.18.0
     transitivePeerDependencies:
@@ -12751,7 +12751,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-vite@7.2.1(@types/node@24.10.0)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0):
+  rolldown-vite@7.2.2(@types/node@24.10.0)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0):
     dependencies:
       '@oxc-project/runtime': 0.96.0
       fdir: 6.5.0(picomatch@4.0.3)
