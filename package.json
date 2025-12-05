@@ -31,7 +31,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@unpackjs/cli": "^3.2.0",
-    "@unpackjs/core": "^3.6.0",
+    "@unpackjs/core": "^3.6.1",
     "@unpackjs/plugin-react": "^3.3.0",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitejs/plugin-react-swc": "^4.2.2",
