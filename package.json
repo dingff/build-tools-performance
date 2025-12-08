@@ -36,7 +36,6 @@
     "@unpackjs/core": "^3.6.1",
     "@unpackjs/plugin-react": "^3.3.0",
     "@vitejs/plugin-react": "^5.1.1",
-    "@vitejs/plugin-react-swc": "^4.2.2",
     "babel-loader": "^10.0.0",
     "cross-env": "^10.1.0",
     "css-loader": "^7.1.2",

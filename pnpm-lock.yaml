@@ -102,9 +102,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^5.1.1
         version: 5.1.1(vite@8.0.0-beta.1(@types/node@24.10.1)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))
-      '@vitejs/plugin-react-swc':
-        specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.17)(vite@8.0.0-beta.1(@types/node@24.10.1)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))
       babel-loader:
         specifier: ^10.0.0
         version: 10.0.0(@babel/core@7.28.5)(webpack@5.103.0)
@@ -2721,12 +2718,6 @@ packages:
     resolution: {integrity: sha512-nMxZISW/sm1R3FEe72CyCugMOYA8DJz8OZDJyiboPAENk3cw/s3vYyKXb4TWG5pySKjo08of9QY8Z8oMBOYdIQ==}
     peerDependencies:
       '@unpackjs/core': 3.x
-
-  '@vitejs/plugin-react-swc@4.2.2':
-    resolution: {integrity: sha512-x+rE6tsxq/gxrEJN3Nv3dIV60lFflPj94c90b+NNo6n1QV1QQUTLoL0MpaOVasUZ0zqVBn7ead1B5ecx1JAGfA==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    peerDependencies:
-      vite: ^4 || ^5 || ^6 || ^7
 
   '@vitejs/plugin-react@5.1.1':
     resolution: {integrity: sha512-WQfkSw0QbQ5aJ2CHYw23ZGkqnRwqKHD/KYsMeTkZzPT4Jcf0DcBxBtwMJxnu6E7oxw5+JC6ZAiePgh28uJ1HBA==}
@@ -9487,14 +9478,6 @@ snapshots:
       - supports-color
       - typescript
       - webpack-hot-middleware
-
-  '@vitejs/plugin-react-swc@4.2.2(@swc/helpers@0.5.17)(vite@8.0.0-beta.1(@types/node@24.10.1)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))':
-    dependencies:
-      '@rolldown/pluginutils': 1.0.0-beta.47
-      '@swc/core': 1.13.5(@swc/helpers@0.5.17)
-      vite: 8.0.0-beta.1(@types/node@24.10.1)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0)
-    transitivePeerDependencies:
-      - '@swc/helpers'
 
   '@vitejs/plugin-react@5.1.1(vite@8.0.0-beta.1(@types/node@24.10.1)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))':
     dependencies:
