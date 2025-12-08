@@ -4,9 +4,9 @@ import App0 from './f0'
 import './index.css'
 import { Form } from '@douyinfe/semi-ui'
 import { AddAlarmOutlined } from '@material-ui/icons'
+import { AbcOutlined } from '@mui/icons-material'
 import { IconArrowLeft } from '@tabler/icons-react'
 import { Button } from 'antd'
-import { IceCream } from 'lucide-react'
 
 const App1 = React.lazy(() => import('./f1'))
 const App2 = React.lazy(() => import('./f2'))
@@ -21,7 +21,7 @@ const Main = () => {
   return (
     <React.StrictMode>
       <BrowserRouter>
-        <IceCream />
+        <AbcOutlined />
         <AddAlarmOutlined />
         <IconArrowLeft />
         <Button>按钮</Button>
