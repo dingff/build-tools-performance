@@ -404,7 +404,7 @@ toolNames.forEach((name) => {
     case 'vite':
       buildTools.push(
         new BuildTool({
-          name: 'Vite' + require('vite/package.json').version,
+          name: 'Vite ' + require('vite/package.json').version,
           port: 5173,
           startScript: 'start:vite',
           startedRegex: /ready in (\d+) (s|ms)/,
