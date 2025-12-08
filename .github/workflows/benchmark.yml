@@ -10,14 +10,14 @@ on:
       case:
         description: 'Select test case to run'
         required: true
-        default: 'small'
+        default: 'large'
         type: choice
         options:
           - small
           - medium
           - large
       debug:
-        description: 'Enable debug mode'
+        description: 'debug'
         required: false
         default: false
         type: boolean
