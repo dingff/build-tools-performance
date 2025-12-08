@@ -359,16 +359,7 @@ class BuildTool {
 }
 
 const parseToolNames = () => {
-  const allTools = [
-    'farm',
-    'rspack',
-    'rsbuild',
-    'unpack',
-    'next',
-    'rolldown-vite',
-    'vite',
-    'webpack',
-  ]
+  const allTools = ['farm', 'rspack', 'rsbuild', 'unpack', 'next', 'vite', 'webpack']
 
   if (process.env.TOOLS === 'all') {
     return allTools
@@ -377,7 +368,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['farm', 'rspack', 'rsbuild', 'unpack', 'next', 'rolldown-vite']
+  const defaultTools = ['farm', 'rspack', 'rsbuild', 'unpack', 'next', 'vite']
   return defaultTools
 }
 
@@ -413,24 +404,12 @@ toolNames.forEach((name) => {
     case 'vite':
       buildTools.push(
         new BuildTool({
-          name: 'Vite (SWC) ' + require('vite/package.json').version,
+          name: 'Vite' + require('vite/package.json').version,
           port: 5173,
           startScript: 'start:vite',
           startedRegex: /ready in (\d+) (s|ms)/,
           buildScript: 'build:vite',
           binFilePath: 'vite/bin/vite.js',
-        }),
-      )
-      break
-    case 'rolldown-vite':
-      buildTools.push(
-        new BuildTool({
-          name: 'Vite (Rolldown) ' + require('rolldown-vite/package.json').version,
-          port: 5173,
-          startScript: 'start:rolldown-vite',
-          startedRegex: /ready in (\d+) (s|ms)/,
-          buildScript: 'build:rolldown-vite',
-          binFilePath: 'rolldown-vite/bin/vite.js',
         }),
       )
       break

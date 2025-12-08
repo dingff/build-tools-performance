@@ -62,7 +62,7 @@ jobs:
             cross-env CASE=${{ matrix.case }} pnpm benchmark
           fi
 
-      - name: Commit and Push README changes
+      - name: Update README
         if: ${{ always() }}
         run: |
           set -e
