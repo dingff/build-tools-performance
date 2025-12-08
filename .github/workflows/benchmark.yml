@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       case:
-        description: 'Select test case to run'
+        description: 'Select case'
         required: true
         default: 'large'
         type: choice
