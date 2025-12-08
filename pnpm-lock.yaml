@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@douyinfe/semi-ui':
-        specifier: ^2.88.3
-        version: 2.88.3(@floating-ui/dom@1.7.4)(@tiptap/suggestion@3.10.6(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(acorn@8.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^2.89.0
+        version: 2.89.0(@floating-ui/dom@1.7.4)(@tiptap/suggestion@3.10.6(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(acorn@8.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.7)(react@18.3.1)
@@ -64,11 +64,11 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2(react-refresh@0.18.0)(type-fest@0.21.3)(webpack-dev-server@5.2.2)(webpack@5.103.0)
       '@rsbuild/core':
-        specifier: ^1.6.12
-        version: 1.6.12
+        specifier: ^1.6.13
+        version: 1.6.13
       '@rsbuild/plugin-react':
         specifier: ^1.4.2
-        version: 1.4.2(@rsbuild/core@1.6.12)
+        version: 1.4.2(@rsbuild/core@1.6.13)
       '@rspack/cli':
         specifier: ^1.6.6
         version: 1.6.6(@rspack/core@1.6.6(@swc/helpers@0.5.17))(@types/express@4.17.22)(webpack-cli@6.0.1)(webpack@5.103.0)
@@ -92,19 +92,19 @@ importers:
         version: 19.2.3(@types/react@19.2.7)
       '@unpackjs/cli':
         specifier: ^3.2.0
-        version: 3.2.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3))
+        version: 3.2.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3))
       '@unpackjs/core':
         specifier: ^3.6.1
-        version: 3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
+        version: 3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
       '@unpackjs/plugin-react':
         specifier: ^3.3.0
-        version: 3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)
+        version: 3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.1
-        version: 5.1.1(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))
+        version: 5.1.1(vite@7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))
       '@vitejs/plugin-react-swc':
         specifier: ^4.2.2
-        version: 4.2.2(@swc/helpers@0.5.17)(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))
+        version: 4.2.2(@swc/helpers@0.5.17)(vite@7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))
       babel-loader:
         specifier: ^10.0.0
         version: 10.0.0(@babel/core@7.28.5)(webpack@5.103.0)
@@ -169,8 +169,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
       vite:
-        specifier: ^7.2.6
-        version: 7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
+        specifier: ^7.2.7
+        version: 7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
       webpack:
         specifier: ^5.103.0
         version: 5.103.0(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.5)(webpack-cli@6.0.1)
@@ -930,36 +930,36 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
 
-  '@douyinfe/semi-animation-react@2.88.3':
-    resolution: {integrity: sha512-Jhk/QXZ1Wz++D7PZpdRSc3Pj9sDHIDeOXal/zfzUVpEjuQWlD/ebup0MM50ChBkMPI9HkOQLCbZ2Z5qV7bX5SQ==}
+  '@douyinfe/semi-animation-react@2.89.0':
+    resolution: {integrity: sha512-6GSQMF2bIoWN2Bua4wYGCe//ltfE1/iNQRMF7+TybVMz9kBJU0gelFsvxxVnqpka994RuTvhe73CSWWdpLwjng==}
 
-  '@douyinfe/semi-animation-styled@2.88.3':
-    resolution: {integrity: sha512-VNuMBD4mffSB4yCzhxHf7/AIRddIxUzz6U+jHQbd0ZAt75CXmj6h/YNyURpaYspHKr3bMqgRW98956CTa8qbjQ==}
+  '@douyinfe/semi-animation-styled@2.89.0':
+    resolution: {integrity: sha512-y1wXswseGbJpPh3hJQ9aNjnMzecLh9eUERmSpQaWbDSdrzk65hBa91MMC2rk/wlIN0/Q6OAKU8FcMoSiBiuI0Q==}
 
-  '@douyinfe/semi-animation@2.88.3':
-    resolution: {integrity: sha512-x7Ef2IJjW8M0cgg41P7hgePlxz3XvWRVcov4fvzAE3LYBPgYRz9FL+k/gQ/OhT8PpnlHh5XpPUL3N2ATBLeiEQ==}
+  '@douyinfe/semi-animation@2.89.0':
+    resolution: {integrity: sha512-y6an913b841V0BAdR5qSLYvoK5C2OAbNKImzM+FzWmbRQjzbOEYcF3bqi5AZhY4mYk7v05k2W7U6fmaXYNOS1Q==}
 
-  '@douyinfe/semi-foundation@2.88.3':
-    resolution: {integrity: sha512-/jlSfki5Bg4lAqbl0oAUtHqzWqFijvqcHvH/dmU1wgLw/kZYj/bQkA3G9/VrTyWggfXmq2JC6bx9EoQAvXEsSQ==}
+  '@douyinfe/semi-foundation@2.89.0':
+    resolution: {integrity: sha512-Ryc2XywB3BVoUHETp5e7cY9x/ccweeKyCjqw/dcM16txeSpGxW7p1ykexGHRl3+dz1QcVrU4vp/ELD6GutC0Sg==}
 
-  '@douyinfe/semi-icons@2.88.3':
-    resolution: {integrity: sha512-g3YFaM8Jr0GRY9rV5OuxvmZiqZUN9grj+TdRC930StxBjxdp901WGhuaPGpkaVahO0mkX3hSAJVlQYPEF/MOzQ==}
+  '@douyinfe/semi-icons@2.89.0':
+    resolution: {integrity: sha512-LfUhh/S0+3bOdD7jy1xg5F1y6mXrYtDiIsA1Hmuhy3zhNSpSKSwfqPiV3IxwRRmGXFWjgiSefKd99h5OmKMPHg==}
     peerDependencies:
       react: '>=16.0.0'
 
-  '@douyinfe/semi-illustrations@2.88.3':
-    resolution: {integrity: sha512-L8nqLz7YaRTDM+ZSXmWLrt+zjaGl7SFOBT4QQG7O6q1gmaK2XOiHWLiiQYztp863cMr11LSBIckMy56M9ScCbQ==}
+  '@douyinfe/semi-illustrations@2.89.0':
+    resolution: {integrity: sha512-yAU4sSHr236E7ygTlwxupQkeF/W7EtfrUfRx3NUdGWuswMPAICz7d6Upa0XAZoCJ4skBZ5ItcQq9FfM+pw4wKg==}
     peerDependencies:
       react: '>=16.0.0'
 
-  '@douyinfe/semi-json-viewer-core@2.88.3':
-    resolution: {integrity: sha512-2tqTXbUrDYxZVu/Stl14Rv/WeiqbYlfyKmra9AIG81ZaqG1fP28g/dkiBlHVzUZbYCMM9s3EGAuZugn1jWkWKQ==}
+  '@douyinfe/semi-json-viewer-core@2.89.0':
+    resolution: {integrity: sha512-BGMJgg+tBFcwg3/7aJmtIXaHW+tSA6Tae3UfyhLYjUxcl6cFtYjtN0DAGwoia9KzUdNHoSAhl3GJVtGCBsmApQ==}
 
-  '@douyinfe/semi-theme-default@2.88.3':
-    resolution: {integrity: sha512-mCuxedgCT1bJChMEQ+AAJ8g0oJQZaXsL+vVKxjqISjFUutbUvs++K+A2pWobgZafOXu1JS+cpppPsEcR4G4JvQ==}
+  '@douyinfe/semi-theme-default@2.89.0':
+    resolution: {integrity: sha512-mdL6Ui1XMGW9L5tYl9uG3MnmyHaIXnRVa7b4PB0Y8kfFGAVzls5XBjZT5ACVtwxlVZrU5BrJBFOXGER5p1FVDg==}
 
-  '@douyinfe/semi-ui@2.88.3':
-    resolution: {integrity: sha512-lVW4euk+j+ev2c4c2LNwx1gwnEU6pGguaB5Z9E11DoyrvMtIg5irow5o1M4pG1r3xbU+4+oQqkRLPXAx01WPzg==}
+  '@douyinfe/semi-ui@2.89.0':
+    resolution: {integrity: sha512-XZ2yo2TgGWk8ubukJq7zbpKePpswQRq3nxeBlmL39SEben8AUfEq92vus0Hcmua5Y2wgi6TY2qWPgo+WEZCrkQ==}
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
@@ -2254,8 +2254,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@rsbuild/core@1.6.12':
-    resolution: {integrity: sha512-gHwDfAMMgK2Zu9JgiekX949F262g6yYY+/ZLTIaMXHZmqYLAgsu0XOeVogpfQa045xcnwcQfpieiB9zgukJSgw==}
+  '@rsbuild/core@1.6.13':
+    resolution: {integrity: sha512-7Isd9G6ufIK5+kPCH8OhvVAVD5clsak9bp9IfhyEWT8SH43cLuXsUpK+4w0a6JA/kM98ea7KJEigIuCHJ5wAag==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -6607,8 +6607,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@7.2.6:
-    resolution: {integrity: sha512-tI2l/nFHC5rLh7+5+o7QjKjSR04ivXDF4jcgV0f/bTQ+OJiITy5S6gaynVsEM+7RqzufMnVbIon6Sr5x1SDYaQ==}
+  vite@7.2.7:
+    resolution: {integrity: sha512-ITcnkFeR3+fI8P1wMgItjGrR10170d8auB4EpMLPqmx6uxElH3a/hHGQabSHKdqd4FXWO1nFIp9rRn7JQ34ACQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -7859,22 +7859,22 @@ snapshots:
       react: 18.3.1
       tslib: 2.8.1
 
-  '@douyinfe/semi-animation-react@2.88.3':
+  '@douyinfe/semi-animation-react@2.89.0':
     dependencies:
-      '@douyinfe/semi-animation': 2.88.3
-      '@douyinfe/semi-animation-styled': 2.88.3
+      '@douyinfe/semi-animation': 2.89.0
+      '@douyinfe/semi-animation-styled': 2.89.0
       classnames: 2.5.1
 
-  '@douyinfe/semi-animation-styled@2.88.3': {}
+  '@douyinfe/semi-animation-styled@2.89.0': {}
 
-  '@douyinfe/semi-animation@2.88.3':
+  '@douyinfe/semi-animation@2.89.0':
     dependencies:
       bezier-easing: 2.1.0
 
-  '@douyinfe/semi-foundation@2.88.3(acorn@8.15.0)':
+  '@douyinfe/semi-foundation@2.89.0(acorn@8.15.0)':
     dependencies:
-      '@douyinfe/semi-animation': 2.88.3
-      '@douyinfe/semi-json-viewer-core': 2.88.3
+      '@douyinfe/semi-animation': 2.89.0
+      '@douyinfe/semi-json-viewer-core': 2.89.0
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       async-validator: 3.5.2
       classnames: 2.5.1
@@ -7891,32 +7891,32 @@ snapshots:
       - acorn
       - supports-color
 
-  '@douyinfe/semi-icons@2.88.3(react@18.3.1)':
+  '@douyinfe/semi-icons@2.89.0(react@18.3.1)':
     dependencies:
       classnames: 2.5.1
       react: 18.3.1
 
-  '@douyinfe/semi-illustrations@2.88.3(react@18.3.1)':
+  '@douyinfe/semi-illustrations@2.89.0(react@18.3.1)':
     dependencies:
       react: 18.3.1
 
-  '@douyinfe/semi-json-viewer-core@2.88.3':
+  '@douyinfe/semi-json-viewer-core@2.89.0':
     dependencies:
       jsonc-parser: 3.3.1
 
-  '@douyinfe/semi-theme-default@2.88.3': {}
+  '@douyinfe/semi-theme-default@2.89.0': {}
 
-  '@douyinfe/semi-ui@2.88.3(@floating-ui/dom@1.7.4)(@tiptap/suggestion@3.10.6(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(acorn@8.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@douyinfe/semi-ui@2.89.0(@floating-ui/dom@1.7.4)(@tiptap/suggestion@3.10.6(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(acorn@8.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 7.0.2(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@dnd-kit/utilities': 3.2.2(react@18.3.1)
-      '@douyinfe/semi-animation': 2.88.3
-      '@douyinfe/semi-animation-react': 2.88.3
-      '@douyinfe/semi-foundation': 2.88.3(acorn@8.15.0)
-      '@douyinfe/semi-icons': 2.88.3(react@18.3.1)
-      '@douyinfe/semi-illustrations': 2.88.3(react@18.3.1)
-      '@douyinfe/semi-theme-default': 2.88.3
+      '@douyinfe/semi-animation': 2.89.0
+      '@douyinfe/semi-animation-react': 2.89.0
+      '@douyinfe/semi-foundation': 2.89.0(acorn@8.15.0)
+      '@douyinfe/semi-icons': 2.89.0(react@18.3.1)
+      '@douyinfe/semi-illustrations': 2.89.0(react@18.3.1)
+      '@douyinfe/semi-theme-default': 2.89.0
       '@tiptap/core': 3.11.0(@tiptap/pm@3.11.0)
       '@tiptap/extension-document': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
       '@tiptap/extension-hard-break': 3.11.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))
@@ -8471,14 +8471,14 @@ snapshots:
 
   '@manypkg/find-root@1.1.0':
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.4
       '@types/node': 12.20.55
       find-up: 4.1.0
       fs-extra: 8.1.0
 
   '@manypkg/get-packages@1.1.3':
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.4
       '@changesets/types': 4.1.0
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
@@ -9065,7 +9065,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.48.1':
     optional: true
 
-  '@rsbuild/core@1.6.12':
+  '@rsbuild/core@1.6.13':
     dependencies:
       '@rspack/core': 1.6.6(@swc/helpers@0.5.17)
       '@rspack/lite-tapable': 1.1.0
@@ -9073,7 +9073,7 @@ snapshots:
       core-js: 3.47.0
       jiti: 2.6.1
 
-  '@rsbuild/plugin-check-syntax@1.5.0(@rsbuild/core@1.6.12)':
+  '@rsbuild/plugin-check-syntax@1.5.0(@rsbuild/core@1.6.13)':
     dependencies:
       acorn: 8.15.0
       browserslist-to-es-version: 1.2.0
@@ -9081,11 +9081,11 @@ snapshots:
       picocolors: 1.1.1
       source-map: 0.7.6
     optionalDependencies:
-      '@rsbuild/core': 1.6.12
+      '@rsbuild/core': 1.6.13
 
-  '@rsbuild/plugin-react@1.4.2(@rsbuild/core@1.6.12)':
+  '@rsbuild/plugin-react@1.4.2(@rsbuild/core@1.6.13)':
     dependencies:
-      '@rsbuild/core': 1.6.12
+      '@rsbuild/core': 1.6.13
       '@rspack/plugin-react-refresh': 1.5.3(react-refresh@0.18.0)
       react-refresh: 0.18.0
     transitivePeerDependencies:
@@ -9093,9 +9093,9 @@ snapshots:
 
   '@rsdoctor/client@1.3.12': {}
 
-  '@rsdoctor/core@1.3.12(@rsbuild/core@1.6.12)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)':
+  '@rsdoctor/core@1.3.12(@rsbuild/core@1.6.13)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)':
     dependencies:
-      '@rsbuild/plugin-check-syntax': 1.5.0(@rsbuild/core@1.6.12)
+      '@rsbuild/plugin-check-syntax': 1.5.0(@rsbuild/core@1.6.13)
       '@rsdoctor/graph': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rsdoctor/sdk': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rsdoctor/types': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
@@ -9126,9 +9126,9 @@ snapshots:
       - '@rspack/core'
       - webpack
 
-  '@rsdoctor/rspack-plugin@1.3.12(@rsbuild/core@1.6.12)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)':
+  '@rsdoctor/rspack-plugin@1.3.12(@rsbuild/core@1.6.13)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)':
     dependencies:
-      '@rsdoctor/core': 1.3.12(@rsbuild/core@1.6.12)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
+      '@rsdoctor/core': 1.3.12(@rsbuild/core@1.6.13)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rsdoctor/graph': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rsdoctor/sdk': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rsdoctor/types': 1.3.12(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
@@ -9786,15 +9786,15 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@unpackjs/cli@3.2.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3))':
+  '@unpackjs/cli@3.2.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3))':
     dependencies:
-      '@unpackjs/core': 3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
-      '@unpackjs/plugin-react': 3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)
+      '@unpackjs/core': 3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@unpackjs/plugin-react': 3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)
       cac: 6.7.14
 
-  '@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)':
+  '@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)':
     dependencies:
-      '@rsdoctor/rspack-plugin': 1.3.12(@rsbuild/core@1.6.12)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
+      '@rsdoctor/rspack-plugin': 1.3.12(@rsbuild/core@1.6.13)(@rspack/core@1.6.6(@swc/helpers@0.5.17))(webpack@5.103.0)
       '@rspack/core': 1.6.6(@swc/helpers@0.5.17)
       '@rspack/dev-server': 1.1.4(@rspack/core@1.6.6(@swc/helpers@0.5.17))(@types/express@4.17.22)(webpack-cli@6.0.1)(webpack@5.103.0)
       '@types/less': 3.0.8
@@ -9819,27 +9819,27 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)':
+  '@unpackjs/plugin-react@3.3.0(@unpackjs/core@3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0))(typescript@5.9.3)':
     dependencies:
       '@rspack/plugin-react-refresh': 1.5.3(react-refresh@0.18.0)
       '@svgr/webpack': 8.1.0(typescript@5.9.3)
       '@swc/helpers': 0.5.17
-      '@unpackjs/core': 3.6.1(@rsbuild/core@1.6.12)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
+      '@unpackjs/core': 3.6.1(@rsbuild/core@1.6.13)(@swc/helpers@0.5.17)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.103.0)
       react-refresh: 0.18.0
     transitivePeerDependencies:
       - supports-color
       - typescript
       - webpack-hot-middleware
 
-  '@vitejs/plugin-react-swc@4.2.2(@swc/helpers@0.5.17)(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))':
+  '@vitejs/plugin-react-swc@4.2.2(@swc/helpers@0.5.17)(vite@7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.47
       '@swc/core': 1.13.5(@swc/helpers@0.5.17)
-      vite: 7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
+      vite: 7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitejs/plugin-react@5.1.1(vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))':
+  '@vitejs/plugin-react@5.1.1(vite@7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0))':
     dependencies:
       '@babel/core': 7.28.5
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.5)
@@ -9847,7 +9847,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.47
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
+      vite: 7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10575,7 +10575,7 @@ snapshots:
 
   date-fns@2.30.0:
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.4
 
   dayjs@1.11.13: {}
 
@@ -13318,7 +13318,7 @@ snapshots:
 
   react-window@1.8.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.4
       memoize-one: 5.2.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -14233,7 +14233,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite@7.2.6(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0):
+  vite@7.2.7(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.41.0):
     dependencies:
       esbuild: 0.25.5
       fdir: 6.5.0(picomatch@4.0.3)
