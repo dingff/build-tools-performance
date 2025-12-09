@@ -603,11 +603,11 @@ async function runBenchmark() {
         timeout: 5 * 60 * 1000,
         waitUntil: 'networkidle0', // Wait for network to be idle
       })
-
+      /** vite full bundle compatible start */
+      await devColdStartPromise
+      /** vite full bundle compatible end */
       // Additional wait to ensure page is fully interactive before HMR tests
-      await new Promise((resolve) =>
-        setTimeout(resolve, isCI ? (isViteFullBundle ? 60000 : 10000) : 3000),
-      )
+      await new Promise((resolve) => setTimeout(resolve, isCI ? 10000 : 3000))
 
       let waitResolve = null
       let waitReject = null
