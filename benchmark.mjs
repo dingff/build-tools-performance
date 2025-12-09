@@ -727,34 +727,6 @@ async function runBenchmark() {
               perfResult[buildTool.name].leafHmr = hmrTime
             }
           }
-          /** vite full bundle compatible start */
-          if (isFinished()) {
-            clearTimeout(hmrTimeout)
-            page.close()
-            waitResolve()
-          }
-        } else if (isViteFullBundle && event.text().includes('[vite] connected')) {
-          if (perfResult[buildTool.name]?.rootHmr === undefined && hmrRootStart !== -1) {
-            const currentTime = Date.now()
-            const hmrTime = currentTime - hmrRootStart
-            if (hmrTime < 0 || hmrTime > 30000) {
-              perfResult[buildTool.name].rootHmr = 'Failed'
-            } else {
-              perfResult[buildTool.name].rootHmr = hmrTime
-              if (rootHmrResolve) {
-                rootHmrResolve()
-              }
-            }
-          } else if (perfResult[buildTool.name]?.leafHmr === undefined && hmrLeafStart !== -1) {
-            const currentTime = Date.now()
-            const hmrTime = currentTime - hmrLeafStart
-            if (hmrTime < 0 || hmrTime > 30000) {
-              perfResult[buildTool.name].leafHmr = 'Failed'
-            } else {
-              perfResult[buildTool.name].leafHmr = hmrTime
-            }
-          }
-          /** vite full bundle compatible end */
           if (isFinished()) {
             clearTimeout(hmrTimeout)
             page.close()
@@ -800,7 +772,7 @@ async function runBenchmark() {
           throw e
         }
       }
-
+      await new Promise((resolve) => setTimeout(resolve, 3000))
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')
 
