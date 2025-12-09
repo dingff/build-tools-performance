@@ -411,6 +411,14 @@ toolNames.forEach((name) => {
           buildScript: 'build:vite',
           binFilePath: 'vite/bin/vite.js',
         }),
+        new BuildTool({
+          name: 'Vite (Full Bundle) ' + require('vite/package.json').version,
+          port: 5173,
+          startScript: 'start:vite:full-bundle',
+          startedRegex: /ready in (\d+) (s|ms)/,
+          buildScript: 'build:vite',
+          binFilePath: 'vite/bin/vite.js',
+        }),
       )
       break
     case 'webpack':
