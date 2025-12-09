@@ -80,11 +80,14 @@ export function updateReadme({
       const myChart = new QuickChart()
       myChart.setFormat('svg')
       myChart.setBackgroundColor('transparent')
-      const dataArr = labels.map(
-        (name) =>
-          averageResultsNumbers[name]?.[dimension.name] ||
-          sizeResults[name]?.[dimension.name].toFixed(1),
-      )
+      const dataArr = labels.map((name) => {
+        const perfVal = averageResultsNumbers[name]?.[dimension.name]
+        const sizeVal = sizeResults[name]?.[dimension.name]
+        if (typeof perfVal === 'number' && Number.isFinite(perfVal)) return perfVal
+        if (typeof sizeVal === 'number' && Number.isFinite(sizeVal))
+          return Number(sizeVal.toFixed(1))
+        return 0
+      })
       myChart.setConfig({
         type: 'horizontalBar',
         data: {
