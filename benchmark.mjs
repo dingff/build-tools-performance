@@ -447,14 +447,6 @@ toolNames.forEach((name) => {
       break
     case 'unpack':
       buildTools.push(
-        // new BuildTool({
-        //   name: 'Unpack (Native Watcher) ' + require('@unpackjs/core/package.json').version,
-        //   port: 4000,
-        //   startScript: 'start:unpack:native-watcher',
-        //   startedRegex: /ready in (\d+) ms/,
-        //   buildScript: 'build:unpack',
-        //   binFilePath: '@unpackjs/cli/bin/unpack.js',
-        // }),
         new BuildTool({
           name: 'Unpack ' + require('@unpackjs/core/package.json').version,
           port: 4000,
@@ -467,6 +459,14 @@ toolNames.forEach((name) => {
           name: 'Unpack (Prebundle) ' + require('@unpackjs/core/package.json').version,
           port: 4000,
           startScript: 'start:unpack:prebundle',
+          startedRegex: /ready in (\d+) ms/,
+          buildScript: 'build:unpack',
+          binFilePath: '@unpackjs/cli/bin/unpack.js',
+        }),
+        new BuildTool({
+          name: 'Unpack (Prebundle Plus) ' + require('@unpackjs/core/package.json').version,
+          port: 4000,
+          startScript: 'start:unpack:prebundle-plus',
           startedRegex: /ready in (\d+) ms/,
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/unpack.js',

@@ -16,16 +16,15 @@ export default defineConfig({
     css: Boolean(process.env.EXPERIMENTS_CSS),
   },
   dev: {
-    prebundle: Boolean(process.env.PREBUNDLE),
+    prebundle: process.env.PREBUNDLE
+      ? {
+          exclude: process.env.PREBUNDLE_PLUS ? [] : ['@iconify-icons/material-symbols'],
+        }
+      : false,
   },
   typeCheck: false,
   plugins: [pluginReact()],
   build: {
     target: 'es2022',
   },
-  // bundlerConfig: {
-  //   experiments: {
-  //     nativeWatcher: Boolean(process.env.NATIVE_WATCHER),
-  //   },
-  // },
 })
