@@ -541,9 +541,9 @@ async function runBenchmark() {
       const time = await buildTool.startServer()
       page = await browser.newPage()
       const start = Date.now()
+      let devColdStartMeasured = false
       /** vite full bundle compatible start */
       const isViteFullBundle = /Vite \(Full Bundle\)/.test(buildTool.name)
-      let devColdStartMeasured = false
       let pendingReload = false
       let devColdStartResolve = null
       const devColdStartPromise = new Promise((resolve) => {
@@ -563,9 +563,7 @@ async function runBenchmark() {
       }
       /** vite full bundle compatible end */
       page.on('load', () => {
-        /** vite full bundle compatible start */
         if (devColdStartMeasured) return
-        /** vite full bundle compatible end */
         const loadTime = Date.now() - start
         /** vite full bundle compatible start */
         if (isViteFullBundle && !pendingReload) {
@@ -583,8 +581,8 @@ async function runBenchmark() {
         perfResult[buildTool.name].devColdStart = time + loadTime
         perfResult[buildTool.name].serverStart = time
         perfResult[buildTool.name].onLoad = loadTime
-        /** vite full bundle compatible start */
         devColdStartMeasured = true
+        /** vite full bundle compatible start */
         if (reloadListener && buildTool.child && buildTool.child.stdout) {
           buildTool.child.stdout.off('data', reloadListener)
           reloadListener = null
@@ -604,7 +602,9 @@ async function runBenchmark() {
         waitUntil: 'networkidle0', // Wait for network to be idle
       })
       /** vite full bundle compatible start */
-      await devColdStartPromise
+      if (isViteFullBundle) {
+        await devColdStartPromise
+      }
       /** vite full bundle compatible end */
       // Additional wait to ensure page is fully interactive before HMR tests
       await new Promise((resolve) => setTimeout(resolve, isCI ? 10000 : 3000))
@@ -739,14 +739,6 @@ async function runBenchmark() {
 
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
-      /** vite full bundle compatible start */
-      if (isViteFullBundle) {
-        await Promise.race([
-          devColdStartPromise,
-          new Promise((resolve) => setTimeout(resolve, 90000)),
-        ])
-      }
-      /** vite full bundle compatible end */
 
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
