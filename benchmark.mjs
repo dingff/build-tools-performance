@@ -541,9 +541,37 @@ async function runBenchmark() {
       const time = await buildTool.startServer()
       page = await browser.newPage()
       const start = Date.now()
+      /** vite full bundle compatible start */
+      const isViteFullBundle = /Vite \(Full Bundle\)/.test(buildTool.name)
+      let devColdStartMeasured = false
+      let pendingReload = false
+      let devColdStartResolve = null
+      const devColdStartPromise = new Promise((resolve) => {
+        devColdStartResolve = resolve
+      })
 
+      const viteReloadRegex = /\[vite\]\s+\(client\)\s+page reload/i
+      let reloadListener = null
+      if (isViteFullBundle && buildTool.child && buildTool.child.stdout) {
+        reloadListener = (data) => {
+          const text = data.toString()
+          if (viteReloadRegex.test(text)) {
+            pendingReload = true
+          }
+        }
+        buildTool.child.stdout.on('data', reloadListener)
+      }
+      /** vite full bundle compatible end */
       page.on('load', () => {
+        /** vite full bundle compatible start */
+        if (devColdStartMeasured) return
+        /** vite full bundle compatible end */
         const loadTime = Date.now() - start
+        /** vite full bundle compatible start */
+        if (isViteFullBundle && !pendingReload) {
+          return
+        }
+        /** vite full bundle compatible end */
         logger.success(
           color.dim(buildTool.name) + ' dev cold start in ' + color.green(time + loadTime + 'ms'),
         )
@@ -555,6 +583,17 @@ async function runBenchmark() {
         perfResult[buildTool.name].devColdStart = time + loadTime
         perfResult[buildTool.name].serverStart = time
         perfResult[buildTool.name].onLoad = loadTime
+        /** vite full bundle compatible start */
+        devColdStartMeasured = true
+        if (reloadListener && buildTool.child && buildTool.child.stdout) {
+          buildTool.child.stdout.off('data', reloadListener)
+          reloadListener = null
+        }
+        if (devColdStartResolve) {
+          devColdStartResolve()
+          devColdStartResolve = null
+        }
+        /** vite full bundle compatible end */
       })
 
       logger.info(color.dim('Navigating to' + ` http://localhost:${buildTool.port}`))
@@ -592,6 +631,11 @@ async function runBenchmark() {
 
       let hmrRootStart = -1
       let hmrLeafStart = -1
+
+      let rootHmrResolve = null
+      const rootHmrPromise = new Promise((resolve) => {
+        rootHmrResolve = resolve
+      })
 
       // Ensure perfResult object is initialized
       if (!perfResult[buildTool.name]) {
@@ -640,6 +684,9 @@ async function runBenchmark() {
                 color.dim(buildTool.name) + ' root HMR in ' + color.green(hmrTime + 'ms'),
               )
               perfResult[buildTool.name].rootHmr = hmrTime
+              if (rootHmrResolve) {
+                rootHmrResolve()
+              }
             }
           }
 
@@ -680,7 +727,34 @@ async function runBenchmark() {
               perfResult[buildTool.name].leafHmr = hmrTime
             }
           }
-
+          /** vite full bundle compatible start */
+          if (isFinished()) {
+            clearTimeout(hmrTimeout)
+            page.close()
+            waitResolve()
+          }
+        } else if (isViteFullBundle && event.text().includes('[vite] connected')) {
+          if (perfResult[buildTool.name]?.rootHmr === undefined && hmrRootStart !== -1) {
+            const currentTime = Date.now()
+            const hmrTime = currentTime - hmrRootStart
+            if (hmrTime < 0 || hmrTime > 30000) {
+              perfResult[buildTool.name].rootHmr = 'Failed'
+            } else {
+              perfResult[buildTool.name].rootHmr = hmrTime
+              if (rootHmrResolve) {
+                rootHmrResolve()
+              }
+            }
+          } else if (perfResult[buildTool.name]?.leafHmr === undefined && hmrLeafStart !== -1) {
+            const currentTime = Date.now()
+            const hmrTime = currentTime - hmrLeafStart
+            if (hmrTime < 0 || hmrTime > 30000) {
+              perfResult[buildTool.name].leafHmr = 'Failed'
+            } else {
+              perfResult[buildTool.name].leafHmr = hmrTime
+            }
+          }
+          /** vite full bundle compatible end */
           if (isFinished()) {
             clearTimeout(hmrTimeout)
             page.close()
@@ -691,6 +765,14 @@ async function runBenchmark() {
 
       const rootFilePath = path.join(__dirname, 'src', caseName, 'f0.jsx')
       const originalRootFileContent = readFileSync(rootFilePath, 'utf-8')
+      /** vite full bundle compatible start */
+      if (isViteFullBundle) {
+        await Promise.race([
+          devColdStartPromise,
+          new Promise((resolve) => setTimeout(resolve, 90000)),
+        ])
+      }
+      /** vite full bundle compatible end */
 
       // Record the timestamp when we start the file modification process
       const fileModStartTime = Date.now()
@@ -711,7 +793,13 @@ async function runBenchmark() {
       // Set start time to the file modification time for consistent measurement
       hmrRootStart = fileModStartTime
 
-      await new Promise((resolve) => setTimeout(resolve, isCI ? 10000 : 3000))
+      try {
+        await Promise.race([rootHmrPromise, waitPromise])
+      } catch (e) {
+        if (e.message !== 'HMR timeout') {
+          throw e
+        }
+      }
 
       const leafFilePath = path.join(__dirname, 'src', caseName, 'd0/d0/d0/f0.jsx')
       const originalLeafFileContent = readFileSync(leafFilePath, 'utf-8')

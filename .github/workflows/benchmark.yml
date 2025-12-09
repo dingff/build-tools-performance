@@ -17,7 +17,7 @@ on:
           - medium
           - large
       debug:
-        description: 'debug'
+        description: 'Enable debug mode'
         required: false
         default: false
         type: boolean
