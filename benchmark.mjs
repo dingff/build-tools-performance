@@ -33,6 +33,7 @@ const startConsoleRegex = /Benchmark Start Time (\d+)/
 
 const caseName = process.env.CASE ?? 'medium'
 process.env.CASE = caseName
+const benchmarkStart = Date.now()
 
 // Restore Next.js entry to default state
 function restoreNextEntry() {
@@ -1255,5 +1256,26 @@ updateReadme({
   averageResultsNumbers,
   sizeResults,
 })
+const prettyTime = (milliseconds) => {
+  const seconds = milliseconds / 1000
+  const toFixed = (num, len) => {
+    const factor = 10 ** len
+    return Math.floor(num * factor) / factor
+  }
+  if (seconds < 1) {
+    return `${toFixed(seconds * 1000, 0)}ms`
+  }
+  if (seconds < 60) {
+    return `${toFixed(seconds, 2)}s`
+  }
+  return `${toFixed(seconds / 60, 2)}m`
+}
+
+logger.info(
+  'Benchmark case ' +
+    color.green(`"${caseName}"`) +
+    ' completed in ' +
+    color.green(prettyTime(Date.now() - benchmarkStart)),
+)
 
 process.exit(0)
