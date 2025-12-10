@@ -1,7 +1,6 @@
 const path = require('node:path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { EsbuildPlugin } = require('esbuild-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -15,7 +14,7 @@ module.exports = {
   devtool: isProd ? false : 'cheap-module-source-map',
   entry: path.join(caseDir, 'index.jsx'),
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['...', '.tsx', '.ts', '.jsx'],
   },
   module: {
     rules: [
@@ -43,10 +42,6 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
-      {
         test: /\.svg$/,
         type: 'asset',
       },
@@ -57,11 +52,10 @@ module.exports = {
     hot: true,
   },
   plugins: [
-    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(caseDir, 'index-rspack.html'),
     }),
-    isProd ? null : new ReactRefreshWebpackPlugin(),
+    !isProd && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
   optimization: {
     minimize: isProd,
@@ -73,6 +67,7 @@ module.exports = {
     ],
   },
   experiments: {
+    css: true,
     lazyCompilation: !isProd
       ? {
           entries: false,
