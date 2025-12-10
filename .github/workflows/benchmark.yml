@@ -1,9 +1,6 @@
 name: Benchmark
 
 on:
-  schedule:
-    # Run daily at 2:30 AM Beijing time (UTC 18:30)
-    - cron: '30 18 * * *'
   
   workflow_dispatch:
     inputs:
