@@ -137,8 +137,7 @@ export function updateReadme({
                 ticks: {
                   display: false,
                   min: 0,
-                  // For score, max is 100. For others, auto-scale.
-                  suggestedMax: dimension.name === 'dxScore' ? 100 : Math.max(...dataArr) * 1.15,
+                  suggestedMax: Math.max(...dataArr) * 1.15,
                 },
               },
             ],

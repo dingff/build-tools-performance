@@ -1136,68 +1136,58 @@ function calculateAndFormatResults(results) {
 }
 
 const formattedResults = calculateAndFormatResults(averageResultsNumbers)
+
 function calculateDXScore(results) {
   const scores = {}
 
-  // 1. 权重配置 (建议总和为 1，或者 100 也可以，代码会自动归一化)
-  const WEIGHTS = {
-    leafHmr: 0.35,
-    rootHmr: 0.2,
-    startup: 0.15,
-    pageReload: 0.2,
-    prodBuild: 0.1,
+  // 定义缩放系数
+  let scaleFactor = 1
+  if (caseName === 'medium') {
+    scaleFactor = 0.5
+  } else if (caseName === 'small') {
+    scaleFactor = 0.3
   }
 
-  const metricKeys = Object.keys(WEIGHTS)
-
-  // 2. 动态计算每一项指标的 Min (最好) 和 Max (最差)
-  const ranges = {}
-  metricKeys.forEach((key) => {
-    ranges[key] = { min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY }
-  })
-
-  // 遍历寻找最大最小值
-  for (const metrics of Object.values(results)) {
-    metricKeys.forEach((key) => {
-      const val = metrics[key]
-      if (typeof val === 'number' && !Number.isNaN(val)) {
-        if (val < ranges[key].min) ranges[key].min = val
-        if (val > ranges[key].max) ranges[key].max = val
-      }
-    })
+  // 基准配置表 (对应 Large Case 的标准)
+  const BASE_CONFIG = {
+    leafHmr: { weight: 0.35, threshold: 150, sensitivity: 1.2 },
+    rootHmr: { weight: 0.25, threshold: 150, sensitivity: 1.2 },
+    pageReload: { weight: 0.15, threshold: 500, sensitivity: 1 },
+    startup: { weight: 0.15, threshold: 1500, sensitivity: 1 },
+    prodBuild: { weight: 0.1, threshold: 1500, sensitivity: 0.8 },
   }
 
-  // 3. 计算分数
   for (const [name, metrics] of Object.entries(results)) {
     let totalScore = 0
     let totalWeight = 0
 
-    metricKeys.forEach((key) => {
+    for (const [key, config] of Object.entries(BASE_CONFIG)) {
       const val = metrics[key]
-      const { min, max } = ranges[key]
-      const weight = WEIGHTS[key]
+      const { weight, threshold, sensitivity } = config
 
-      // 无论数据是否有值，权重都要计入 totalWeight
-      // 这样如果某项缺失（NaN），相当于该项得 0 分，但分母依然包含它，从而拉低总分
+      // 动态计算当前 Case 的阈值
+      const currentThreshold = threshold * scaleFactor
+
       totalWeight += weight
 
-      // 如果数据无效，不加分 (totalScore += 0)
-      if (typeof val !== 'number' || Number.isNaN(val)) {
-        return
+      // 如果数据无效，跳过
+      if (typeof val !== 'number' || Number.isNaN(val) || val <= 0) {
+        continue
       }
 
-      // 核心打分逻辑
-      if (max === min) {
-        // 如果大家数值都一样，这一项大家都得满分
-        totalScore += 100 * weight
+      let metricScore = 0
+
+      if (val <= currentThreshold) {
+        // 在当前规模的阈值内，满分
+        metricScore = 100
       } else {
-        // 相对排名公式
-        const score = ((max - val) / (max - min)) * 100
-        totalScore += score * weight
+        // 超出阈值，计算衰减
+        metricScore = 100 * (currentThreshold / val) ** sensitivity
       }
-    })
 
-    // 这样无论你的权重设置是 0.x 还是整数 10, 20...，结果都会被还原到 0-100 区间
+      totalScore += metricScore * weight
+    }
+
     scores[name] = totalWeight > 0 ? Math.round(totalScore / totalWeight) : 0
   }
 
