@@ -31,7 +31,7 @@ const __dirname = import.meta.dirname
 const startConsole = "console.log('Benchmark Start Time', Date.now());"
 const startConsoleRegex = /Benchmark Start Time (\d+)/
 
-const caseName = process.env.CASE ?? 'medium'
+const caseName = process.env.CASE ?? 'large'
 process.env.CASE = caseName
 const benchmarkStart = Date.now()
 
@@ -369,7 +369,7 @@ const parseToolNames = () => {
     return process.env.TOOLS?.split(',').map((item) => item.toLowerCase())
   }
 
-  const defaultTools = ['farm', 'rspack', 'rsbuild', 'unpack', 'next', 'vite']
+  const defaultTools = ['farm', 'rspack', 'rsbuild', 'unpack', 'next', 'vite', 'webpack']
   return defaultTools
 }
 

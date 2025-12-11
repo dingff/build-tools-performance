@@ -2,7 +2,7 @@ import path from 'node:path'
 import { defineConfig } from '@farmfe/core'
 
 const isProd = process.env.NODE_ENV === 'production'
-const caseName = process.env.CASE ?? 'medium'
+const caseName = process.env.CASE
 
 export default defineConfig({
   compilation: {

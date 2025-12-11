@@ -5,17 +5,8 @@ import { fileURLToPath } from 'node:url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Get environment variable CASE, default to 'medium'
-const caseType = process.env.CASE || 'medium'
-
-// Supported case types
-const supportedCases = ['small', 'medium', 'large']
-
-if (!supportedCases.includes(caseType)) {
-  console.error(`❌ Unsupported case type: ${caseType}`)
-  console.error(`✅ Supported case types: ${supportedCases.join(', ')}`)
-  process.exit(1)
-}
+// Get environment variable CASE
+const caseType = process.env.CASE
 
 // Next.js page file path
 const pageFilePath = path.resolve(__dirname, '../src/app/page.jsx')

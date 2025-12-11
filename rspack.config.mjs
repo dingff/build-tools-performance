@@ -1,11 +1,10 @@
-// @ts-check
 import path from 'node:path'
 import { defineConfig } from '@rspack/cli'
 import { rspack } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 
 const isProd = process.env.NODE_ENV === 'production'
-const caseName = process.env.CASE ?? 'medium'
+const caseName = process.env.CASE
 const caseDir = path.join(import.meta.dirname, './src', caseName)
 
 export default defineConfig({
