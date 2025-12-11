@@ -1140,7 +1140,7 @@ const formattedResults = calculateAndFormatResults(averageResultsNumbers)
 function calculateDXScore(results) {
   const scores = {}
 
-  // 定义缩放系数
+  // Define scale factor
   let scaleFactor = 1
   if (caseName === 'medium') {
     scaleFactor = 0.5
@@ -1148,7 +1148,7 @@ function calculateDXScore(results) {
     scaleFactor = 0.3
   }
 
-  // 基准配置表 (对应 Large Case 的标准)
+  // Baseline configuration (standard for the Large case)
   const BASE_CONFIG = {
     leafHmr: { weight: 0.35, threshold: 150, sensitivity: 1.2 },
     rootHmr: { weight: 0.25, threshold: 150, sensitivity: 1.2 },
@@ -1165,12 +1165,12 @@ function calculateDXScore(results) {
       const val = metrics[key]
       const { weight, threshold, sensitivity } = config
 
-      // 动态计算当前 Case 的阈值
+      // Dynamically compute the threshold for the current case
       const currentThreshold = threshold * scaleFactor
 
       totalWeight += weight
 
-      // 如果数据无效，跳过
+      // Skip if data is invalid
       if (typeof val !== 'number' || Number.isNaN(val) || val <= 0) {
         continue
       }
@@ -1178,10 +1178,10 @@ function calculateDXScore(results) {
       let metricScore = 0
 
       if (val <= currentThreshold) {
-        // 在当前规模的阈值内，满分
+        // Within the threshold for the current scale, full score
         metricScore = 100
       } else {
-        // 超出阈值，计算衰减
+        // Above the threshold, apply decay
         metricScore = 100 * (currentThreshold / val) ** sensitivity
       }
 
