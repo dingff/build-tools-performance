@@ -542,13 +542,13 @@ async function runBenchmark() {
       const time = await buildTool.startServer()
       page = await browser.newPage()
       const start = Date.now()
-      let devColdStartMeasured = false
+      let startupMeasured = false
       /** vite full bundle compatible start */
       const isViteFullBundle = /Vite \(Full Bundle\)/.test(buildTool.name)
       let pendingReload = false
-      let devColdStartResolve = null
-      const devColdStartPromise = new Promise((resolve) => {
-        devColdStartResolve = resolve
+      let startupResolve = null
+      const startupPromise = new Promise((resolve) => {
+        startupResolve = resolve
       })
 
       const viteReloadRegex = /\[vite\]\s+\(client\)\s+page reload/i
@@ -564,7 +564,7 @@ async function runBenchmark() {
       }
       /** vite full bundle compatible end */
       page.on('load', () => {
-        if (devColdStartMeasured) return
+        if (startupMeasured) return
         const loadTime = Date.now() - start
         /** vite full bundle compatible start */
         if (isViteFullBundle && !pendingReload) {
@@ -572,25 +572,25 @@ async function runBenchmark() {
         }
         /** vite full bundle compatible end */
         logger.success(
-          color.dim(buildTool.name) + ' dev cold start in ' + color.green(time + loadTime + 'ms'),
+          color.dim(buildTool.name) + ' startup in ' + color.green(time + loadTime + 'ms'),
         )
 
         if (!perfResult[buildTool.name]) {
           perfResult[buildTool.name] = {}
         }
 
-        perfResult[buildTool.name].devColdStart = time + loadTime
+        perfResult[buildTool.name].startup = time + loadTime
         perfResult[buildTool.name].serverStart = time
         perfResult[buildTool.name].onLoad = loadTime
-        devColdStartMeasured = true
+        startupMeasured = true
         /** vite full bundle compatible start */
         if (reloadListener && buildTool.child && buildTool.child.stdout) {
           buildTool.child.stdout.off('data', reloadListener)
           reloadListener = null
         }
-        if (devColdStartResolve) {
-          devColdStartResolve()
-          devColdStartResolve = null
+        if (startupResolve) {
+          startupResolve()
+          startupResolve = null
         }
         /** vite full bundle compatible end */
       })
@@ -604,7 +604,7 @@ async function runBenchmark() {
       })
       /** vite full bundle compatible start */
       if (isViteFullBundle) {
-        await devColdStartPromise
+        await startupPromise
       }
       /** vite full bundle compatible end */
       // Additional wait to ensure page is fully interactive before HMR tests
@@ -826,12 +826,10 @@ async function runBenchmark() {
             color.green(buildResult.actualBuild + 'ms'),
         )
         logger.success(
-          color.dim(buildTool.name) + ' total size: ' + color.green(formatKB(sizes.totalSize)),
+          color.dim(buildTool.name) + ' output size: ' + color.green(formatKB(sizes.outputSize)),
         )
         logger.success(
-          color.dim(buildTool.name) +
-            ' gzipped size: ' +
-            color.green(formatKB(sizes.totalGzipSize)),
+          color.dim(buildTool.name) + ' gzipped size: ' + color.green(formatKB(sizes.gzippedSize)),
         )
 
         perfResult[buildTool.name].actualBuild = buildResult.actualBuild
@@ -841,8 +839,8 @@ async function runBenchmark() {
         perfResult[buildTool.name].actualBuild = 'Failed'
         perfResult[buildTool.name].prodBuild = 'Failed'
         sizeResults[buildTool.name] = {
-          totalSize: 'Failed',
-          totalGzipSize: 'Failed',
+          outputSize: 'Failed',
+          gzippedSize: 'Failed',
         }
       }
 
@@ -890,8 +888,8 @@ function formatKB(val) {
 async function getFileSizes(targetDir) {
   try {
     let files = await glob(convertPath(path.join(targetDir, '**/*')))
-    let totalSize = 0
-    let totalGzipSize = 0
+    let outputSize = 0
+    let gzippedSize = 0
 
     files = files.filter((file) => {
       return !(file.endsWith('.map') || file.endsWith('.LICENSE.txt'))
@@ -901,8 +899,8 @@ async function getFileSizes(targetDir) {
       files.map(async (file) => {
         try {
           const content = await fse.readFile(file, 'utf-8')
-          totalSize += Buffer.byteLength(content)
-          totalGzipSize += gzipSizeSync(content)
+          outputSize += Buffer.byteLength(content)
+          gzippedSize += gzipSizeSync(content)
         } catch (error) {
           logger.warn(`Failed to read file ${file}: ${error.message}`)
           // Continue processing other files
@@ -912,14 +910,14 @@ async function getFileSizes(targetDir) {
 
     // Return numeric sizes in kilobytes for downstream formatting
     return {
-      totalSize: totalSize / 1000,
-      totalGzipSize: totalGzipSize / 1000,
+      outputSize: outputSize / 1000,
+      gzippedSize: gzippedSize / 1000,
     }
   } catch (error) {
     logger.error(`Failed to get file sizes from ${targetDir}: ${error.message}`)
     return {
-      totalSize: 'Error',
-      totalGzipSize: 'Error',
+      outputSize: 'Error',
+      gzippedSize: 'Error',
     }
   }
 }
@@ -982,7 +980,7 @@ for (const [name, values] of Object.entries(averageResults)) {
 
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
-  const metrics = ['devColdStart', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
+  const metrics = ['startup', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
 
   const formattedResults = {}
   const resultsEntries = Object.entries(results)
@@ -1035,35 +1033,35 @@ function calculateAndFormatResults(results) {
     }
   }
 
-  // Process Dev cold start (special case: devColdStart = serverStart + onLoad)
-  let minDevColdStart = Number.POSITIVE_INFINITY
+  // Process Startup (special case: startup = serverStart + onLoad)
+  let minStartup = Number.POSITIVE_INFINITY
   for (const [, values] of resultsEntries) {
-    const devColdStartValue = getNumericValue(values, 'devColdStart')
-    if (devColdStartValue !== null && devColdStartValue < minDevColdStart) {
-      minDevColdStart = devColdStartValue
+    const startupValue = getNumericValue(values, 'startup')
+    if (startupValue !== null && startupValue < minStartup) {
+      minStartup = startupValue
     }
   }
 
-  if (minDevColdStart !== Number.POSITIVE_INFINITY) {
+  if (minStartup !== Number.POSITIVE_INFINITY) {
     for (const [name, values] of resultsEntries) {
-      const devColdStartValue = getNumericValue(values, 'devColdStart')
+      const startupValue = getNumericValue(values, 'startup')
       const serverStartValue = getNumericValue(values, 'serverStart')
       const onLoadValue = getNumericValue(values, 'onLoad')
 
-      if (devColdStartValue !== null && serverStartValue !== null && onLoadValue !== null) {
-        const multiplier = devColdStartValue / minDevColdStart
+      if (startupValue !== null && serverStartValue !== null && onLoadValue !== null) {
+        const multiplier = startupValue / minStartup
 
         if (!formattedResults[name]) {
           formattedResults[name] = {}
         }
 
-        formattedResults[name].devColdStart =
-          `${devColdStartValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x`
+        formattedResults[name].startup =
+          `${startupValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x`
       } else {
         if (!formattedResults[name]) {
           formattedResults[name] = {}
         }
-        formattedResults[name].devColdStart = 'Failed'
+        formattedResults[name].startup = 'Failed'
       }
     }
   }
@@ -1111,7 +1109,7 @@ function calculateDXScore(results) {
   const WEIGHTS = {
     leafHmr: 0.4,
     rootHmr: 0.25,
-    devColdStart: 0.2,
+    startup: 0.2,
     prodBuild: 0.15,
   }
 
@@ -1182,79 +1180,79 @@ function formatBundleSizesWithMultipliers(sizeResults) {
   for (const [name, sizes] of Object.entries(sizeResults)) {
     // Skip failed/error entries
     if (
-      sizes.totalSize === 'Failed' ||
-      sizes.totalSize === 'Error' ||
-      sizes.totalGzipSize === 'Failed' ||
-      sizes.totalGzipSize === 'Error'
+      sizes.outputSize === 'Failed' ||
+      sizes.outputSize === 'Error' ||
+      sizes.gzippedSize === 'Failed' ||
+      sizes.gzippedSize === 'Error'
     ) {
       sizeNumbers[name] = {
-        totalSize: 'Failed',
-        totalGzipSize: 'Failed',
+        outputSize: 'Failed',
+        gzippedSize: 'Failed',
       }
       continue
     }
 
-    const totalSize = sizes.totalSize
-    const totalGzipSize = sizes.totalGzipSize
+    const outputSize = sizes.outputSize
+    const gzippedSize = sizes.gzippedSize
     if (
-      Number.isNaN(totalSize) ||
-      Number.isNaN(totalGzipSize) ||
-      totalSize <= 0 ||
-      totalGzipSize <= 0
+      Number.isNaN(outputSize) ||
+      Number.isNaN(gzippedSize) ||
+      outputSize <= 0 ||
+      gzippedSize <= 0
     ) {
       sizeNumbers[name] = {
-        totalSize: 'Failed',
-        totalGzipSize: 'Failed',
+        outputSize: 'Failed',
+        gzippedSize: 'Failed',
       }
     } else {
       sizeNumbers[name] = {
-        totalSize,
-        totalGzipSize,
+        outputSize,
+        gzippedSize,
       }
     }
   }
 
   // Find minimum sizes (only from valid entries with size > 0)
-  let minTotalSize = Number.POSITIVE_INFINITY
+  let minOutputSize = Number.POSITIVE_INFINITY
   let minGzipSize = Number.POSITIVE_INFINITY
   for (const sizes of Object.values(sizeNumbers)) {
     if (
-      typeof sizes.totalSize === 'number' &&
-      sizes.totalSize > 0 &&
-      sizes.totalSize < minTotalSize
+      typeof sizes.outputSize === 'number' &&
+      sizes.outputSize > 0 &&
+      sizes.outputSize < minOutputSize
     ) {
-      minTotalSize = sizes.totalSize
+      minOutputSize = sizes.outputSize
     }
     if (
-      typeof sizes.totalGzipSize === 'number' &&
-      sizes.totalGzipSize > 0 &&
-      sizes.totalGzipSize < minGzipSize
+      typeof sizes.gzippedSize === 'number' &&
+      sizes.gzippedSize > 0 &&
+      sizes.gzippedSize < minGzipSize
     ) {
-      minGzipSize = sizes.totalGzipSize
+      minGzipSize = sizes.gzippedSize
     }
   }
 
   // Format with multipliers
   for (const [name, sizes] of Object.entries(sizeNumbers)) {
-    if (sizes.totalSize === 'Failed' || sizes.totalGzipSize === 'Failed') {
+    if (sizes.outputSize === 'Failed' || sizes.gzippedSize === 'Failed') {
       formattedSizes[name] = {
-        totalSize: 'Failed',
-        totalGzipSize: 'Failed',
+        outputSize: 'Failed',
+        gzippedSize: 'Failed',
       }
     } else {
       const totalMultiplier =
-        minTotalSize !== Number.POSITIVE_INFINITY && sizes.totalSize > 0
-          ? sizes.totalSize / minTotalSize
+        minOutputSize !== Number.POSITIVE_INFINITY && sizes.outputSize > 0
+          ? sizes.outputSize / minOutputSize
           : 1
       const gzipMultiplier =
-        minGzipSize !== Number.POSITIVE_INFINITY && sizes.totalGzipSize > 0
-          ? sizes.totalGzipSize / minGzipSize
+        minGzipSize !== Number.POSITIVE_INFINITY && sizes.gzippedSize > 0
+          ? sizes.gzippedSize / minGzipSize
           : 1
 
       // Format numeric kB values for output
       formattedSizes[name] = {
-        totalSize: `${formatKB(sizes.totalSize)} (${totalMultiplier.toFixed(1)}x)`,
-        totalGzipSize: `${formatKB(sizes.totalGzipSize)} (${gzipMultiplier.toFixed(1)}x)`,
+        outputSize: `${formatKB(sizes.outputSize)} (${totalMultiplier.toFixed(1)}x)`,
+        gzippedSize: `${formatKB(sizes.gzippedSize)} (${gzipMultiplier.toFixed(1)}x)`,
       }
     }
   }
@@ -1274,11 +1272,11 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'DX Score', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
+      ['Name', 'DX Score', 'Startup', 'Root HMR', 'Leaf HMR', 'Prod Build'],
       ...buildTools.map(({ name }) => [
         name,
         dxScores[name] !== undefined ? String(dxScores[name]) : '-',
-        formattedResults[name]?.devColdStart || 'Failed',
+        formattedResults[name]?.startup || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
@@ -1295,11 +1293,11 @@ logger.info('Bundle sizes:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'Total size', 'Gzipped size'],
+      ['Name', 'Output size', 'Gzipped size'],
       ...buildTools.map(({ name }) => [
         name,
-        formattedSizes[name]?.totalSize || 'Failed',
-        formattedSizes[name]?.totalGzipSize || 'Failed',
+        formattedSizes[name]?.outputSize || 'Failed',
+        formattedSizes[name]?.gzippedSize || 'Failed',
       ]),
     ],
     {

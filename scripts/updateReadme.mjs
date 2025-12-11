@@ -51,8 +51,8 @@ export function updateReadme({
         title: 'DX Score (Higher is better)',
       },
       {
-        name: 'devColdStart',
-        title: 'Dev cold start',
+        name: 'startup',
+        title: 'Startup',
         unit: 'ms',
       },
       {
@@ -67,16 +67,16 @@ export function updateReadme({
       },
       {
         name: 'prodBuild',
-        title: 'Prod build',
+        title: 'Prod Build',
         unit: 'ms',
       },
       {
-        name: 'totalSize',
-        title: 'Total size',
+        name: 'outputSize',
+        title: 'Output size',
         unit: 'kB',
       },
       {
-        name: 'totalGzipSize',
+        name: 'gzippedSize',
         title: 'Gzipped size',
         unit: 'kB',
       },
@@ -171,11 +171,11 @@ export function updateReadme({
 
     const buildPerfTable = markdownTable(
       [
-        ['Name', 'DX Score', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
+        ['Name', 'DX Score', 'Startup', 'Root HMR', 'Leaf HMR', 'Prod Build'],
         ...buildTools.map(({ name }) => [
           name,
           dxScores && dxScores[name] !== undefined ? String(dxScores[name]) : '-',
-          sanitizeBreakdown(formattedResults[name]?.devColdStart || 'Failed'),
+          sanitizeBreakdown(formattedResults[name]?.startup || 'Failed'),
           formattedResults[name]?.rootHmr || 'Failed',
           formattedResults[name]?.leafHmr || 'Failed',
           sanitizeBreakdown(formattedResults[name]?.prodBuild || 'Failed'),
@@ -188,11 +188,11 @@ export function updateReadme({
 
     const bundleSizesTable = markdownTable(
       [
-        ['Name', 'Total size', 'Gzipped size'],
+        ['Name', 'Output size', 'Gzipped size'],
         ...buildTools.map(({ name }) => [
           name,
-          formattedSizes[name]?.totalSize || 'Failed',
-          formattedSizes[name]?.totalGzipSize || 'Failed',
+          formattedSizes[name]?.outputSize || 'Failed',
+          formattedSizes[name]?.gzippedSize || 'Failed',
         ]),
       ],
       {
