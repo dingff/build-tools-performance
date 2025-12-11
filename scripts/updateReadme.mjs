@@ -16,6 +16,7 @@ export function updateReadme({
   caseName,
   averageResultsNumbers,
   sizeResults,
+  dxScores,
 }) {
   try {
     const hash32 = (string_) => {
@@ -42,7 +43,13 @@ export function updateReadme({
 
       return `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, ${opacity})`
     }
+
+    // 1. Add DX Score to chart dimensions
     const chartDimensions = [
+      {
+        name: 'dxScore',
+        title: 'DX Score (Higher is better)',
+      },
       {
         name: 'devColdStart',
         title: 'Dev cold start',
@@ -80,14 +87,22 @@ export function updateReadme({
       const myChart = new QuickChart()
       myChart.setFormat('svg')
       myChart.setBackgroundColor('transparent')
+
+      // 2. Update logic to handle dxScore data extraction
       const dataArr = labels.map((name) => {
+        if (dimension.name === 'dxScore') {
+          return dxScores?.[name] || 0
+        }
+
         const perfVal = averageResultsNumbers[name]?.[dimension.name]
         const sizeVal = sizeResults[name]?.[dimension.name]
+
         if (typeof perfVal === 'number' && Number.isFinite(perfVal)) return perfVal
         if (typeof sizeVal === 'number' && Number.isFinite(sizeVal))
           return Number(sizeVal.toFixed(1))
         return 0
       })
+
       myChart.setConfig({
         type: 'horizontalBar',
         data: {
@@ -103,7 +118,7 @@ export function updateReadme({
         options: {
           title: {
             display: true,
-            text: dimension.title + ' (' + dimension.unit + ')',
+            text: dimension.title + (dimension.unit ? ' (' + dimension.unit + ')' : ''),
           },
           legend: {
             display: false,
@@ -117,7 +132,8 @@ export function updateReadme({
                 ticks: {
                   display: false,
                   min: 0,
-                  suggestedMax: Math.max(...dataArr) * 1.15,
+                  // For score, max is 100. For others, auto-scale.
+                  suggestedMax: dimension.name === 'dxScore' ? 100 : Math.max(...dataArr) * 1.15,
                 },
               },
             ],
@@ -131,8 +147,8 @@ export function updateReadme({
           },
           plugins: {
             datalabels: {
-              anchor: 'end', // 标签锚点位置：'end' 表示在数据条的末端（对于柱状图，通常是顶部）
-              align: 'right', // 标签文本相对于锚点的对齐方式：'top' 表示在上方
+              anchor: 'end',
+              align: 'right',
             },
           },
         },
@@ -143,24 +159,22 @@ export function updateReadme({
 
     const sanitizeBreakdown = (text) => {
       if (typeof text !== 'string') return text
-      // Remove breakdown like (9638 + 3283)
       let s = text.replace(/\s*\(\s*\d+\s*\+\s*\d+\s*\)\s*/g, ' ')
-      // Wrap multiplier like 6.6x with parentheses if not already wrapped
       s = s.replace(/(\d+(?:\.\d+)?)x/g, (m, _num, offset, str) => {
         const before = str[offset - 1]
         const after = str[offset + m.length]
         if (before === '(' && after === ')') return m
         return `(${m})`
       })
-      // Normalize spaces
       return s.replace(/\s{2,}/g, ' ').trim()
     }
 
     const buildPerfTable = markdownTable(
       [
-        ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
+        ['Name', 'DX Score', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
         ...buildTools.map(({ name }) => [
           name,
+          dxScores && dxScores[name] !== undefined ? String(dxScores[name]) : '-',
           sanitizeBreakdown(formattedResults[name]?.devColdStart || 'Failed'),
           formattedResults[name]?.rootHmr || 'Failed',
           formattedResults[name]?.leafHmr || 'Failed',

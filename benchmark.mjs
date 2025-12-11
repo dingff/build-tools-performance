@@ -1002,12 +1002,11 @@ function calculateAndFormatResults(results) {
     const numericValue = getNumericValue(values, metric)
     if (numericValue !== null && minValue !== Number.POSITIVE_INFINITY) {
       const multiplier = numericValue / minValue
-      const trophy = multiplier === 1 ? ' ◆' : ''
 
       if (customFormatter) {
-        formattedResults[name][metric] = customFormatter(numericValue, multiplier, trophy, values)
+        formattedResults[name][metric] = customFormatter(numericValue, multiplier, values)
       } else {
-        formattedResults[name][metric] = `${numericValue}ms (${multiplier.toFixed(1)}x)${trophy}`
+        formattedResults[name][metric] = `${numericValue}ms (${multiplier.toFixed(1)}x)`
       }
     } else {
       formattedResults[name][metric] = values[metric] || 'Failed'
@@ -1053,14 +1052,13 @@ function calculateAndFormatResults(results) {
 
       if (devColdStartValue !== null && serverStartValue !== null && onLoadValue !== null) {
         const multiplier = devColdStartValue / minDevColdStart
-        const trophy = multiplier === 1 ? ' ◆' : ''
 
         if (!formattedResults[name]) {
           formattedResults[name] = {}
         }
 
         formattedResults[name].devColdStart =
-          `${devColdStartValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x${trophy}`
+          `${devColdStartValue}ms (${serverStartValue} + ${onLoadValue}) ${multiplier.toFixed(1)}x`
       } else {
         if (!formattedResults[name]) {
           formattedResults[name] = {}
@@ -1086,14 +1084,13 @@ function calculateAndFormatResults(results) {
 
       if (prodBuildValue !== null && actualBuildValue !== null) {
         const multiplier = prodBuildValue / minProdBuild
-        const trophy = multiplier === 1 ? ' ◆' : ''
 
         if (!formattedResults[name]) {
           formattedResults[name] = {}
         }
 
         formattedResults[name].prodBuild =
-          `${prodBuildValue}ms (${actualBuildValue} + ${prodBuildValue - actualBuildValue}) ${multiplier.toFixed(1)}x${trophy}`
+          `${prodBuildValue}ms (${actualBuildValue} + ${prodBuildValue - actualBuildValue}) ${multiplier.toFixed(1)}x`
       } else {
         if (!formattedResults[name]) {
           formattedResults[name] = {}
@@ -1107,6 +1104,74 @@ function calculateAndFormatResults(results) {
 }
 
 const formattedResults = calculateAndFormatResults(averageResultsNumbers)
+function calculateDXScore(results) {
+  const scores = {}
+
+  // 1. 权重配置 (建议总和为 1，或者 100 也可以，代码会自动归一化)
+  const WEIGHTS = {
+    leafHmr: 0.4,
+    rootHmr: 0.25,
+    devColdStart: 0.2,
+    prodBuild: 0.15,
+  }
+
+  const metricKeys = Object.keys(WEIGHTS)
+
+  // 2. 动态计算每一项指标的 Min (最好) 和 Max (最差)
+  const ranges = {}
+  metricKeys.forEach((key) => {
+    ranges[key] = { min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY }
+  })
+
+  // 遍历寻找最大最小值
+  for (const metrics of Object.values(results)) {
+    metricKeys.forEach((key) => {
+      const val = metrics[key]
+      if (typeof val === 'number' && !Number.isNaN(val)) {
+        if (val < ranges[key].min) ranges[key].min = val
+        if (val > ranges[key].max) ranges[key].max = val
+      }
+    })
+  }
+
+  // 3. 计算分数
+  for (const [name, metrics] of Object.entries(results)) {
+    let totalScore = 0
+    let totalWeight = 0
+
+    metricKeys.forEach((key) => {
+      const val = metrics[key]
+      const { min, max } = ranges[key]
+      const weight = WEIGHTS[key]
+
+      // 无论数据是否有值，权重都要计入 totalWeight
+      // 这样如果某项缺失（NaN），相当于该项得 0 分，但分母依然包含它，从而拉低总分
+      totalWeight += weight
+
+      // 如果数据无效，不加分 (totalScore += 0)
+      if (typeof val !== 'number' || Number.isNaN(val)) {
+        return
+      }
+
+      // 核心打分逻辑
+      if (max === min) {
+        // 如果大家数值都一样，这一项大家都得满分
+        totalScore += 100 * weight
+      } else {
+        // 相对排名公式
+        const score = ((max - val) / (max - min)) * 100
+        totalScore += score * weight
+      }
+    })
+
+    // 这样无论你的权重设置是 0.x 还是整数 10, 20...，结果都会被还原到 0-100 区间
+    scores[name] = totalWeight > 0 ? Math.round(totalScore / totalWeight) : 0
+  }
+
+  return scores
+}
+
+const dxScores = calculateDXScore(averageResultsNumbers)
 
 // Format bundle sizes with multipliers
 function formatBundleSizesWithMultipliers(sizeResults) {
@@ -1186,13 +1251,10 @@ function formatBundleSizesWithMultipliers(sizeResults) {
           ? sizes.totalGzipSize / minGzipSize
           : 1
 
-      const totalTrophy = totalMultiplier === 1 ? ' ◆' : ''
-      const gzipTrophy = gzipMultiplier === 1 ? ' ◆' : ''
-
       // Format numeric kB values for output
       formattedSizes[name] = {
-        totalSize: `${formatKB(sizes.totalSize)} (${totalMultiplier.toFixed(1)}x)${totalTrophy}`,
-        totalGzipSize: `${formatKB(sizes.totalGzipSize)} (${gzipMultiplier.toFixed(1)}x)${gzipTrophy}`,
+        totalSize: `${formatKB(sizes.totalSize)} (${totalMultiplier.toFixed(1)}x)`,
+        totalGzipSize: `${formatKB(sizes.totalGzipSize)} (${gzipMultiplier.toFixed(1)}x)`,
       }
     }
   }
@@ -1212,9 +1274,10 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
+      ['Name', 'DX Score', 'Dev cold start', 'Root HMR', 'Leaf HMR', 'Prod build'],
       ...buildTools.map(({ name }) => [
         name,
+        dxScores[name] !== undefined ? String(dxScores[name]) : '-',
         formattedResults[name]?.devColdStart || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
@@ -1255,6 +1318,7 @@ updateReadme({
   caseName,
   averageResultsNumbers,
   sizeResults,
+  dxScores,
 })
 const prettyTime = (milliseconds) => {
   const seconds = milliseconds / 1000
