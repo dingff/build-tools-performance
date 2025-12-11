@@ -56,6 +56,11 @@ export function updateReadme({
         unit: 'ms',
       },
       {
+        name: 'pageReload',
+        title: 'Page Reload',
+        unit: 'ms',
+      },
+      {
         name: 'rootHmr',
         title: 'Root HMR',
         unit: 'ms',
@@ -171,11 +176,12 @@ export function updateReadme({
 
     const buildPerfTable = markdownTable(
       [
-        ['Name', 'DX Score', 'Startup', 'Root HMR', 'Leaf HMR', 'Prod Build'],
+        ['Name', 'DX Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
         ...buildTools.map(({ name }) => [
           name,
           dxScores && dxScores[name] !== undefined ? String(dxScores[name]) : '-',
           sanitizeBreakdown(formattedResults[name]?.startup || 'Failed'),
+          formattedResults[name]?.pageReload || 'Failed',
           formattedResults[name]?.rootHmr || 'Failed',
           formattedResults[name]?.leafHmr || 'Failed',
           sanitizeBreakdown(formattedResults[name]?.prodBuild || 'Failed'),

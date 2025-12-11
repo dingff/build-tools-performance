@@ -695,7 +695,6 @@ async function runBenchmark() {
 
           if (isFinished()) {
             clearTimeout(hmrTimeout)
-            page.close()
             waitResolve()
           }
         } else if (
@@ -732,7 +731,6 @@ async function runBenchmark() {
           }
           if (isFinished()) {
             clearTimeout(hmrTimeout)
-            page.close()
             waitResolve()
           }
         }
@@ -797,6 +795,34 @@ async function runBenchmark() {
           throw error
         }
       })
+
+      // Measure page reload after HMR tests
+      if (!perfResult[buildTool.name]) {
+        perfResult[buildTool.name] = {}
+      }
+      if (page && !page.isClosed()) {
+        const reloadStart = Date.now()
+        try {
+          await page.reload({ waitUntil: 'load', timeout: 60000 })
+          const reloadTime = Date.now() - reloadStart
+          logger.success(
+            color.dim(buildTool.name) + ' page reload in ' + color.green(reloadTime + 'ms'),
+          )
+          perfResult[buildTool.name].pageReload = reloadTime
+        } catch {
+          logger.warn(`Page reload timeout for ${buildTool.name}, skipping reload tests...`)
+          perfResult[buildTool.name].pageReload = 'Failed'
+        }
+        try {
+          await page.close()
+        } catch (pageCloseError) {
+          logger.warn(
+            `Failed to close page after reload for ${buildTool.name}: ${pageCloseError.message}`,
+          )
+        }
+      } else {
+        perfResult[buildTool.name].pageReload = 'Failed'
+      }
 
       // restore files
       writeFileSync(rootFilePath, originalRootFileContent)
@@ -980,7 +1006,15 @@ for (const [name, values] of Object.entries(averageResults)) {
 
 // Calculate multipliers and format with original time
 function calculateAndFormatResults(results) {
-  const metrics = ['startup', 'serverStart', 'onLoad', 'rootHmr', 'leafHmr', 'prodBuild']
+  const metrics = [
+    'startup',
+    'serverStart',
+    'onLoad',
+    'pageReload',
+    'rootHmr',
+    'leafHmr',
+    'prodBuild',
+  ]
 
   const formattedResults = {}
   const resultsEntries = Object.entries(results)
@@ -1107,10 +1141,11 @@ function calculateDXScore(results) {
 
   // 1. 权重配置 (建议总和为 1，或者 100 也可以，代码会自动归一化)
   const WEIGHTS = {
-    leafHmr: 0.4,
-    rootHmr: 0.25,
-    startup: 0.2,
-    prodBuild: 0.15,
+    leafHmr: 0.35,
+    rootHmr: 0.2,
+    startup: 0.15,
+    pageReload: 0.2,
+    prodBuild: 0.1,
   }
 
   const metricKeys = Object.keys(WEIGHTS)
@@ -1272,11 +1307,12 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'DX Score', 'Startup', 'Root HMR', 'Leaf HMR', 'Prod Build'],
+      ['Name', 'DX Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
       ...buildTools.map(({ name }) => [
         name,
         dxScores[name] !== undefined ? String(dxScores[name]) : '-',
         formattedResults[name]?.startup || 'Failed',
+        formattedResults[name]?.pageReload || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
         formattedResults[name]?.leafHmr || 'Failed',
         formattedResults[name]?.prodBuild || 'Failed',
