@@ -1150,11 +1150,11 @@ function calculateDXScore(results) {
 
   // Baseline configuration (standard for the Large case)
   const BASE_CONFIG = {
-    leafHmr: { weight: 0.35, threshold: 150, sensitivity: 1.2 },
-    rootHmr: { weight: 0.25, threshold: 150, sensitivity: 1.2 },
-    pageReload: { weight: 0.15, threshold: 500, sensitivity: 1 },
-    startup: { weight: 0.15, threshold: 1500, sensitivity: 1 },
-    prodBuild: { weight: 0.1, threshold: 1500, sensitivity: 0.8 },
+    leafHmr: { weight: 0.4, threshold: 150, sensitivity: 1.5 },
+    rootHmr: { weight: 0.2, threshold: 150, sensitivity: 1.2 },
+    pageReload: { weight: 0.2, threshold: 500, sensitivity: 1 },
+    startup: { weight: 0.1, threshold: 1500, sensitivity: 0.5 },
+    prodBuild: { weight: 0.1, threshold: 1500, sensitivity: 0.6 },
   }
 
   for (const [name, metrics] of Object.entries(results)) {
