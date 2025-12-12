@@ -2,7 +2,7 @@ import path from 'node:path'
 import { defineConfig } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 
-const caseName = process.env.CASE
+const caseName = process.env.CASE ?? 'large'
 
 export default defineConfig({
   plugins: [pluginReact()],

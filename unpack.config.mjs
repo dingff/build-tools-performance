@@ -2,7 +2,7 @@ import path from 'node:path'
 import { defineConfig } from '@unpackjs/core'
 import { pluginReact } from '@unpackjs/plugin-react'
 
-const caseName = process.env.CASE
+const caseName = process.env.CASE ?? 'large'
 
 export default defineConfig({
   entry: path.join(import.meta.dirname, 'src', caseName, 'index.jsx'),

@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Get environment variable CASE
-const caseType = process.env.CASE
+const caseType = process.env.CASE ?? 'large'
 
 // Next.js page file path
 const pageFilePath = path.resolve(__dirname, '../src/app/page.jsx')

@@ -4,7 +4,7 @@ import { rspack } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 
 const isProd = process.env.NODE_ENV === 'production'
-const caseName = process.env.CASE
+const caseName = process.env.CASE ?? 'large'
 const caseDir = path.join(import.meta.dirname, './src', caseName)
 
 export default defineConfig({

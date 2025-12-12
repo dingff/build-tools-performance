@@ -4,7 +4,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const { EsbuildPlugin } = require('esbuild-loader')
 
 const isProd = process.env.NODE_ENV === 'production'
-const caseName = process.env.CASE
+const caseName = process.env.CASE ?? 'large'
 const caseDir = path.join(__dirname, './src', caseName)
 
 // webpack.config.js
