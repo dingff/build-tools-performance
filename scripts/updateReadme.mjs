@@ -16,7 +16,7 @@ export function updateReadme({
   caseName,
   averageResultsNumbers,
   sizeResults,
-  dxScores,
+  scores,
 }) {
   try {
     const hash32 = (string_) => {
@@ -44,11 +44,11 @@ export function updateReadme({
       return `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, ${opacity})`
     }
 
-    // 1. Add DX Score to chart dimensions
+    // 1. Add Score to chart dimensions
     const chartDimensions = [
       {
-        name: 'dxScore',
-        title: 'DX Score (Higher is better)',
+        name: 'score',
+        title: 'Score (Higher is better)',
       },
       {
         name: 'startup',
@@ -93,10 +93,10 @@ export function updateReadme({
       myChart.setFormat('svg')
       myChart.setBackgroundColor('transparent')
 
-      // 2. Update logic to handle dxScore data extraction
+      // 2. Update logic to handle score data extraction
       const dataArr = labels.map((name) => {
-        if (dimension.name === 'dxScore') {
-          return dxScores?.[name] || 0
+        if (dimension.name === 'score') {
+          return scores?.[name] || 0
         }
 
         const perfVal = averageResultsNumbers[name]?.[dimension.name]
@@ -175,10 +175,10 @@ export function updateReadme({
 
     const buildPerfTable = markdownTable(
       [
-        ['Name', 'DX Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
+        ['Name', 'Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
         ...buildTools.map(({ name }) => [
           name,
-          dxScores && dxScores[name] !== undefined ? String(dxScores[name]) : '-',
+          scores && scores[name] !== undefined ? String(scores[name]) : '-',
           sanitizeBreakdown(formattedResults[name]?.startup || 'Failed'),
           formattedResults[name]?.pageReload || 'Failed',
           formattedResults[name]?.rootHmr || 'Failed',

@@ -1137,7 +1137,7 @@ function calculateAndFormatResults(results) {
 
 const formattedResults = calculateAndFormatResults(averageResultsNumbers)
 
-function calculateDXScore(results) {
+function calculateScore(results) {
   const scores = {}
 
   // Define scale factor
@@ -1194,7 +1194,7 @@ function calculateDXScore(results) {
   return scores
 }
 
-const dxScores = calculateDXScore(averageResultsNumbers)
+const scores = calculateScore(averageResultsNumbers)
 
 // Format bundle sizes with multipliers
 function formatBundleSizesWithMultipliers(sizeResults) {
@@ -1297,10 +1297,10 @@ logger.info('Build performance:\n')
 console.log(
   markdownTable(
     [
-      ['Name', 'DX Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
+      ['Name', 'Score', 'Startup', 'Page Reload', 'Root HMR', 'Leaf HMR', 'Prod Build'],
       ...buildTools.map(({ name }) => [
         name,
-        dxScores[name] !== undefined ? String(dxScores[name]) : '-',
+        scores[name] !== undefined ? String(scores[name]) : '-',
         formattedResults[name]?.startup || 'Failed',
         formattedResults[name]?.pageReload || 'Failed',
         formattedResults[name]?.rootHmr || 'Failed',
@@ -1342,7 +1342,7 @@ updateReadme({
   caseName,
   averageResultsNumbers,
   sizeResults,
-  dxScores,
+  scores,
 })
 const prettyTime = (milliseconds) => {
   const seconds = milliseconds / 1000
