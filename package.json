@@ -74,7 +74,6 @@
     "build:rsbuild": "rsbuild build",
     "start:unpack": "unpack dev",
     "start:unpack:prebundle": "cross-env PREBUNDLE=true unpack dev",
-    "start:unpack:prebundle-plus": "cross-env PREBUNDLE=true PREBUNDLE_PLUS=true unpack dev",
     "start:unpack:experiments-css": "cross-env EXPERIMENTS_CSS=true unpack dev",
     "build:unpack": "unpack build",
     "start:next": "node scripts/changeNextEntry.mjs && cross-env NODE_OPTIONS=--max-old-space-size=8192 next dev --port 3200",

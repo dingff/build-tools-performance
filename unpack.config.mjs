@@ -18,10 +18,7 @@ export default defineConfig({
   dev: {
     prebundle: process.env.PREBUNDLE
       ? {
-          exclude: !process.env.PREBUNDLE_PLUS ? ['@iconify-icons/material-symbols'] : undefined,
-          include: process.env.PREBUNDLE_PLUS
-            ? ['@iconify-icons/material-symbols', '@douyinfe/semi-ui']
-            : undefined,
+          include: ['@iconify-icons/material-symbols', '@douyinfe/semi-ui'],
         }
       : false,
   },

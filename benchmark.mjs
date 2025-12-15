@@ -464,14 +464,6 @@ toolNames.forEach((name) => {
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/unpack.js',
         }),
-        new BuildTool({
-          name: 'Unpack (Prebundle Plus) ' + require('@unpackjs/core/package.json').version,
-          port: 4000,
-          startScript: 'start:unpack:prebundle-plus',
-          startedRegex: /ready in (\d+) ms/,
-          buildScript: 'build:unpack',
-          binFilePath: '@unpackjs/cli/bin/unpack.js',
-        }),
         // new BuildTool({
         //   name: 'Unpack (Experiments CSS) ' + require('@unpackjs/core/package.json').version,
         //   port: 4000,
