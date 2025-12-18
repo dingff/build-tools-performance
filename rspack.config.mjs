@@ -55,7 +55,6 @@ export default defineConfig({
     }),
     !isProd && new ReactRefreshPlugin(),
   ],
-  // lazyCompilation should only be enabled in development mode
   lazyCompilation: !isProd
     ? {
         entries: false,

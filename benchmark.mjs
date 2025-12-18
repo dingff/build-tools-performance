@@ -69,9 +69,9 @@ class BuildTool {
   cleanCache() {
     try {
       fse.removeSync('./node_modules/.cache')
-      fse.removeSync('./node_modules/.vite')
-      fse.removeSync('./node_modules/.farm')
-      fse.removeSync('./node_modules/.unpack')
+      // fse.removeSync('./node_modules/.vite')
+      // fse.removeSync('./node_modules/.farm')
+      // fse.removeSync('./node_modules/.unpack')
     } catch {}
   }
 
@@ -834,6 +834,7 @@ async function runBenchmark() {
         const buildResult = await buildTool.build()
 
         const cachedSizes = sizeResults[buildTool.name]
+        const sizeTargetDir = getSizeTargetDir(buildTool)
         const sizes =
           cachedSizes &&
           typeof cachedSizes.outputSize === 'number' &&
@@ -841,7 +842,7 @@ async function runBenchmark() {
           typeof cachedSizes.gzippedSize === 'number' &&
           Number.isFinite(cachedSizes.gzippedSize)
             ? cachedSizes
-            : await getFileSizes(distDir)
+            : await getFileSizes(sizeTargetDir)
         sizeResults[buildTool.name] = sizes
 
         logger.success(
@@ -905,6 +906,13 @@ function convertPath(path) {
     return glob.convertPathToPattern(path)
   }
   return path
+}
+
+function getSizeTargetDir(buildTool) {
+  if (buildTool.buildScript === 'build:next' || buildTool.name.toLowerCase().includes('next.js')) {
+    return path.join(__dirname, '.next', 'static')
+  }
+  return path.join(__dirname, 'dist')
 }
 
 // Format a numeric kilobyte value into display string like "814kB"

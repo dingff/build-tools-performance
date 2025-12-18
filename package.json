@@ -43,7 +43,7 @@
     "gzip-size": "^7.0.0",
     "html-webpack-plugin": "^5.6.5",
     "markdown-table": "^3.0.4",
-    "next": "^16.0.8",
+    "next": "^16.1.0-canary.32",
     "picocolors": "^1.1.1",
     "puppeteer": "^24.33.0",
     "react-refresh": "^0.18.0",
@@ -60,7 +60,7 @@
   "scripts": {
     "benchmark": "node benchmark.mjs",
     "benchmark:debug": "cross-env DEBUG=true WARMUP_TIMES=0 RUN_TIMES=1 node benchmark.mjs",
-    "clean": "rm -rf ./node_modules/.cache && rm -rf ./node_modules/.vite && rm -rf ./node_modules/.farm",
+    "clean": "rm -rf ./node_modules/.cache && rm -rf ./node_modules/.vite && rm -rf ./node_modules/.farm && rm -rf ./node_modules/.unpack",
     "start:farm": "farm start",
     "build:farm": "farm build",
     "start:vite": "node ./node_modules/vite/bin/vite.js",

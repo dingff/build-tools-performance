@@ -11,9 +11,6 @@ export default defineConfig({
       index: path.join(import.meta.dirname, 'src', caseName, 'index.jsx'),
     },
   },
-  dev: {
-    lazyCompilation: true,
-  },
   server: {
     port: 3333,
   },
