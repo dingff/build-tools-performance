@@ -71,6 +71,7 @@ class BuildTool {
       fse.removeSync('./node_modules/.cache')
       fse.removeSync('./node_modules/.vite')
       fse.removeSync('./node_modules/.farm')
+      fse.removeSync('./node_modules/.unpack')
     } catch {}
   }
 
@@ -832,7 +833,15 @@ async function runBenchmark() {
       try {
         const buildResult = await buildTool.build()
 
-        const sizes = sizeResults[buildTool.name] || (await getFileSizes(distDir))
+        const cachedSizes = sizeResults[buildTool.name]
+        const sizes =
+          cachedSizes &&
+          typeof cachedSizes.outputSize === 'number' &&
+          Number.isFinite(cachedSizes.outputSize) &&
+          typeof cachedSizes.gzippedSize === 'number' &&
+          Number.isFinite(cachedSizes.gzippedSize)
+            ? cachedSizes
+            : await getFileSizes(distDir)
         sizeResults[buildTool.name] = sizes
 
         logger.success(
@@ -900,7 +909,9 @@ function convertPath(path) {
 
 // Format a numeric kilobyte value into display string like "814kB"
 function formatKB(val) {
-  return `${val.toFixed(1)}kB`
+  const n = typeof val === 'number' ? val : Number(val)
+  if (!Number.isFinite(n)) return String(val)
+  return `${n.toFixed(1)}kB`
 }
 
 async function getFileSizes(targetDir) {
