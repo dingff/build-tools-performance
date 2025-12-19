@@ -465,6 +465,14 @@ toolNames.forEach((name) => {
           buildScript: 'build:unpack',
           binFilePath: '@unpackjs/cli/bin/unpack.js',
         }),
+        new BuildTool({
+          name: 'Unpack (Cache) ' + require('@unpackjs/core/package.json').version,
+          port: 4000,
+          startScript: 'start:unpack:cache',
+          startedRegex: /ready in (\d+) ms/,
+          buildScript: 'build:unpack:cache',
+          binFilePath: '@unpackjs/cli/bin/unpack.js',
+        }),
         // new BuildTool({
         //   name: 'Unpack (Experiments CSS) ' + require('@unpackjs/core/package.json').version,
         //   port: 4000,

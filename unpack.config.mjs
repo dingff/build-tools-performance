@@ -26,6 +26,7 @@ export default defineConfig({
   plugins: [pluginReact()],
   build: {
     target: 'es2022',
+    cache: Boolean(process.env.UNPACK_BUILD_CACHE),
   },
   performance: {
     printFileSize: false,
