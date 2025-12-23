@@ -1172,7 +1172,7 @@ function calculateScore(results) {
     leafHmr: { weight: 0.4, threshold: 150, sensitivity: 1.5 },
     rootHmr: { weight: 0.2, threshold: 150, sensitivity: 1.2 },
     pageReload: { weight: 0.2, threshold: 300, sensitivity: 1 },
-    startup: { weight: 0.1, threshold: 1500, sensitivity: 0.5 },
+    startup: { weight: 0.1, threshold: 1500, sensitivity: 0.8 },
     prodBuild: { weight: 0.1, threshold: 1500, sensitivity: 0.6 },
   }
 
