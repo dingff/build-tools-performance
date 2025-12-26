@@ -1,9 +1,9 @@
 {
   "name": "performance-compare",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.26.2",
   "dependencies": {
-    "@douyinfe/semi-ui": "^2.89.1",
+    "@douyinfe/semi-ui": "^2.90.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@iconify-icons/material-symbols": "^1.2.58",
@@ -52,7 +52,7 @@
     "swc-loader": "^0.2.6",
     "tree-kill": "^1.2.2",
     "typescript": "^5.9.3",
-    "vite": "^8.0.0-beta.4",
+    "vite": "^8.0.0-beta.5",
     "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
