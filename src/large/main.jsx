@@ -6,7 +6,6 @@ import App2 from './f2'
 import App3 from './f3'
 import App4 from './f4'
 import './index.css'
-import { Form } from '@douyinfe/semi-ui'
 import { AddAlarmOutlined } from '@material-ui/icons'
 import { AbcOutlined } from '@mui/icons-material'
 import { IconArrowLeft } from '@tabler/icons-react'
@@ -25,9 +24,6 @@ const Main = () => {
         <AddAlarmOutlined />
         <IconArrowLeft />
         <Button>按钮</Button>
-        <Form>
-          <Form.Input field="name" initValue="semi design" />
-        </Form>
         <App0 />
         <App1 />
         <App2 />
