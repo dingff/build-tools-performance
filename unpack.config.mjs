@@ -29,5 +29,6 @@ export default defineConfig({
   },
   performance: {
     printFileSize: false,
+    cache: false,
   },
 })
