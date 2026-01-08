@@ -17,7 +17,4 @@ export default defineConfig({
   performance: {
     printFileSize: false,
   },
-  output: {
-    overrideBrowserslist: ['Chrome >= 93'],
-  },
 })

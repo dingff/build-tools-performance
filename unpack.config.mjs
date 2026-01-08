@@ -16,17 +16,10 @@ export default defineConfig({
     css: Boolean(process.env.EXPERIMENTS_CSS),
   },
   dev: {
-    prebundle: process.env.PREBUNDLE
-      ? {
-          include: ['@iconify-icons/material-symbols'],
-        }
-      : false,
+    prebundle: Boolean(process.env.PREBUNDLE),
   },
   typeCheck: false,
   plugins: [pluginReact()],
-  build: {
-    target: 'es2022',
-  },
   performance: {
     printFileSize: false,
     cache: false,

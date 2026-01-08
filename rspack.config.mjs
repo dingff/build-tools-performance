@@ -10,7 +10,6 @@ const caseDir = path.join(import.meta.dirname, './src', caseName)
 export default defineConfig({
   context: import.meta.dirname,
   devtool: isProd ? false : 'cheap-module-source-map',
-  target: ['web', 'es2022'],
   entry: {
     main: path.join(caseDir, 'index.jsx'),
   },
@@ -31,7 +30,6 @@ export default defineConfig({
           /** @type {import('@rspack/core').SwcLoaderOptions} */
           options: {
             jsc: {
-              target: 'es2022',
               parser: {
                 syntax: 'typescript',
                 tsx: true,

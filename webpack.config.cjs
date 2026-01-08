@@ -10,7 +10,6 @@ const caseDir = path.join(__dirname, './src', caseName)
 // webpack.config.js
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  target: ['web', 'es2022'],
   devtool: isProd ? false : 'cheap-module-source-map',
   entry: path.join(caseDir, 'index.jsx'),
   resolve: {
@@ -24,7 +23,6 @@ module.exports = {
           loader: 'swc-loader',
           options: {
             jsc: {
-              target: 'es2022',
               parser: {
                 syntax: 'typescript',
                 tsx: true,
@@ -61,7 +59,6 @@ module.exports = {
     minimize: isProd,
     minimizer: [
       new EsbuildPlugin({
-        target: 'es2022',
         css: true, // Apply minification to CSS assets
       }),
     ],

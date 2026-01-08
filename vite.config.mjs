@@ -7,7 +7,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: path.resolve(__dirname, 'dist'),
-    target: 'es2022',
     reportCompressedSize: false,
   },
   optimizeDeps: {
