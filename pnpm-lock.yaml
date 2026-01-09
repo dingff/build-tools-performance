@@ -24,8 +24,8 @@ importers:
         specifier: ^4.11.3
         version: 4.11.3(@material-ui/core@4.12.4(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
-        specifier: ^7.3.6
-        version: 7.3.6(@mui/material@7.3.6(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.2.7)(react@18.3.1)
+        specifier: ^7.3.7
+        version: 7.3.7(@mui/material@7.3.6(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.2.7)(react@18.3.1)
       '@tabler/icons-react':
         specifier: ^3.36.1
         version: 3.36.1(react@18.3.1)
@@ -86,13 +86,13 @@ importers:
         version: 19.2.3(@types/react@19.2.7)
       '@unpackjs/cli':
         specifier: ^3.4.0
-        version: 3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))
+        version: 3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))
       '@unpackjs/core':
-        specifier: ^3.8.2
-        version: 3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
+        specifier: ^3.8.3
+        version: 3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
       '@unpackjs/plugin-react':
         specifier: ^3.4.0
-        version: 3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
+        version: 3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
         version: 5.1.2(vite@8.0.0-beta.7(@types/node@24.10.4)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))
@@ -1707,11 +1707,11 @@ packages:
   '@mui/core-downloads-tracker@7.3.6':
     resolution: {integrity: sha512-QaYtTHlr8kDFN5mE1wbvVARRKH7Fdw1ZuOjBJcFdVpfNfRYKF3QLT4rt+WaB6CKJvpqxRsmEo0kpYinhH5GeHg==}
 
-  '@mui/icons-material@7.3.6':
-    resolution: {integrity: sha512-0FfkXEj22ysIq5pa41A2NbcAhJSvmcZQ/vcTIbjDsd6hlslG82k5BEBqqS0ZJprxwIL3B45qpJ+bPHwJPlF7uQ==}
+  '@mui/icons-material@7.3.7':
+    resolution: {integrity: sha512-3Q+ulAqG+A1+R4ebgoIs7AccaJhIGy+Xi/9OnvX376jQ6wcy+rz4geDGrxQxCGzdjOQr4Z3NgyFSZCz4T999lA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      '@mui/material': ^7.3.6
+      '@mui/material': ^7.3.7
       '@types/react': ^17.0.0 || ^18.0.0 || ^19.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
@@ -2632,8 +2632,8 @@ packages:
       '@unpackjs/core': 3.x
       '@unpackjs/plugin-react': 3.x
 
-  '@unpackjs/core@3.8.2':
-    resolution: {integrity: sha512-FYoBrVKwbAhL6XYtUgS1KONJVmBkylQYKPYaGMx8jN7FN+I7tiostS4U/Q3mdf3Lc1zVGEh+5wHUOfbkWZFR5A==}
+  '@unpackjs/core@3.8.3':
+    resolution: {integrity: sha512-MewObV48rzTa48ww4kbw9qXeNEW+w4fek6gktriCbvJc9daeNEyJLO0BSzE2p2hE8Lm0eDDLc+Om9PmafyDb1g==}
 
   '@unpackjs/plugin-react@3.4.0':
     resolution: {integrity: sha512-DX5oZ5Cesb4Y7j1fgqK7dogOf2TGIK44/aYZZVE7SFsdqQvod+l+F6n3W7D6yCd17YwNiVzrs070dqMWOuCydg==}
@@ -7650,7 +7650,7 @@ snapshots:
 
   '@mui/core-downloads-tracker@7.3.6': {}
 
-  '@mui/icons-material@7.3.6(@mui/material@7.3.6(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.2.7)(react@18.3.1)':
+  '@mui/icons-material@7.3.7(@mui/material@7.3.6(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@19.2.7)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@mui/material': 7.3.6(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react@18.3.1))(@types/react@19.2.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -8552,13 +8552,13 @@ snapshots:
       '@types/node': 24.10.4
     optional: true
 
-  '@unpackjs/cli@3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))':
+  '@unpackjs/cli@3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))':
     dependencies:
-      '@unpackjs/core': 3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
-      '@unpackjs/plugin-react': 3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
+      '@unpackjs/core': 3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
+      '@unpackjs/plugin-react': 3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
       cac: 6.7.14
 
-  '@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)':
+  '@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@rsdoctor/rspack-plugin': 1.4.0(@rsbuild/core@1.7.2)(@rspack/core@1.7.1(@swc/helpers@0.5.18))(webpack@5.104.1)
@@ -8585,12 +8585,12 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)':
+  '@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)':
     dependencies:
       '@rspack/plugin-react-refresh': 1.5.3(react-refresh@0.18.0)
       '@svgr/webpack': 8.1.0(typescript@5.9.3)
       '@swc/helpers': 0.5.18
-      '@unpackjs/core': 3.8.2(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
+      '@unpackjs/core': 3.8.3(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.22)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
       react-refresh: 0.18.0
     transitivePeerDependencies:
       - supports-color
