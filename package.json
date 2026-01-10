@@ -1,7 +1,7 @@
 {
   "name": "performance-compare",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.28.0",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -27,8 +27,8 @@
     "@rspack/cli": "^1.7.1",
     "@rspack/core": "^1.7.1",
     "@rspack/plugin-react-refresh": "^1.6.0",
-    "@types/node": "^24.10.4",
-    "@types/react": "^19.2.7",
+    "@types/node": "^24.10.7",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@unpackjs/cli": "^3.4.0",
     "@unpackjs/core": "^3.8.3",
