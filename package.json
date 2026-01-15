@@ -32,7 +32,7 @@
     "@types/react-dom": "^19.2.3",
     "@unpackjs/cli": "^3.4.1",
     "@unpackjs/core": "^3.9.0",
-    "@unpackjs/plugin-react": "^3.4.0",
+    "@unpackjs/plugin-react": "^4.0.0",
     "@vitejs/plugin-react": "^5.1.2",
     "babel-loader": "^10.0.0",
     "cross-env": "^10.1.0",

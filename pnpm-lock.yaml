@@ -86,13 +86,13 @@ importers:
         version: 19.2.3(@types/react@19.2.8)
       '@unpackjs/cli':
         specifier: ^3.4.1
-        version: 3.4.1(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))
+        version: 3.4.1(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@4.0.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))
       '@unpackjs/core':
         specifier: ^3.9.0
         version: 3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
       '@unpackjs/plugin-react':
-        specifier: ^3.4.0
-        version: 3.4.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
+        specifier: ^4.0.0
+        version: 4.0.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
       '@vitejs/plugin-react':
         specifier: ^5.1.2
         version: 5.1.2(vite@8.0.0-beta.7(@types/node@24.10.8)(esbuild@0.25.5)(jiti@2.6.1)(terser@5.41.0))
@@ -2323,15 +2323,6 @@ packages:
   '@rspack/lite-tapable@1.1.0':
     resolution: {integrity: sha512-E2B0JhYFmVAwdDiG14+DW0Di4Ze4Jg10Pc4/lILUrd5DRCaklduz2OvJ5HYQ6G+hd+WTzqQb3QnDNfK4yvAFYw==}
 
-  '@rspack/plugin-react-refresh@1.5.3':
-    resolution: {integrity: sha512-VOnQMf3YOHkTqJ0+BJbrYga4tQAWNwoAnkgwRauXB4HOyCc5wLfBs9DcOFla/2usnRT3Sq6CMVhXmdPobwAoTA==}
-    peerDependencies:
-      react-refresh: '>=0.10.0 <1.0.0'
-      webpack-hot-middleware: 2.x
-    peerDependenciesMeta:
-      webpack-hot-middleware:
-        optional: true
-
   '@rspack/plugin-react-refresh@1.6.0':
     resolution: {integrity: sha512-OO53gkrte/Ty4iRXxxM6lkwPGxsSsupFKdrPFnjwFIYrPvFLjeolAl5cTx+FzO5hYygJiGnw7iEKTmD+ptxqDA==}
     peerDependencies:
@@ -2664,10 +2655,10 @@ packages:
   '@unpackjs/core@3.9.0':
     resolution: {integrity: sha512-uTlPOc1siDSbWb5xGVsVRDyB91sqrPzvOga5Tv2HNQi6KQHj/Yzwoj6nCBnEznuSUExcNEOxNc66YojUf4cCGg==}
 
-  '@unpackjs/plugin-react@3.4.0':
-    resolution: {integrity: sha512-DX5oZ5Cesb4Y7j1fgqK7dogOf2TGIK44/aYZZVE7SFsdqQvod+l+F6n3W7D6yCd17YwNiVzrs070dqMWOuCydg==}
+  '@unpackjs/plugin-react@4.0.0':
+    resolution: {integrity: sha512-9n/sDPg+a+cgmOW/r0zaez4YPj3aRH2xiD3fwZO6Il63ssFeTYQsFUAzR0mKS1OrmAQJEra9rUqcsaZDepcoYw==}
     peerDependencies:
-      '@unpackjs/core': 3.x
+      '@unpackjs/core': 4.x
 
   '@vitejs/plugin-react@5.1.2':
     resolution: {integrity: sha512-EcA07pHJouywpzsoTUqNh5NwGayl2PPVEJKUSinGGSxFGYn+shYbqMGBg6FXDqgXum9Ou/ecb+411ssw8HImJQ==}
@@ -8368,12 +8359,6 @@ snapshots:
 
   '@rspack/lite-tapable@1.1.0': {}
 
-  '@rspack/plugin-react-refresh@1.5.3(react-refresh@0.18.0)':
-    dependencies:
-      error-stack-parser: 2.1.4
-      html-entities: 2.6.0
-      react-refresh: 0.18.0
-
   '@rspack/plugin-react-refresh@1.6.0(react-refresh@0.18.0)':
     dependencies:
       error-stack-parser: 2.1.4
@@ -8716,10 +8701,10 @@ snapshots:
       '@types/node': 24.10.8
     optional: true
 
-  '@unpackjs/cli@3.4.1(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))':
+  '@unpackjs/cli@3.4.1(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(@unpackjs/plugin-react@4.0.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3))':
     dependencies:
       '@unpackjs/core': 3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
-      '@unpackjs/plugin-react': 3.4.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
+      '@unpackjs/plugin-react': 4.0.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)
       cac: 6.7.14
 
   '@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)':
@@ -8749,9 +8734,9 @@ snapshots:
       - webpack
       - webpack-cli
 
-  '@unpackjs/plugin-react@3.4.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)':
+  '@unpackjs/plugin-react@4.0.0(@unpackjs/core@3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1))(typescript@5.9.3)':
     dependencies:
-      '@rspack/plugin-react-refresh': 1.5.3(react-refresh@0.18.0)
+      '@rspack/plugin-react-refresh': 1.6.0(react-refresh@0.18.0)
       '@svgr/webpack': 8.1.0(typescript@5.9.3)
       '@swc/helpers': 0.5.18
       '@unpackjs/core': 3.9.0(@rsbuild/core@1.7.2)(@swc/helpers@0.5.18)(@types/express@4.17.25)(typescript@5.9.3)(webpack-cli@6.0.1)(webpack@5.104.1)
