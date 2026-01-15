@@ -455,7 +455,7 @@ toolNames.forEach((name) => {
           startScript: 'start:unpack',
           startedRegex: /ready in (\d+) ms/,
           buildScript: 'build:unpack',
-          binFilePath: '@unpackjs/cli/bin/unpack.js',
+          binFilePath: '@unpackjs/core/bin/unpack.js',
         }),
         new BuildTool({
           name: 'Unpack (Prebundle) ' + require('@unpackjs/core/package.json').version,
@@ -463,7 +463,7 @@ toolNames.forEach((name) => {
           startScript: 'start:unpack:prebundle',
           startedRegex: /ready in (\d+) ms/,
           buildScript: 'build:unpack',
-          binFilePath: '@unpackjs/cli/bin/unpack.js',
+          binFilePath: '@unpackjs/core/bin/unpack.js',
         }),
         // new BuildTool({
         //   name: 'Unpack (Experiments CSS) ' + require('@unpackjs/core/package.json').version,
@@ -471,7 +471,7 @@ toolNames.forEach((name) => {
         //   startScript: 'start:unpack:experiments-css',
         //   startedRegex: /ready in (\d+)ms/,
         //   buildScript: 'build:unpack',
-        //   binFilePath: '@unpackjs/cli/bin/unpack.js',
+        //   binFilePath: '@unpackjs/core/bin/unpack.js',
         // }),
       )
       break
