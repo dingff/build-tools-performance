@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { defineConfig } from '@rspack/cli'
 import { rspack } from '@rspack/core'
-import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
+import { ReactRefreshRspackPlugin } from '@rspack/plugin-react-refresh'
 
 const isProd = process.env.NODE_ENV === 'production'
 const caseName = process.env.CASE ?? 'large'
@@ -51,7 +51,7 @@ export default defineConfig({
     new rspack.HtmlRspackPlugin({
       template: path.join(caseDir, 'index-rspack.html'),
     }),
-    !isProd && new ReactRefreshPlugin(),
+    !isProd && new ReactRefreshRspackPlugin(),
   ],
   lazyCompilation: !isProd
     ? {

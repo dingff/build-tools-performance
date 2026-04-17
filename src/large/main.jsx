@@ -12,7 +12,7 @@ import App8 from './f8'
 
 import './index.css'
 import { AddAlarmOutlined } from '@material-ui/icons'
-import { AbcOutlined } from '@mui/icons-material'
+// import { AbcOutlined } from '@mui/icons-material'
 import { IconArrowLeft } from '@tabler/icons-react'
 import { Button } from 'antd'
 
@@ -20,7 +20,7 @@ const Main = () => {
   return (
     <React.StrictMode>
       <BrowserRouter>
-        <AbcOutlined />
+        {/* <AbcOutlined /> */}
         <AddAlarmOutlined />
         <IconArrowLeft />
         <Button>按钮</Button>
