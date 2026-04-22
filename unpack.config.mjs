@@ -11,9 +11,7 @@ export default defineConfig({
   },
   css: {
     transformer: 'lightningcss',
-  },
-  experiments: {
-    css: Boolean(process.env.EXPERIMENTS_CSS),
+    native: Boolean(process.env.EXPERIMENTS_CSS),
   },
   dev: {
     prebundle: Boolean(process.env.PREBUNDLE),
